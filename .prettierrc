@@ -1,0 +1,24 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 80,
+  "parser": "babel-ts",
+  "importOrder": ["^[./]", "^@/(.*)$"],
+  "importOrderSeparation": true,
+  "bracketSpacing": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderParserPlugins": [
+    "typescript",
+    "classProperties",
+    "[\"decorators-legacy\", { \"decoratorsBeforeExport\": true }]"
+  ],
+  "endOfLine": "auto",
+  "overrides": [
+    {
+      "files": "(*.json|.prettierrc)",
+      "options": {
+        "parser": "json"
+      }
+    }
+  ]
+}
