@@ -1,4 +1,4 @@
-/*import {
+import {
   Alert,
   Grid,
   TextField,
@@ -6,32 +6,63 @@
   Button,
   Link,
 } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { useForm } from '../../hooks/useForm';
+import logo from '../../public/logo-auth.jpg';
 
 import { AuthLayout } from '../layout/AuthLayout';
 
+const startData = {
+  email: '',
+  password: '',
+};
 export const RegisterPage = () => {
+  const { email, password, inputHandler } = useForm(startData);
+
+  const errorMessage = false;
+
+  const isAuthenticating = 'checking';
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+  };
+
+  const googleSignInHandler = () => {};
+
   return (
-    <AuthLayout title="Register">
+    <AuthLayout title="Registro">
       <form
-        onSubmit={onSubmit}
+        onSubmit={submitHandler}
         className="animate__animated animate__fadeIn animate__faster"
       >
         <Grid container>
-          <Grid item xs={12} sx={{ mt: 3 }}>
-            <TextField
-              label="Nombre Completo"
-              type="text"
-              placeholder="Nombre Completo"
-              fullWidth
-              name="displayName"
-              value={displayName}
-              onChange={inputHandler}
-              error={!!displayNameValid && formSubmitted}
-              helperText={displayNameValid}
-            />
+          <Grid
+            item
+            xs={12}
+            sx={{
+              mt: 3,
+              mb: 2,
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <img src={logo} alt="" style={{ width: '75%' }} />
+            <Typography variant="h5" style={{ color: 'grey' }}>
+              Registrarse en Centro PyME
+            </Typography>
           </Grid>
 
-          <Grid container>
+          <Grid
+            item
+            xs={12}
+            style={{
+              borderRadius: '5px',
+              border: '2px solid #b5cebc',
+              padding: '15px',
+            }}
+          >
             <Grid item xs={12} sx={{ mt: 3 }}>
               <TextField
                 label="Correo"
@@ -41,8 +72,6 @@ export const RegisterPage = () => {
                 name="email"
                 value={email}
                 onChange={inputHandler}
-                error={!!emailValid && formSubmitted}
-                helperText={emailValid}
               />
             </Grid>
 
@@ -55,37 +84,35 @@ export const RegisterPage = () => {
                 name="password"
                 value={password}
                 onChange={inputHandler}
-                error={!!passwordValid && formSubmitted}
-                helperText={passwordValid}
               />
             </Grid>
 
             <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
-              <Grid display={!!errorMessage ? '' : 'none'} item xs={12}>
+              <Grid display={!!errorMessage ? '' : 'none'} item xs={12} sm={12}>
                 <Alert severity="error">{errorMessage}</Alert>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={12}>
                 <Button
-                  disabled={isCheckingAuthentication}
+                  disabled={isAuthenticating}
                   type="submit"
                   variant="contained"
                   fullWidth
+                  style={{ backgroundColor: 'green', color: 'white' }}
                 >
-                  Crear Cuenta
+                  Ingresar
                 </Button>
               </Grid>
             </Grid>
 
             <Grid container direction="row" justifyContent="end">
-              <Typography sx={{ mr: 1, mt: 2 }}>¿Ya tienes cuenta?</Typography>
               <Link
                 component={RouterLink}
                 color="inherit"
                 to="/auth/login"
                 sx={{ mt: 2 }}
               >
-                Ingresar
+                Login
               </Link>
             </Grid>
           </Grid>
@@ -94,4 +121,3 @@ export const RegisterPage = () => {
     </AuthLayout>
   );
 };
-*/

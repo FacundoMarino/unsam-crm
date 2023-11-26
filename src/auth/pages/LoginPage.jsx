@@ -10,7 +10,6 @@ import {
   Typography,
   Button,
   Link,
-  Avatar,
 } from '@mui/material';
 
 import { AuthLayout } from '../layout/AuthLayout';
@@ -43,50 +42,73 @@ export const LoginPage = () => {
         className="animate__animated animate__fadeIn animate__faster"
       >
         <Grid container>
-          <Grid item xs={12} sx={{ mt: 3 }}>
-            <img
-              src={logo}
-              alt=""
-              style={{ width: '50%', backgroundColor: 'black' }}
-            />
-
-            <TextField
-              label="Correo"
-              type="email"
-              placeholder="correo@google.com.ar"
-              fullWidth
-              name="email"
-              value={email}
-              onChange={inputHandler}
-            />
+          <Grid
+            item
+            xs={12}
+            sx={{
+              mt: 3,
+              mb: 2,
+              display: 'flex',
+              justifyContent: 'center',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <img src={logo} alt="" style={{ width: '75%' }} />
+            <Typography variant="h5" style={{ color: 'grey' }}>
+              Ingresar a Centro PyME
+            </Typography>
           </Grid>
 
-          <Grid item xs={12} sx={{ mt: 3 }}>
-            <TextField
-              label="Contraseña"
-              type="password"
-              placeholder="Contraseña"
-              fullWidth
-              name="password"
-              value={password}
-              onChange={inputHandler}
-            />
-          </Grid>
-
-          <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
-            <Grid display={!!errorMessage ? '' : 'none'} item xs={12} sm={12}>
-              <Alert severity="error">{errorMessage}</Alert>
+          <Grid
+            item
+            xs={12}
+            style={{
+              borderRadius: '5px',
+              border: '2px solid #b5cebc',
+              padding: '15px',
+            }}
+          >
+            <Grid item xs={12} sx={{ mt: 3 }}>
+              <TextField
+                label="Correo"
+                type="email"
+                placeholder="correo@google.com.ar"
+                fullWidth
+                name="email"
+                value={email}
+                onChange={inputHandler}
+              />
             </Grid>
 
-            <Grid item xs={12} sm={12}>
-              <Button
-                disabled={isAuthenticating}
-                type="submit"
-                variant="contained"
+            <Grid item xs={12} sx={{ mt: 3 }}>
+              <TextField
+                label="Contraseña"
+                type="password"
+                placeholder="Contraseña"
                 fullWidth
-              >
-                Login
-              </Button>
+                name="password"
+                value={password}
+                onChange={inputHandler}
+              />
+            </Grid>
+
+            <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+              <Grid display={!!errorMessage ? '' : 'none'} item xs={12} sm={12}>
+                <Alert severity="error">{errorMessage}</Alert>
+              </Grid>
+
+              <Grid item xs={12} sm={12}>
+                <Button
+                  disabled={isAuthenticating}
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  style={{ backgroundColor: 'green', color: 'white' }}
+                >
+                  Ingresar
+                </Button>
+              </Grid>
             </Grid>
 
             <Grid container direction="row" justifyContent="end">
