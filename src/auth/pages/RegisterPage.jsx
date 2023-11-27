@@ -13,11 +13,15 @@ import logo from '../../public/logo-auth.jpg';
 import { AuthLayout } from '../layout/AuthLayout';
 
 const startData = {
+  nombre: '',
+  apellido: '',
   email: '',
+  telefono: '',
   password: '',
 };
 export const RegisterPage = () => {
-  const { email, password, inputHandler } = useForm(startData);
+  const { email, password, nombre, apellido, telefono, inputHandler } =
+    useForm(startData);
 
   const errorMessage = false;
 
@@ -65,12 +69,48 @@ export const RegisterPage = () => {
           >
             <Grid item xs={12} sx={{ mt: 3 }}>
               <TextField
+                label="Nombre"
+                type="nombre"
+                placeholder="Nombre"
+                fullWidth
+                name="nombre"
+                value={nombre}
+                onChange={inputHandler}
+              />
+            </Grid>
+
+            <Grid item xs={12} sx={{ mt: 3 }}>
+              <TextField
+                label="Apellido"
+                type="apellido"
+                placeholder="Apellido"
+                fullWidth
+                name="apellido"
+                value={apellido}
+                onChange={inputHandler}
+              />
+            </Grid>
+
+            <Grid item xs={12} sx={{ mt: 3 }}>
+              <TextField
                 label="Correo"
                 type="email"
                 placeholder="correo@google.com.ar"
                 fullWidth
                 name="email"
                 value={email}
+                onChange={inputHandler}
+              />
+            </Grid>
+
+            <Grid item xs={12} sx={{ mt: 3 }}>
+              <TextField
+                label="Telefono"
+                type="telefono"
+                placeohlder="Telefono"
+                fullWidth
+                name="telefono"
+                value={telefono}
                 onChange={inputHandler}
               />
             </Grid>
@@ -94,13 +134,13 @@ export const RegisterPage = () => {
 
               <Grid item xs={12} sm={12}>
                 <Button
-                  disabled={isAuthenticating}
+                  disabled={!isAuthenticating}
                   type="submit"
                   variant="contained"
                   fullWidth
                   style={{ backgroundColor: 'green', color: 'white' }}
                 >
-                  Ingresar
+                  Crear Cuenta
                 </Button>
               </Grid>
             </Grid>
