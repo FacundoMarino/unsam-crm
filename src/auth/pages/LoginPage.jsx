@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import logo from '../../public/logo-auth.jpg';
 
@@ -14,6 +14,7 @@ import {
 
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks/useForm';
+import { login, selectAuthStatus } from '../../store/auth/authSlider';
 
 const startData = {
   email: '',
@@ -27,7 +28,7 @@ export const LoginPage = () => {
 
   const errorMessage = false;
 
-  const isAuthenticating = 'checking';
+  const isAuthenticating = useSelector(selectAuthStatus);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -100,7 +101,7 @@ export const LoginPage = () => {
 
               <Grid item xs={12} sm={12}>
                 <Button
-                  disabled={isAuthenticating}
+                  disabled={!isAuthenticating}
                   type="submit"
                   variant="contained"
                   fullWidth

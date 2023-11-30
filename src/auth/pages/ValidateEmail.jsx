@@ -3,14 +3,25 @@ import EmailIcon from '@mui/icons-material/Email';
 import logo from '../../public/logo-auth.jpg';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, selectAuthStatus } from '../../store/auth/authSlider';
 
 export const ValidateEmail = () => {
-  const isAuthenticating = 'validation';
+  const isAuthenticating = useSelector(selectAuthStatus);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isAuthenticating === 'validationOk') {
+    if (isAuthenticating === 'validate') {
       setTimeout(() => {
-        window.location.href = '/auth/register';
+        dispatch(login('validateEmail'));
+      }, 3000);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticating === 'validateEmail') {
+      setTimeout(() => {
+        dispatch(login('validateOk'));
       }, 3000);
     }
   }, [isAuthenticating]);
@@ -35,7 +46,7 @@ export const ValidateEmail = () => {
         <img src={logo} alt="" style={{ width: '15%' }} />
       </Grid>
 
-      {isAuthenticating === 'validationOk' ? (
+      {isAuthenticating === 'validateEmail' ? (
         <Grid
           item
           className=" animate__animated animate__fadeIn"

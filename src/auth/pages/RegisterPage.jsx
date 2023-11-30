@@ -11,6 +11,8 @@ import { useForm } from '../../hooks/useForm';
 import logo from '../../public/logo-auth.jpg';
 
 import { AuthLayout } from '../layout/AuthLayout';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, selectAuthStatus } from '../../store/auth/authSlider';
 
 const startData = {
   nombre: '',
@@ -25,9 +27,14 @@ export const RegisterPage = () => {
 
   const errorMessage = false;
 
-  const isAuthenticating = 'checking';
+  const isAuthenticating = useSelector(selectAuthStatus);
+
+  const dispatch = useDispatch();
 
   const submitHandler = (event) => {
+    dispatch(login('validate'));
+
+    console.log(isAuthenticating);
     event.preventDefault();
   };
 
