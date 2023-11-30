@@ -2,9 +2,18 @@ import { Grid, Typography } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import logo from '../../public/logo-auth.jpg';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
+import { useEffect } from 'react';
 
 export const ValidateEmail = () => {
-  const isAuthenticating = 'validationOk';
+  const isAuthenticating = 'validation';
+
+  useEffect(() => {
+    if (isAuthenticating === 'validationOk') {
+      setTimeout(() => {
+        window.location.href = '/auth/register';
+      }, 3000);
+    }
+  }, [isAuthenticating]);
 
   return (
     <Grid
