@@ -77,6 +77,18 @@ export const RegisterPage = () => {
             >
               <Grid item xs={12} sx={{ mt: 3 }}>
                 <TextField
+                  label="Cuit"
+                  type="cuit"
+                  placeholder="Cuit"
+                  fullWidth
+                  name="cuit"
+                  value={password}
+                  onChange={inputHandler}
+                />
+              </Grid>
+
+              <Grid item xs={12} sx={{ mt: 3 }}>
+                <TextField
                   label="Rubro"
                   type="rubor"
                   placeholder="Rubro"
@@ -130,18 +142,6 @@ export const RegisterPage = () => {
                   placeholder="Direccion"
                   fullWidth
                   name="direccion"
-                  value={password}
-                  onChange={inputHandler}
-                />
-              </Grid>
-
-              <Grid item xs={12} sx={{ mt: 3 }}>
-                <TextField
-                  label="Cuit"
-                  type="cuit"
-                  placeholder="Cuit"
-                  fullWidth
-                  name="cuit"
                   value={password}
                   onChange={inputHandler}
                 />
