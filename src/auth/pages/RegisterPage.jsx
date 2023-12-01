@@ -22,8 +22,20 @@ const startData = {
   password: '',
 };
 export const RegisterPage = () => {
-  const { email, password, nombre, apellido, telefono, inputHandler } =
-    useForm(startData);
+  const {
+    cuit,
+    direccion,
+    descripcion,
+    empleados,
+    sucursales,
+    rubro,
+    email,
+    password,
+    nombre,
+    apellido,
+    telefono,
+    inputHandler,
+  } = useForm(startData);
 
   const errorMessage = false;
 
@@ -82,7 +94,7 @@ export const RegisterPage = () => {
                   placeholder="Cuit"
                   fullWidth
                   name="cuit"
-                  value={password}
+                  value={cuit}
                   onChange={inputHandler}
                 />
               </Grid>
@@ -94,7 +106,7 @@ export const RegisterPage = () => {
                   placeholder="Rubro"
                   fullWidth
                   name="rubro"
-                  value={nombre}
+                  value={rubro}
                   onChange={inputHandler}
                 />
               </Grid>
@@ -105,8 +117,8 @@ export const RegisterPage = () => {
                   type="descripcion"
                   placeholder="Descripcion"
                   fullWidth
-                  name="desripcion"
-                  value={apellido}
+                  name="descripcion"
+                  value={descripcion}
                   onChange={inputHandler}
                 />
               </Grid>
@@ -118,7 +130,7 @@ export const RegisterPage = () => {
                   placeholder="Empleados"
                   fullWidth
                   name="empleados"
-                  value={email}
+                  value={empleados}
                   onChange={inputHandler}
                 />
               </Grid>
@@ -130,7 +142,7 @@ export const RegisterPage = () => {
                   placeohlder="Sucursales"
                   fullWidth
                   name="sucursales"
-                  value={telefono}
+                  value={sucursales}
                   onChange={inputHandler}
                 />
               </Grid>
@@ -142,7 +154,7 @@ export const RegisterPage = () => {
                   placeholder="Direccion"
                   fullWidth
                   name="direccion"
-                  value={password}
+                  value={direccion}
                   onChange={inputHandler}
                 />
               </Grid>
