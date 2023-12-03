@@ -4,6 +4,7 @@ import { AuthRoute } from '../auth/routes/AuthRoute';
 import { useSelector } from 'react-redux';
 import { selectAuthStatus } from '../store/auth/authSlider';
 import { RegisterPage, ValidateEmail } from '../auth/pages';
+import { CrmRoutes } from '../mainPage/routes/CrmRoutes';
 
 export const AppRouter = () => {
   const status = useSelector(selectAuthStatus);
@@ -13,9 +14,9 @@ export const AppRouter = () => {
   return (
     <Routes>
       {status === 'checking' ? (
-        <Route path="/*" element={<AuthRoute />} />
+        <Route path="/*" element={<CrmRoutes />} />
       ) : (
-        <Route path="/auth/*" element={<ValidateEmail />} />
+        <Route path="/auth/*" element={<CrmRoutes />} />
       )}
       {status === 'validateOk' ? (
         <Route path="/auth/register" element={<RegisterPage />} />
