@@ -13,13 +13,20 @@ import logo from '../../public/logo-auth.jpg';
 import { AuthLayout } from '../layout/AuthLayout';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, selectAuthStatus } from '../../store/auth/authSlider';
+import { startRegister } from '../../store/auth/thunks';
 
 const startData = {
+  cuit: '',
+  direccion: '',
+  descripcion: '',
+  empleados: '',
+  sucursales: '',
+  rubro: '',
+  email: '',
+  password: '',
   nombre: '',
   apellido: '',
-  email: '',
   telefono: '',
-  password: '',
 };
 export const RegisterPage = () => {
   const {
@@ -35,19 +42,17 @@ export const RegisterPage = () => {
     apellido,
     telefono,
     inputHandler,
+    formState,
   } = useForm(startData);
 
   const errorMessage = false;
-
+  const dispatch = useDispatch();
   const isAuthenticating = useSelector(selectAuthStatus);
 
-  const dispatch = useDispatch();
-
   const submitHandler = (event) => {
-    dispatch(login('validate'));
-
-    console.log(isAuthenticating);
     event.preventDefault();
+
+    dispatch(startRegister(formState));
   };
 
   const googleSignInHandler = () => {};

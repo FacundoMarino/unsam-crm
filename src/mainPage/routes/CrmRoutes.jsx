@@ -5,9 +5,9 @@ export const CrmRoutes = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<CrmPage />} />
+        <Route path="/crm" element={<CrmPage />} />
 
-        <Route path="/*" element={<Navigate to="/" />} />
+        <Route path="/*" element={<Navigate to="/crm" />} />
       </Routes>
     </div>
   );

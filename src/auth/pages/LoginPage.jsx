@@ -15,6 +15,7 @@ import {
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks/useForm';
 import { login, selectAuthStatus } from '../../store/auth/authSlider';
+import { startLoginWithEmailPassword } from '../../store/auth/thunks';
 
 const startData = {
   email: '',
@@ -24,14 +25,17 @@ const startData = {
 export const LoginPage = () => {
   // const { status, errorMessage } = useSelector((state) => state.auth);
 
-  const { email, password, inputHandler } = useForm(startData);
+  const { email, password, inputHandler, formState } = useForm(startData);
 
+  const dispatch = useDispatch();
   const errorMessage = false;
 
   const isAuthenticating = useSelector(selectAuthStatus);
 
   const submitHandler = (event) => {
     event.preventDefault();
+
+    dispatch(startLoginWithEmailPassword(formState));
   };
 
   const googleSignInHandler = () => {};

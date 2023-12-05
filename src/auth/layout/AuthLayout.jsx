@@ -1,6 +1,12 @@
 import { Grid, Typography } from '@mui/material';
+import { useEffect } from 'react';
+import { checkAuth } from '../../store/auth/thunks';
 
 export const AuthLayout = ({ children, title = '' }) => {
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
   return (
     <Grid
       container
