@@ -38,8 +38,6 @@ export const LoginPage = () => {
     dispatch(startLoginWithEmailPassword(formState));
   };
 
-  const googleSignInHandler = () => {};
-
   return (
     <AuthLayout title="Login">
       <form

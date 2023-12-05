@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    status: 'checking',
+    status: 'validate',
     user_apellido: '',
     user_email: '',
     user_email_verified_at: null,
@@ -45,9 +45,17 @@ export const authSlice = createSlice({
       state.user_telephone = '';
       state.user_type_user = '';
     },
+    registerStepOne: (state, { payload }) => {
+      state.status = 'validate';
+    },
+    registerStepTwo: (state, { payload }) => {
+      state.status = 'validateOk  ';
+    },
   },
 });
 
-export const { login } = authSlice.actions;
+export const { login, logout, registerStepOne, registerStepTwo } =
+  authSlice.actions;
 
 export const selectAuthStatus = (state) => state.auth.status;
+export const selectUserStep = (state) => state.auth.user_step;

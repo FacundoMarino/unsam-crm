@@ -12,7 +12,7 @@ import logo from '../../public/logo-auth.jpg';
 
 import { AuthLayout } from '../layout/AuthLayout';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, selectAuthStatus } from '../../store/auth/authSlider';
+import { selectAuthStatus } from '../../store/auth/authSlider';
 import { startRegister } from '../../store/auth/thunks';
 
 const startData = {
@@ -54,8 +54,6 @@ export const RegisterPage = () => {
 
     dispatch(startRegister(formState));
   };
-
-  const googleSignInHandler = () => {};
 
   return (
     <AuthLayout title="Registro">

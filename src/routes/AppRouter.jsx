@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { AuthRoute } from '../auth/routes/AuthRoute';
 import { useSelector } from 'react-redux';
 import { selectAuthStatus } from '../store/auth/authSlider';
-import { RegisterPage } from '../auth/pages';
+import { ValidateEmail } from '../auth/pages';
 import { CrmRoutes } from '../mainPage/routes/CrmRoutes';
 
 export const AppRouter = () => {
@@ -11,14 +11,11 @@ export const AppRouter = () => {
 
   return (
     <Routes>
-      {status === 'checking' ? (
-        <Route path="/*" element={<AuthRoute />} />
-      ) : (
+      {status === 'checking' && <Route path="/*" element={<AuthRoute />} />}
+      {status === 'authenticated' && (
         <Route path="/*" element={<CrmRoutes />} />
       )}
-      {status === 'validateOk' ? (
-        <Route path="/auth/register" element={<RegisterPage />} />
-      ) : null}
+      {status === 'validate' && <Route path="/*" element={<ValidateEmail />} />}
       <Route path="/*" element={<Navigate to="/auth/login" />} />
     </Routes>
   );

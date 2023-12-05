@@ -1,5 +1,10 @@
-import { getLogin, postLogin, postRegister } from '../../services/provider';
-import { login } from './authSlider';
+import {
+  getLogin,
+  postLogin,
+  postRegister,
+  postSendEmailCode,
+} from '../../services/provider';
+import { login, logout, registerStepOne, registerStepTwo } from './authSlider';
 
 export const checkAuth = () => {
   const token = localStorage.getItem('browser_token');
@@ -41,6 +46,24 @@ export const startRegister = ({
       token,
     });
 
-    dispatch(login(data));
+    dispatch(registerStepOne(data));
+  };
+};
+
+export const startLogout = () => {
+  return (dispatch) => {
+    dispatch(logout());
+  };
+};
+
+export const sendEmailCode = (code) => {
+  return async (dispatch) => {
+    const data = await postSendEmailCode({
+      code,
+    });
+
+    if (data.error) {
+      dispatch(registerStepTwo());
+    }
   };
 };

@@ -1,30 +1,27 @@
-import { Grid, Typography } from '@mui/material';
+import { Button, Grid, TextField, Typography } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import logo from '../../public/logo-auth.jpg';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, selectAuthStatus } from '../../store/auth/authSlider';
+import { selectAuthStatus } from '../../store/auth/authSlider';
+import { useForm } from '../../hooks/useForm';
+import { sendEmailCode } from '../../store/auth/thunks';
 
 export const ValidateEmail = () => {
   const isAuthenticating = useSelector(selectAuthStatus);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (isAuthenticating === 'validate') {
-      setTimeout(() => {
-        dispatch(login('validateEmail'));
-      }, 3000);
-    }
-  }, []);
+  const startData = {
+    code: '',
+  };
 
-  useEffect(() => {
-    if (isAuthenticating === 'validateEmail') {
-      setTimeout(() => {
-        dispatch(login('validateOk'));
-      }, 3000);
-    }
-  }, [isAuthenticating]);
+  const { code, inputHandler, formState } = useForm(startData);
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+
+    dispatch(sendEmailCode(formState));
+  };
 
   return (
     <Grid
@@ -46,7 +43,7 @@ export const ValidateEmail = () => {
         <img src={logo} alt="" style={{ width: '15%' }} />
       </Grid>
 
-      {isAuthenticating === 'validateEmail' ? (
+      {isAuthenticating === 'validateOk' ? (
         <Grid
           item
           className=" animate__animated animate__fadeIn"
@@ -74,10 +71,41 @@ export const ValidateEmail = () => {
             variant="h5"
             style={{ color: 'grey', textAlign: 'center' }}
           >
-            Hemos enviado un enlace de activación a tu dirección de correo
+            Hemos enviado un código de activación a tu dirección de correo
             electrónico. Por favor, verifica tu bandeja de entrada y sigue las
             instrucciones para activar tu cuenta.
           </Typography>
+
+          <form
+            onSubmit={submitHandler}
+            className="animate__animated animate__fadeIn animate__faster"
+          >
+            <Grid item xs={12} sx={{ mt: 3 }}>
+              <TextField
+                label="Codigo de Activación"
+                type="code"
+                placeholder="Codigo de Activación"
+                fullWidth
+                name="code"
+                value={code}
+                onChange={inputHandler}
+              />
+              <Grid item xs={12} sm={12} sx={{ mt: 3 }}>
+                <Button
+                  disabled={!isAuthenticating}
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  style={{
+                    backgroundColor: 'green',
+                    color: 'white',
+                  }}
+                >
+                  Enviar
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
         </Grid>
       )}
     </Grid>

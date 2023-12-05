@@ -83,7 +83,26 @@ export const postRegister = async ({
       requestOptions,
     ).then((response) => response.json());
 
-    console.log(response);
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const postSendEmailCode = async ({ code, token }) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({ code, browser_token: token }),
+  };
+
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/login`,
+      requestOptions,
+    ).then((response) => response.json());
+
+    return response;
   } catch (error) {
     console.error('Error:', error);
   }
