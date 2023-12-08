@@ -49,7 +49,7 @@ export const authSlice = createSlice({
       state.status = 'validate';
     },
     registerStepTwo: (state, { payload }) => {
-      state.status = 'validateOk  ';
+      state.status = 'validateOk';
     },
   },
 });

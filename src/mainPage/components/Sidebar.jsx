@@ -1,9 +1,16 @@
 import { Box, Divider, Drawer, List, Toolbar, Typography } from '@mui/material';
 import { SideBarItem } from './SideBarItem';
+import logo from '../../public/logo-auth-crm.png';
+import { MdOutlineHomeRepairService } from 'react-icons/md';
 
 export const Sidebar = ({ draweWidth }) => {
-  const displayName = '';
-  const notes = [];
+  const notes = [
+    {
+      id: 1,
+      title: 'Services',
+      icon: <MdOutlineHomeRepairService />,
+    },
+  ];
   return (
     <Box
       component="nav"
@@ -17,14 +24,23 @@ export const Sidebar = ({ draweWidth }) => {
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: draweWidth },
         }}
       >
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            {displayName}
-          </Typography>
+        <Toolbar
+          sx={{
+            backgroundColor: '#343840',
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <img src={logo} alt="logo" style={{ width: '75%' }} />
+          </div>
         </Toolbar>
         <Divider />
 
-        <List>
+        <List
+          sx={{
+            backgroundColor: '#343840',
+            height: '100vh',
+          }}
+        >
           {notes.map((note) => (
             <SideBarItem key={note.id} {...note} />
           ))}

@@ -57,7 +57,7 @@ export const LoginPage = () => {
               alignItems: 'center',
             }}
           >
-            <img src={logo} alt="" style={{ width: '75%' }} />
+            <img src={logo} alt="logo" style={{ width: '75%' }} />
             <Typography variant="h5" style={{ color: 'grey' }}>
               Ingresar a Centro PyME
             </Typography>

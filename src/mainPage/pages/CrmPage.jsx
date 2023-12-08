@@ -1,14 +1,9 @@
-import { AddOutlined } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CrmLayout } from '../layout/CrmLayout';
+import { TurnosPage } from './TurnosPage';
 
 export const CrmPage = () => {
-  const dispatch = useDispatch();
+  const page = useSelector((state) => state.crm.page);
 
-  const isSaving = false;
-
-  const clickNewNoteHandler = () => {};
-
-  return <CrmLayout></CrmLayout>;
+  return <CrmLayout>{page === 'turnos' && <TurnosPage />}</CrmLayout>;
 };
