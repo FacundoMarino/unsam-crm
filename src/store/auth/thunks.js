@@ -53,6 +53,7 @@ export const startRegister = ({
       telefono,
       token,
     });
+
     data.error ? dispatch(errorApi(data)) : dispatch(registerStepOne(data));
   };
 };

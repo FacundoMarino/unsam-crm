@@ -52,6 +52,18 @@ export const authSlice = createSlice({
     },
     registerStepOne: (state, { payload }) => {
       state.status = 'validate';
+      state.apellido = payload.info.user_apellido;
+      state.email = payload.info.user_email;
+      state.email_verified_at = payload.info.user_email_verified_at;
+      state.enterprise = payload.info.user_enterprise;
+      state.link_meet = payload.info.user_link_meet;
+      state.name = payload.info.user_name;
+      state.rol = payload.info.user_rol;
+      state._status = payload.info.user_status;
+      state.step = payload.info.user_step;
+      state.telephone = payload.info.user_telephone;
+      state.type_user = payload.info.user_type_user;
+      state.telekinesis = payload.telekinesis;
       state.errorMessage = null;
     },
     registerStepTwo: (state, { payload }) => {
@@ -59,6 +71,19 @@ export const authSlice = createSlice({
     },
     errorApi: (state, { payload }) => {
       state.errorMessage = payload.error;
+      state.apellido = payload.info.user_apellido;
+      state.email = payload.info.user_email;
+      state.email_verified_at = payload.info.user_email_verified_at;
+      state.enterprise = payload.info.user_enterprise;
+      state.link_meet = payload.info.user_link_meet;
+      state.name = payload.info.user_name;
+      state.rol = payload.info.user_rol;
+      state._status = payload.info.user_status;
+      state.step = payload.info.user_step;
+      state.telephone = payload.info.user_telephone;
+      state.type_user = payload.info.user_type_user;
+      state.telekinesis = payload.telekinesis;
+      state.errorMessage = null;
     },
   },
 });

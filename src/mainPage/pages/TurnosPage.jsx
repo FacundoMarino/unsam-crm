@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-
-import 'react-datepicker/dist/react-datepicker.css';
-import { Grid, Button } from '@mui/material';
-import { OptionSection } from '../components/turnos/optionSection';
-import { LocationSection } from '../components/turnos/locationSection';
-import { DateSection } from '../components/turnos/dateSection';
-import { TimeSection } from '../components/turnos/timeSection';
+import { Grid } from '@mui/material';
+import { TurnosStepTwo } from '../components/turnos/TurnosStepTwo';
+import { TurnosStepOne } from '../components/turnos/TurnosStepOne';
 
 export const TurnosPage = () => {
   const [selectedOption, setSelectedOption] = useState('');
@@ -13,15 +9,12 @@ export const TurnosPage = () => {
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
 
-  const tipoDeTurno = [
-    { value: 'opcion1', label: 'Admisión' },
-    { value: 'opcion2', label: 'Asesoria' },
-    { value: 'opcion3', label: 'Consultoria' },
-    { value: 'opcion4', label: 'Capacitación' },
-    { value: 'opcion5', label: 'Asesoria' },
-    { value: 'opcion6', label: 'Visita' },
+  const [step, setStep] = useState(true);
 
-    { value: 'opcion7', label: 'Financiamiento' },
+  const options = [
+    { value: 'opcion1', label: 'Opción 1' },
+    { value: 'opcion2', label: 'Opción 2' },
+    // Agrega más opciones según sea necesario
   ];
 
   const locations = ['Presencial', 'Virtual'];
@@ -53,51 +46,35 @@ export const TurnosPage = () => {
 
   const saveAndSendData = () => {
     // Lógica para guardar y enviar datos a la API
-    console.log('Datos guardados y enviados:', {
-      selectedOption,
-      selectedDate,
-      selectedTime,
-      selectedLocation,
-    });
+    setStep(!step);
   };
-
-  return (
-    <Grid container spacing={3}>
-      <OptionSection
-        options={tipoDeTurno}
-        setSelectedOption={setSelectedOption}
-        resetFields={resetFields}
-      />
-      <LocationSection
+  return step === true ? (
+    <Grid container spacing={2} mt={5}>
+      <TurnosStepOne
+        options={options}
         locations={locations}
-        setSelectedLocation={setSelectedLocation}
-      />
-      <DateSection
         selectedOption={selectedOption}
+        selectedLocation={selectedLocation}
+        setSelectedOption={setSelectedOption}
+        setSelectedLocation={setSelectedLocation}
+        resetFields={resetFields}
+        saveAndSendData={saveAndSendData}
+        setStep={setStep}
+      />
+    </Grid>
+  ) : (
+    <Grid container spacing={2} mt={5}>
+      <TurnosStepTwo
+        selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
         isDayDisabled={isDayDisabled}
-      />
-      <TimeSection
-        selectedDate={selectedDate}
-        selectedLocation={selectedLocation}
-        setSelectedTime={setSelectedTime}
         optionsHoras={optionsHoras}
+        selectedTime={selectedTime}
+        setSelectedTime={setSelectedTime}
+        resetFields={resetFields}
+        saveAndSendData={saveAndSendData}
+        setStep={setStep}
       />
-
-      {/* Botones */}
-      <Grid item xs={12} container justifyContent="flex-end">
-        <Button variant="outlined" color="secondary" onClick={resetFields}>
-          Reiniciar
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          style={{ marginLeft: '10px' }}
-          onClick={saveAndSendData}
-        >
-          Guardar y Enviar
-        </Button>
-      </Grid>
     </Grid>
   );
 };
