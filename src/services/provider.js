@@ -20,11 +20,33 @@ export const getLogin = async () => {
   }
 };
 
-export const postLogin = async ({ email, password, token }) => {
+export const getEmailVerified = async () => {
+  const requestOptions = {
+    method: 'GET',
+    headers: headers,
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/email-verified`,
+      requestOptions,
+    ).then((response) => response.json());
+
+    localStorage.setItem('browser_token', response.browser_token);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const postLogin = async ({ email, password, token, telekinesis }) => {
   const requestOptions = {
     method: 'POST',
     headers: headers,
-    body: JSON.stringify({ email, password, browser_token: token }),
+    body: JSON.stringify({
+      email,
+      password,
+      browser_token: token,
+      telekinesis,
+    }),
   };
 
   try {
@@ -63,6 +85,7 @@ export const postRegister = async ({
   nombre,
   apellido,
   telefono,
+  telekinesis,
 }) => {
   const requestOptions = {
     method: 'POST',
@@ -74,6 +97,7 @@ export const postRegister = async ({
       name: nombre,
       apellido,
       telephone: telefono,
+      telekinesis,
     }),
   };
 
@@ -89,16 +113,53 @@ export const postRegister = async ({
   }
 };
 
-export const postSendEmailCode = async ({ code, token }) => {
+export const postRegisterStepTwo = async ({
+  cuit,
+  direccion,
+  descripcion,
+  empleados,
+  sucursales,
+  rubro,
+  token,
+  user,
+}) => {
   const requestOptions = {
     method: 'POST',
     headers: headers,
-    body: JSON.stringify({ code, browser_token: token }),
+    body: JSON.stringify({
+      cuit,
+      adress: direccion,
+      branche_offices: sucursales,
+      employees: empleados,
+      descripcion,
+      category: rubro,
+      browser_token: token,
+      ...user,
+    }),
   };
 
   try {
     const response = await fetch(
-      `${process.env.REACT_APP_URL_API}/api/crmunsam/login`,
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/register`,
+      requestOptions,
+    ).then((response) => response.json());
+
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const postSendEmailCode = async ({ code, token, telekinesis }) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({ code, browser_token: token, telekinesis }),
+  };
+
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/email-verified`,
       requestOptions,
     ).then((response) => response.json());
 

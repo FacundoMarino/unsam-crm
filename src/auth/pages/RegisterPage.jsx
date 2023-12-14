@@ -13,7 +13,7 @@ import logo from '../../public/logo-auth.jpg';
 import { AuthLayout } from '../layout/AuthLayout';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAuthStatus } from '../../store/auth/authSlider';
-import { startRegister } from '../../store/auth/thunks';
+import { startRegister, startRegisterStepTwo } from '../../store/auth/thunks';
 
 const startData = {
   cuit: '',
@@ -48,11 +48,16 @@ export const RegisterPage = () => {
   const errorMessage = false;
   const dispatch = useDispatch();
   const isAuthenticating = useSelector(selectAuthStatus);
+  const user = useSelector((state) => state.auth);
 
   const submitHandler = (event) => {
     event.preventDefault();
 
-    dispatch(startRegister(formState));
+    if (isAuthenticating !== 'validateOk') {
+      dispatch(startRegister(formState));
+    } else {
+      dispatch(startRegisterStepTwo(formState, user));
+    }
   };
 
   return (

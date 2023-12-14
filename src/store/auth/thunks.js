@@ -2,6 +2,7 @@ import {
   getLogin,
   postLogin,
   postRegister,
+  postRegisterStepTwo,
   postSendEmailCode,
 } from '../../services/provider';
 import { login, logout, registerStepOne, registerStepTwo } from './authSlider';
@@ -23,6 +24,7 @@ export const startLoginWithEmailPassword = ({ email, password }) => {
       password,
       token,
     });
+
     dispatch(login(data));
   };
 };
@@ -50,19 +52,46 @@ export const startRegister = ({
   };
 };
 
+export const startRegisterStepTwo = ({
+  cuit,
+  direccion,
+  descripcion,
+  empleados,
+  sucursales,
+  rubro,
+  user,
+}) => {
+  const token = localStorage.getItem('browser_token');
+
+  return async (dispatch) => {
+    const data = await postRegisterStepTwo({
+      cuit,
+      direccion,
+      descripcion,
+      empleados,
+      sucursales,
+      rubro,
+      token,
+      ...user,
+    });
+  };
+};
+
 export const startLogout = () => {
   return (dispatch) => {
     dispatch(logout());
   };
 };
 
-export const sendEmailCode = (code) => {
+export const sendEmailCode = (code, token, telekinesis) => {
   return async (dispatch) => {
     const data = await postSendEmailCode({
       code,
+      token,
+      telekinesis,
     });
 
-    if (data.error) {
+    if (data) {
       dispatch(registerStepTwo());
     }
   };

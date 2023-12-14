@@ -10,6 +10,7 @@ import { sendEmailCode } from '../../store/auth/thunks';
 export const ValidateEmail = () => {
   const isAuthenticating = useSelector(selectAuthStatus);
   const dispatch = useDispatch();
+  const { token, telekinesis } = useSelector((state) => state.auth);
 
   const startData = {
     code: '',
@@ -20,7 +21,7 @@ export const ValidateEmail = () => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    dispatch(sendEmailCode(formState));
+    dispatch(sendEmailCode(formState, token, telekinesis));
   };
 
   return (

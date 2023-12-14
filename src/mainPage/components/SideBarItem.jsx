@@ -14,11 +14,6 @@ export const SideBarItem = ({ title = '', subItems = [], icon }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
-  const handleSetPage = (subItems) => {
-    console.log(subItems);
-    dispatch(setCrmPage(subItems));
-  };
-
   subItems = ['Turnos'];
 
   const handleItemClick = () => {
