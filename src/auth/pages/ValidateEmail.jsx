@@ -24,6 +24,12 @@ export const ValidateEmail = () => {
     dispatch(sendEmailCode(formState, token, telekinesis));
   };
 
+  if (isAuthenticating === 'validateOk') {
+    setTimeout(() => {
+      window.location.href = '/auth/login';
+    }, 1000);
+  }
+
   return (
     <Grid
       container

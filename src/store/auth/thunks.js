@@ -5,7 +5,13 @@ import {
   postRegisterStepTwo,
   postSendEmailCode,
 } from '../../services/provider';
-import { login, logout, registerStepOne, registerStepTwo } from './authSlider';
+import {
+  errorApi,
+  login,
+  logout,
+  registerStepOne,
+  registerStepTwo,
+} from './authSlider';
 
 export const checkAuth = () => {
   const token = localStorage.getItem('browser_token');
@@ -47,8 +53,7 @@ export const startRegister = ({
       telefono,
       token,
     });
-
-    dispatch(registerStepOne(data));
+    data.error ? dispatch(errorApi(data)) : dispatch(registerStepOne(data));
   };
 };
 

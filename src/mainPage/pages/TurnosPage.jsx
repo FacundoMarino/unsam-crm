@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import { es } from 'date-fns/locale';
+
 import 'react-datepicker/dist/react-datepicker.css';
-import {
-  Grid,
-  Paper,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Button,
-} from '@mui/material';
+import { Grid, Button } from '@mui/material';
+import { OptionSection } from '../components/turnos/optionSection';
+import { LocationSection } from '../components/turnos/locationSection';
+import { DateSection } from '../components/turnos/dateSection';
+import { TimeSection } from '../components/turnos/timeSection';
 
 export const TurnosPage = () => {
   const [selectedOption, setSelectedOption] = useState('');
@@ -18,10 +13,15 @@ export const TurnosPage = () => {
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
 
-  const options = [
-    { value: 'opcion1', label: 'Opción 1' },
-    { value: 'opcion2', label: 'Opción 2' },
-    // Agrega más opciones según sea necesario
+  const tipoDeTurno = [
+    { value: 'opcion1', label: 'Admisión' },
+    { value: 'opcion2', label: 'Asesoria' },
+    { value: 'opcion3', label: 'Consultoria' },
+    { value: 'opcion4', label: 'Capacitación' },
+    { value: 'opcion5', label: 'Asesoria' },
+    { value: 'opcion6', label: 'Visita' },
+
+    { value: 'opcion7', label: 'Financiamiento' },
   ];
 
   const locations = ['Presencial', 'Virtual'];
@@ -63,98 +63,27 @@ export const TurnosPage = () => {
 
   return (
     <Grid container spacing={3}>
-      {/* Opción */}
-      <Grid item xs={12} md={6}>
-        <Paper elevation={3} style={{ padding: '20px' }}>
-          <h2>Selecciona una opción</h2>
-          <FormControl fullWidth>
-            <InputLabel
-              id="opcion-select-label"
-              style={{ marginBottom: '8px' }}
-            >
-              Opción
-            </InputLabel>
-            <Select
-              labelId="opcion-select-label"
-              id="opcion-select"
-              value={selectedOption}
-              onChange={(event) => {
-                setSelectedOption(event.target.value);
-                setSelectedDate(null);
-                setSelectedTime('');
-                setSelectedLocation('');
-              }}
-            >
-              {options.map((opcion) => (
-                <MenuItem key={opcion.value} value={opcion.value}>
-                  {opcion.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Paper>
-      </Grid>
+      <OptionSection
+        options={tipoDeTurno}
+        setSelectedOption={setSelectedOption}
+        resetFields={resetFields}
+      />
+      <LocationSection
+        locations={locations}
+        setSelectedLocation={setSelectedLocation}
+      />
+      <DateSection
+        selectedOption={selectedOption}
+        setSelectedDate={setSelectedDate}
+        isDayDisabled={isDayDisabled}
+      />
+      <TimeSection
+        selectedDate={selectedDate}
+        selectedLocation={selectedLocation}
+        setSelectedTime={setSelectedTime}
+        optionsHoras={optionsHoras}
+      />
 
-      {/* Tipo de cita (Presencial o Virtual) */}
-      <Grid item xs={12} md={6}>
-        <Paper elevation={3} style={{ padding: '20px' }}>
-          <h2>Selecciona el tipo de cita</h2>
-          <FormControl fullWidth>
-            <InputLabel id="location-select-label">Tipo de Cita</InputLabel>
-            <Select
-              labelId="location-select-label"
-              id="location-select"
-              value={selectedLocation}
-              onChange={(event) => setSelectedLocation(event.target.value)}
-            >
-              {locations.map((location) => (
-                <MenuItem key={location} value={location}>
-                  {location}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Paper>
-      </Grid>
-
-      {/* Calendario */}
-      <Grid item xs={12} md={6}>
-        <Paper elevation={3} style={{ padding: '36px' }}>
-          <h2>Selecciona la fecha</h2>
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
-            minDate={new Date()}
-            filterDate={isDayDisabled}
-            locale={es}
-            dateFormat="dd/MM/yyyy"
-            showPopperArrow={false}
-          />
-        </Paper>
-      </Grid>
-
-      {/* Horarios */}
-      <Grid item xs={12} md={6}>
-        <Paper elevation={3} style={{ padding: '20px' }}>
-          <h2>Selecciona la hora</h2>
-          <FormControl fullWidth>
-            <InputLabel id="hora-select-label">Selecciona la hora</InputLabel>
-            <Select
-              labelId="hora-select-label"
-              id="hora-select"
-              value={selectedTime}
-              onChange={(event) => setSelectedTime(event.target.value)}
-              disabled={!selectedDate || !selectedLocation}
-            >
-              {optionsHoras.map((hora) => (
-                <MenuItem key={hora} value={hora}>
-                  {hora}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Paper>
-      </Grid>
       {/* Botones */}
       <Grid item xs={12} container justifyContent="flex-end">
         <Button variant="outlined" color="secondary" onClick={resetFields}>

@@ -16,6 +16,10 @@ export const AppRouter = () => {
         <Route path="/*" element={<CrmRoutes />} />
       )}
       {status === 'validate' && <Route path="/*" element={<ValidateEmail />} />}
+      {status === 'validateOk' && (
+        <Route path="/*" element={<ValidateEmail />} />
+      )}
+
       <Route path="/*" element={<Navigate to="/auth/login" />} />
     </Routes>
   );

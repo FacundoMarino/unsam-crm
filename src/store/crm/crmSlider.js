@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const crmSlice = createSlice({
   name: 'crm',
   initialState: {
-    page: '',
+    page: 'turnos',
   },
   reducers: {
     setCrmPage: (state, { payload }) => {

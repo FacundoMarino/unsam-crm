@@ -12,7 +12,10 @@ import logo from '../../public/logo-auth.jpg';
 
 import { AuthLayout } from '../layout/AuthLayout';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAuthStatus } from '../../store/auth/authSlider';
+import {
+  selectAuthStatus,
+  selectErrorMessage,
+} from '../../store/auth/authSlider';
 import { startRegister, startRegisterStepTwo } from '../../store/auth/thunks';
 
 const startData = {
@@ -45,7 +48,7 @@ export const RegisterPage = () => {
     formState,
   } = useForm(startData);
 
-  const errorMessage = false;
+  const errorMessage = useSelector(selectErrorMessage);
   const dispatch = useDispatch();
   const isAuthenticating = useSelector(selectAuthStatus);
   const user = useSelector((state) => state.auth);

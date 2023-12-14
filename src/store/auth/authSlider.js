@@ -16,6 +16,7 @@ export const authSlice = createSlice({
     telephone: '',
     type_user: '',
     telekinesis: '',
+    errorMessage: null,
   },
   reducers: {
     login: (state, { payload }) => {
@@ -32,6 +33,7 @@ export const authSlice = createSlice({
       state.telephone = payload.info.user_telephone;
       state.type_user = payload.info.user_type_user;
       state.telekinesis = payload.telekinesis;
+      state.errorMessage = null;
     },
     logout: (state, { payload }) => {
       state.status = 'checking';
@@ -46,18 +48,24 @@ export const authSlice = createSlice({
       state.step = 1;
       state.telephone = '';
       state.type_user = '';
+      state.errorMessage = payload.error;
     },
     registerStepOne: (state, { payload }) => {
       state.status = 'validate';
+      state.errorMessage = null;
     },
     registerStepTwo: (state, { payload }) => {
       state.status = 'validateOk';
     },
+    errorApi: (state, { payload }) => {
+      state.errorMessage = payload.error;
+    },
   },
 });
 
-export const { login, logout, registerStepOne, registerStepTwo } =
+export const { login, logout, registerStepOne, registerStepTwo, errorApi } =
   authSlice.actions;
 
 export const selectAuthStatus = (state) => state.auth.status;
 export const selectUserStep = (state) => state.auth.user_step;
+export const selectErrorMessage = (state) => state.auth.errorMessage;
