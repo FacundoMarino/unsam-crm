@@ -48,7 +48,7 @@ export const authSlice = createSlice({
       state.step = 1;
       state.telephone = '';
       state.type_user = '';
-      state.errorMessage = payload.error;
+      state.errorMessage = null;
     },
     registerStepOne: (state, { payload }) => {
       state.status = 'validate';
