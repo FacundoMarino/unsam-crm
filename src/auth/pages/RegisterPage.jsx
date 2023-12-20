@@ -17,6 +17,7 @@ import {
   selectErrorMessage,
 } from '../../store/auth/authSlider';
 import { startRegister, startRegisterStepTwo } from '../../store/auth/thunks';
+import { useEffect, useState } from 'react';
 
 const startData = {
   cuit: '',
@@ -52,6 +53,14 @@ export const RegisterPage = () => {
   const dispatch = useDispatch();
   const isAuthenticating = useSelector(selectAuthStatus);
   const user = useSelector((state) => state.auth);
+
+  const [loginError, setLoginError] = useState('');
+
+  useEffect(() => {
+    if (errorMessage != null) {
+      setLoginError(errorMessage);
+    }
+  }, [errorMessage]);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -171,13 +180,8 @@ export const RegisterPage = () => {
               </Grid>
 
               <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
-                <Grid
-                  display={!!errorMessage ? '' : 'none'}
-                  item
-                  xs={12}
-                  sm={12}
-                >
-                  <Alert severity="error">{errorMessage}</Alert>
+                <Grid display={!!loginError ? '' : 'none'} item xs={12} sm={12}>
+                  <Alert severity="error">{loginError}</Alert>
                 </Grid>
 
                 <Grid item xs={12} sm={12}>

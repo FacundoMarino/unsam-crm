@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    status: 'checking',
+    status: 'authenticated',
     apellido: '',
     email: '',
     email_verified_at: null,
@@ -83,7 +83,6 @@ export const authSlice = createSlice({
       state.telephone = payload.info.user_telephone;
       state.type_user = payload.info.user_type_user;
       state.telekinesis = payload.telekinesis;
-      state.errorMessage = null;
     },
   },
 });

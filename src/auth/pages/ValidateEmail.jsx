@@ -5,7 +5,8 @@ import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAuthStatus } from '../../store/auth/authSlider';
 import { useForm } from '../../hooks/useForm';
-import { sendEmailCode } from '../../store/auth/thunks';
+import { reciveEmailCode, sendEmailCode } from '../../store/auth/thunks';
+import { useEffect } from 'react';
 
 export const ValidateEmail = () => {
   const isAuthenticating = useSelector(selectAuthStatus);
@@ -23,6 +24,12 @@ export const ValidateEmail = () => {
 
     dispatch(sendEmailCode(formState, token, telekinesis));
   };
+
+  useEffect(() => {
+    if (isAuthenticating !== 'validateOk') {
+      dispatch(reciveEmailCode(token, telekinesis));
+    }
+  }, [dispatch, isAuthenticating, telekinesis, token]);
 
   if (isAuthenticating === 'validateOk') {
     setTimeout(() => {

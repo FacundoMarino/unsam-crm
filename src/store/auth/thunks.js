@@ -1,4 +1,5 @@
 import {
+  getEmailCode,
   getLogin,
   postLogin,
   postRegister,
@@ -31,7 +32,7 @@ export const startLoginWithEmailPassword = ({ email, password }) => {
       token,
     });
 
-    dispatch(login(data));
+    data.error ? dispatch(errorApi(data)) : dispatch(login(data));
   };
 };
 
@@ -99,6 +100,19 @@ export const sendEmailCode = (code, token, telekinesis) => {
 
     if (data) {
       dispatch(registerStepTwo());
+    }
+  };
+};
+
+export const reciveEmailCode = (token, telekinesis) => {
+  return async (dispatch) => {
+    const data = await getEmailCode({
+      token,
+      telekinesis,
+    });
+
+    if (data) {
+      dispatch();
     }
   };
 };

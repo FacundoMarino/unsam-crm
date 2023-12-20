@@ -4,6 +4,9 @@ import { TurnosPage } from './TurnosPage';
 import { TurnosAdminPage } from './admin/TurnosAdminPage';
 import { TurnosAdminDetail } from './admin/TurnosAdminDetail';
 import { useState } from 'react';
+import { TurnosForm } from './admin/TurnosForm';
+import { TurnosDisponibles } from './admin/TurnosAdmin';
+import { TurnosAdminLAyout } from './layout/TurnosAdminLayout';
 
 export const CrmPage = () => {
   const page = useSelector((state) => state.crm.page);
@@ -23,7 +26,7 @@ export const CrmPage = () => {
   return (
     <CrmLayout>
       {(page === 'turnos' && rol !== 'admin' && <TurnosPage />) || (
-        <TurnosAdminPage onVerDetalle={handleVerDetalle} />
+        <TurnosAdminLAyout onVerDetalle={handleVerDetalle} />
       )}
       {selectedTurno && (
         <TurnosAdminDetail

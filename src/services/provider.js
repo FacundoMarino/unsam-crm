@@ -15,6 +15,7 @@ export const getLogin = async () => {
     ).then((response) => response.json());
 
     localStorage.setItem('browser_token', response.browser_token);
+    return response;
   } catch (error) {
     console.error('Error:', error);
   }
@@ -163,6 +164,25 @@ export const postSendEmailCode = async ({ code, token, telekinesis }) => {
       requestOptions,
     ).then((response) => response.json());
 
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const getEmailCode = async ({ token, telekinesis }) => {
+  const requestOptions = {
+    method: 'GET',
+    headers: headers,
+    body: JSON.stringify({ browser_token: token, telekinesis }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/email-verified`,
+      requestOptions,
+    ).then((response) => response.json());
+
+    localStorage.setItem('browser_token', response.browser_token);
     return response;
   } catch (error) {
     console.error('Error:', error);

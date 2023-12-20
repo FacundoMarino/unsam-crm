@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import logo from '../../public/logo-auth.jpg';
@@ -14,7 +14,10 @@ import {
 
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks/useForm';
-import { login, selectAuthStatus } from '../../store/auth/authSlider';
+import {
+  selectAuthStatus,
+  selectErrorMessage,
+} from '../../store/auth/authSlider';
 import { startLoginWithEmailPassword } from '../../store/auth/thunks';
 
 const startData = {
@@ -23,14 +26,20 @@ const startData = {
 };
 
 export const LoginPage = () => {
-  // const { status, errorMessage } = useSelector((state) => state.auth);
-
   const { email, password, inputHandler, formState } = useForm(startData);
 
   const dispatch = useDispatch();
-  const errorMessage = false;
+  const errorMessage = useSelector(selectErrorMessage);
 
   const isAuthenticating = useSelector(selectAuthStatus);
+
+  const [loginError, setLoginError] = useState('');
+
+  useEffect(() => {
+    if (errorMessage != null) {
+      setLoginError(errorMessage);
+    }
+  }, [errorMessage]);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -97,8 +106,8 @@ export const LoginPage = () => {
             </Grid>
 
             <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
-              <Grid display={!!errorMessage ? '' : 'none'} item xs={12} sm={12}>
-                <Alert severity="error">{errorMessage}</Alert>
+              <Grid display={!!loginError ? '' : 'none'} item xs={12} sm={12}>
+                <Alert severity="error">{loginError}</Alert>
               </Grid>
 
               <Grid item xs={12} sm={12}>
