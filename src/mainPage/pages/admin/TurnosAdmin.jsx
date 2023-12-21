@@ -26,6 +26,7 @@ export const TurnosDisponibles = () => {
       horaInicio: '10:00',
       horaFinal: '11:00',
       estado: 'Sin Asignar',
+      servicio: '-',
     },
     {
       id: 2,
@@ -37,6 +38,7 @@ export const TurnosDisponibles = () => {
       horaInicio: '10:00',
       horaFinal: '11:00',
       estado: 'Asignado',
+      servicio: '-',
     },
     {
       id: 3,
@@ -48,6 +50,7 @@ export const TurnosDisponibles = () => {
       horaInicio: '08:00',
       horaFinal: '08:30',
       estado: 'Sin Asignar',
+      servicio: '-',
     },
   ];
 
@@ -82,53 +85,56 @@ export const TurnosDisponibles = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>
+            <TableCell align="center">
               <Button onClick={() => handleOrdenarTabla('nombre')}>
                 Nombre
               </Button>
             </TableCell>
-            <TableCell>
+            <TableCell align="center">
               <Button onClick={() => handleOrdenarTabla('tipo')}>
                 Tipo de Turno
               </Button>
             </TableCell>
-            <TableCell>
+            <TableCell align="center">
+              <Button onClick={() => handleOrdenarTabla('servicio')}>
+                Servicio
+              </Button>
+            </TableCell>
+            <TableCell align="center">
               <Button onClick={() => handleOrdenarTabla('modalidad')}>
                 Modalidad
               </Button>
             </TableCell>
-            <TableCell>
+            <TableCell align="center">
               <Button onClick={() => handleOrdenarTabla('fecha')}>Fecha</Button>
             </TableCell>
-            <TableCell>
-              <Button onClick={() => handleOrdenarTabla('dia')}>Día</Button>
-            </TableCell>
-            <TableCell>
+
+            <TableCell align="center">
               <Button onClick={() => handleOrdenarTabla('horaInicio')}>
                 Hora
               </Button>
             </TableCell>
-            <TableCell>
+            <TableCell align="center">
               <Button onClick={() => handleOrdenarTabla('estado')}>
                 Estado
               </Button>
             </TableCell>
-            <TableCell>Acciones</TableCell>
+            <TableCell align="center">Acciones</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {turnosOrdenados.map((turno) => (
             <TableRow key={turno.id}>
-              <TableCell>{turno.nombre}</TableCell>
-              <TableCell>{turno.tipo}</TableCell>
-              <TableCell>{turno.modalidad}</TableCell>
-              <TableCell>{turno.fecha}</TableCell>
-              <TableCell>{turno.dia}</TableCell>
-              <TableCell>
+              <TableCell align="center">{turno.nombre}</TableCell>
+              <TableCell align="center">{turno.tipo}</TableCell>
+              <TableCell align="center">{turno.servicio}</TableCell>
+              <TableCell align="center">{turno.modalidad}</TableCell>
+              <TableCell align="center">{turno.fecha}</TableCell>
+              <TableCell align="center">
                 {turno.horaInicio} - {turno.horaFinal}
               </TableCell>
-              <TableCell>{turno.estado}</TableCell>
-              <TableCell>
+              <TableCell align="center">{turno.estado}</TableCell>
+              <TableCell align="center">
                 {turno.estado !== 'Asignado' && (
                   <>
                     <Button

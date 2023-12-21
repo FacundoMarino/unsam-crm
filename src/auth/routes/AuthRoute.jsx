@@ -9,7 +9,7 @@ export const AuthRoute = () => {
 
         <Route path="/auth/register" element={<RegisterPage />} />
 
-        <Route path="/*" element={<Navigate to="/auth/login" />} />
+        <Route path="/*" element={<Navigate to="/auth/register" />} />
       </Routes>
     </>
   );

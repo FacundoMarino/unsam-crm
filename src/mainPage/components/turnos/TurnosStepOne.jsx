@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Paper,
   Select,
@@ -8,23 +8,28 @@ import {
   Button,
   Grid,
 } from '@mui/material';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export const TurnosStepOne = ({
   options,
   locations,
   selectedOption,
   selectedLocation,
+  selectedDate,
   setSelectedOption,
   setSelectedLocation,
+  setSelectedDate,
   resetFields,
   saveAndSendData,
 }) => {
+  useState(() => {}, []);
   return (
     <Grid container spacing={2}>
       {/* Opción */}
       <Grid item xs={6} md={6}>
         <Paper elevation={3} style={{ padding: '20px' }}>
-          <h2>Selecciona una opción</h2>
+          <h2>Selecciona un tipo de Turno</h2>
           <FormControl fullWidth>
             <InputLabel
               id="opcion-select-label"
@@ -69,6 +74,18 @@ export const TurnosStepOne = ({
               ))}
             </Select>
           </FormControl>
+        </Paper>
+      </Grid>
+
+      {/* Fecha */}
+      <Grid item xs={12} md={12}>
+        <Paper elevation={3} style={{ padding: '20px' }}>
+          <h2>Selecciona la fecha</h2>
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+            dateFormat="dd/MM/yyyy"
+          />
         </Paper>
       </Grid>
 

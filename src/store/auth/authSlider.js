@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    status: 'authenticated',
+    status: 'checking',
     apellido: '',
     email: '',
     email_verified_at: null,
@@ -17,6 +17,15 @@ export const authSlice = createSlice({
     type_user: '',
     telekinesis: '',
     errorMessage: null,
+    user_enterprise: {
+      enterprise_address: '',
+      enterprise_branch_offices: 0,
+      enterprise_category: '',
+      enterprise_cuit: 0,
+      enterprise_description: '',
+      enterprise_employees: 0,
+      enterprise_name: '',
+    },
   },
   reducers: {
     login: (state, { payload }) => {
@@ -34,6 +43,7 @@ export const authSlice = createSlice({
       state.type_user = payload.info.user_type_user;
       state.telekinesis = payload.telekinesis;
       state.errorMessage = null;
+      state.user_enterprise = payload.user_enterprise;
     },
     logout: (state, { payload }) => {
       state.status = 'checking';
@@ -68,6 +78,22 @@ export const authSlice = createSlice({
     },
     registerStepTwo: (state, { payload }) => {
       state.status = 'validateOk';
+      state.apellido = payload.info.user_apellido;
+      state.email = payload.info.user_email;
+      state.email_verified_at = payload.info.user_email_verified_at;
+      state.enterprise = payload.info.user_enterprise;
+      state.link_meet = payload.info.user_link_meet;
+      state.name = payload.info.user_name;
+      state.rol = payload.info.user_rol;
+      state._status = payload.info.user_status;
+      state.step = payload.info.user_step;
+      state.telephone = payload.info.user_telephone;
+      state.type_user = payload.info.user_type_user;
+      state.telekinesis = payload.telekinesis;
+      state.errorMessage = null;
+    },
+    registerStepThree: (state, { payload }) => {
+      state.status = 'registerTwo';
     },
     errorApi: (state, { payload }) => {
       state.errorMessage = payload.error;
@@ -87,8 +113,14 @@ export const authSlice = createSlice({
   },
 });
 
-export const { login, logout, registerStepOne, registerStepTwo, errorApi } =
-  authSlice.actions;
+export const {
+  login,
+  logout,
+  registerStepOne,
+  registerStepTwo,
+  errorApi,
+  registerStepThree,
+} = authSlice.actions;
 
 export const selectAuthStatus = (state) => state.auth.status;
 export const selectUserStep = (state) => state.auth.user_step;

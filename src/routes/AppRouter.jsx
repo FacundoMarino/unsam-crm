@@ -8,7 +8,6 @@ import { CrmRoutes } from '../mainPage/routes/CrmRoutes';
 
 export const AppRouter = () => {
   const status = useSelector(selectAuthStatus);
-
   return (
     <Routes>
       {status === 'checking' && <Route path="/*" element={<AuthRoute />} />}
@@ -19,6 +18,7 @@ export const AppRouter = () => {
       {status === 'validateOk' && (
         <Route path="/*" element={<ValidateEmail />} />
       )}
+      {status === 'registerTwo' && <Route path="/*" element={<AuthRoute />} />}
 
       <Route path="/*" element={<Navigate to="/auth/login" />} />
     </Routes>

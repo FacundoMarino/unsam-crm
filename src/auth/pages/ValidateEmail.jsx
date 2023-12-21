@@ -3,19 +3,22 @@ import EmailIcon from '@mui/icons-material/Email';
 import logo from '../../public/logo-auth.jpg';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAuthStatus } from '../../store/auth/authSlider';
+import {
+  registerStepThree,
+  selectAuthStatus,
+} from '../../store/auth/authSlider';
 import { useForm } from '../../hooks/useForm';
 import { reciveEmailCode, sendEmailCode } from '../../store/auth/thunks';
 import { useEffect } from 'react';
 
+const startData = {
+  code: '',
+};
 export const ValidateEmail = () => {
   const isAuthenticating = useSelector(selectAuthStatus);
   const dispatch = useDispatch();
-  const { token, telekinesis } = useSelector((state) => state.auth);
-
-  const startData = {
-    code: '',
-  };
+  const { telekinesis } = useSelector((state) => state.auth);
+  let token = localStorage.getItem('browser_token');
 
   const { code, inputHandler, formState } = useForm(startData);
 
@@ -29,18 +32,17 @@ export const ValidateEmail = () => {
     if (isAuthenticating !== 'validateOk') {
       dispatch(reciveEmailCode(token, telekinesis));
     }
-  }, [dispatch, isAuthenticating, telekinesis, token]);
+  }, []);
 
   if (isAuthenticating === 'validateOk') {
     setTimeout(() => {
-      window.location.href = '/auth/login';
+      dispatch(registerStepThree());
     }, 1000);
   }
 
   return (
     <Grid
       container
-      direction="colum"
       justifyContent="center"
       alignItems="center"
       sx={{ minHeight: '80vh', backgroundColor: 'backgroundCrm', p: 1 }}
@@ -97,7 +99,6 @@ export const ValidateEmail = () => {
             <Grid item xs={12} sx={{ mt: 3 }}>
               <TextField
                 label="Codigo de Activación"
-                type="code"
                 placeholder="Codigo de Activación"
                 fullWidth
                 name="code"

@@ -1,6 +1,7 @@
 import {
   getEmailCode,
   getLogin,
+  getRegister,
   postLogin,
   postRegister,
   postRegisterStepTwo,
@@ -17,7 +18,7 @@ import {
 export const checkAuth = () => {
   const token = localStorage.getItem('browser_token');
 
-  if (!token) {
+  if (!token || token === 'undefined') {
     getLogin();
   }
 };
@@ -36,12 +37,19 @@ export const startLoginWithEmailPassword = ({ email, password }) => {
   };
 };
 
+export const getRegisterThunk = () => {
+  return async () => {
+    const data = await getRegister();
+    localStorage.setItem('browser_token', data.browser_token);
+  };
+};
 export const startRegister = ({
   email,
   password,
   nombre,
   apellido,
   telefono,
+  telekinesis,
 }) => {
   const token = localStorage.getItem('browser_token');
 
@@ -53,6 +61,7 @@ export const startRegister = ({
       apellido,
       telefono,
       token,
+      telekinesis,
     });
 
     data.error ? dispatch(errorApi(data)) : dispatch(registerStepOne(data));
@@ -66,10 +75,9 @@ export const startRegisterStepTwo = ({
   empleados,
   sucursales,
   rubro,
-  user,
+  telekinesis,
 }) => {
   const token = localStorage.getItem('browser_token');
-
   return async (dispatch) => {
     const data = await postRegisterStepTwo({
       cuit,
@@ -78,9 +86,13 @@ export const startRegisterStepTwo = ({
       empleados,
       sucursales,
       rubro,
+      telekinesis,
       token,
-      ...user,
     });
+
+    if (!data.error) {
+      dispatch(login(data));
+    }
   };
 };
 
@@ -90,7 +102,7 @@ export const startLogout = () => {
   };
 };
 
-export const sendEmailCode = (code, token, telekinesis) => {
+export const sendEmailCode = ({ code }, token, telekinesis) => {
   return async (dispatch) => {
     const data = await postSendEmailCode({
       code,
@@ -99,7 +111,7 @@ export const sendEmailCode = (code, token, telekinesis) => {
     });
 
     if (data) {
-      dispatch(registerStepTwo());
+      dispatch(registerStepTwo(data));
     }
   };
 };
@@ -111,8 +123,8 @@ export const reciveEmailCode = (token, telekinesis) => {
       telekinesis,
     });
 
-    if (data) {
-      dispatch();
+    if (!data.error) {
+      dispatch(registerStepOne(data));
     }
   };
 };

@@ -5,6 +5,8 @@ import {
   Typography,
   Button,
   Link,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
@@ -16,7 +18,11 @@ import {
   selectAuthStatus,
   selectErrorMessage,
 } from '../../store/auth/authSlider';
-import { startRegister, startRegisterStepTwo } from '../../store/auth/thunks';
+import {
+  getRegisterThunk,
+  startRegister,
+  startRegisterStepTwo,
+} from '../../store/auth/thunks';
 import { useEffect, useState } from 'react';
 
 const startData = {
@@ -25,7 +31,7 @@ const startData = {
   descripcion: '',
   empleados: '',
   sucursales: '',
-  rubro: '',
+  selectedRubro: '',
   email: '',
   password: '',
   nombre: '',
@@ -53,8 +59,8 @@ export const RegisterPage = () => {
   const dispatch = useDispatch();
   const isAuthenticating = useSelector(selectAuthStatus);
   const user = useSelector((state) => state.auth);
-
   const [loginError, setLoginError] = useState('');
+  const [selectedRubro, setSelectedRubro] = useState('');
 
   useEffect(() => {
     if (errorMessage != null) {
@@ -62,13 +68,28 @@ export const RegisterPage = () => {
     }
   }, [errorMessage]);
 
+  useEffect(() => {
+    if (isAuthenticating !== 'registerTwo') {
+      dispatch(getRegisterThunk());
+    }
+  }, [dispatch]);
+
   const submitHandler = (event) => {
     event.preventDefault();
+    const token = localStorage.getItem('browser_token');
 
-    if (isAuthenticating !== 'validateOk') {
+    let telekinesis = user.telekinesis;
+    if (isAuthenticating !== 'registerTwo') {
       dispatch(startRegister(formState));
-    } else {
-      dispatch(startRegisterStepTwo(formState, user));
+    } else if (isAuthenticating === 'registerTwo') {
+      dispatch(
+        startRegisterStepTwo({
+          ...formState,
+
+          telekinesis,
+          token,
+        }),
+      );
     }
   };
 
@@ -78,7 +99,7 @@ export const RegisterPage = () => {
         onSubmit={submitHandler}
         className="animate__animated animate__fadeIn animate__faster"
       >
-        {isAuthenticating === 'validateOk' ? (
+        {isAuthenticating === 'registerTwo' ? (
           <Grid container>
             <Grid
               item
@@ -120,15 +141,16 @@ export const RegisterPage = () => {
               </Grid>
 
               <Grid item xs={12} sx={{ mt: 3 }}>
-                <TextField
+                <Select
                   label="Rubro"
-                  type="rubor"
-                  placeholder="Rubro"
                   fullWidth
                   name="rubro"
-                  value={rubro}
-                  onChange={inputHandler}
-                />
+                  value={selectedRubro}
+                  onChange={(e) => setSelectedRubro(e.target.value)}
+                >
+                  <MenuItem value="opcion1">Opción 1</MenuItem>
+                  <MenuItem value="opcion2">Opción 2</MenuItem>
+                </Select>
               </Grid>
 
               <Grid item xs={12} sx={{ mt: 3 }}>
@@ -158,7 +180,7 @@ export const RegisterPage = () => {
               <Grid item xs={12} sx={{ mt: 3 }}>
                 <TextField
                   label="Sucursales"
-                  type="sucursales"
+                  type="number"
                   placeohlder="Sucursales"
                   fullWidth
                   name="sucursales"

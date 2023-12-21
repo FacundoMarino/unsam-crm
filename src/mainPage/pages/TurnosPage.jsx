@@ -60,6 +60,7 @@ export const TurnosPage = () => {
         resetFields={resetFields}
         saveAndSendData={saveAndSendData}
         setStep={setStep}
+        selectedDate={selectedDate}
       />
     </Grid>
   ) : (
