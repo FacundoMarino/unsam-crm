@@ -1,41 +1,82 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { TurnosStepTwo } from '../components/turnos/TurnosStepTwo';
 import { TurnosStepOne } from '../components/turnos/TurnosStepOne';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getShiftsTypes,
+  postShiftStepOneThunk,
+  postStoreShift,
+} from '../../store/shift/thunks';
+import { resetShift } from '../../store/shift/shiftSlider';
 
 export const TurnosPage = () => {
   const [selectedOption, setSelectedOption] = useState('');
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
 
-  const [step, setStep] = useState(true);
+  const user = useSelector((state) => state.auth);
+  const step = useSelector((state) => state.shift.status);
+  const diasNoDisponibles = useSelector(
+    (state) => state.shift.daysNotAvailable,
+  );
+  const shify_id = useSelector((state) => state.shift.shift_type_id);
+  const optionsHoras = useSelector((state) => state.shift.hoursNotAvailable);
+  const dispatch = useDispatch();
 
-  const options = [
-    { value: 'opcion1', label: 'Opción 1' },
-    { value: 'opcion2', label: 'Opción 2' },
-    // Agrega más opciones según sea necesario
-  ];
+  useEffect(() => {
+    dispatch(getShiftsTypes({ telekinesis: user.telekinesis }));
+  }, []);
 
-  const locations = ['Presencial', 'Virtual'];
-
-  const diasNoDisponibles =
-    {
-      opcion1: [new Date(2023, 11, 10), new Date(2023, 11, 15)],
-      opcion2: [new Date(2023, 11, 5), new Date(2023, 11, 20)],
-      // Ajusta los días no disponibles para cada opción
-    }[selectedOption] || [];
+  const locations = ['presencial', 'virtual'];
 
   const isDayDisabled = (date) => {
-    return diasNoDisponibles.some(
-      (d) =>
-        date.getFullYear() === d.getFullYear() &&
-        date.getMonth() === d.getMonth() &&
-        date.getDate() === d.getDate(),
-    );
+    if (typeof diasNoDisponibles === 'object' && diasNoDisponibles !== null) {
+      const dateString = `${date.getFullYear()}-${
+        date.getMonth() + 1
+      }-${date.getDate()}`;
+      return diasNoDisponibles.hasOwnProperty(dateString);
+    }
+    return false;
   };
 
-  const optionsHoras = ['09:00 AM', '12:00 PM', '03:00 PM'];
+  const getAvailableHours = () => {
+    const formatHour = (hour, minutes) => {
+      return `${hour.toString().padStart(2, '0')}:${minutes
+        .toString()
+        .padStart(2, '0')}:00`;
+    };
+
+    const unavailableHours = optionsHoras.map((item) => item.hour);
+
+    if (Array.isArray(diasNoDisponibles) && diasNoDisponibles.length === 0) {
+      if (selectedLocation === 'presencial') {
+        // Si es presencial y no hay días no disponibles, mostrar turnos de 1 hora de 9 am a 4 pm
+        return Array.from({ length: 8 }, (_, index) =>
+          formatHour(index + 9, 0),
+        );
+      } else if (selectedLocation === 'virtual') {
+        // Si es virtual y no hay días no disponibles, mostrar turnos de 30 minutos de 8:30 am a 4 pm
+        const virtualHours = Array.from({ length: 15 }, (_, index) =>
+          formatHour(Math.floor(index / 2) + 8, (index % 2) * 30),
+        );
+        return virtualHours.filter((hour) => !unavailableHours.includes(hour));
+      }
+    }
+
+    // Filtrar las horas no disponibles
+    const filteredHours = Array.from({ length: 17 }, (_, index) =>
+      formatHour(Math.floor(index / 2) + 8, (index % 2) * 30),
+    );
+
+    if (Array.isArray(diasNoDisponibles)) {
+      return filteredHours.filter((hour) => !unavailableHours.includes(hour));
+    }
+
+    // Si diasNoDisponibles no es un array, devolver todas las horas filtradas solo por unavailableHours
+    return filteredHours.filter((hour) => !unavailableHours.includes(hour));
+  };
 
   const resetFields = () => {
     setSelectedOption('');
@@ -44,14 +85,38 @@ export const TurnosPage = () => {
     setSelectedLocation('');
   };
 
-  const saveAndSendData = () => {
-    // Lógica para guardar y enviar datos a la API
-    setStep(!step);
+  const cancelButton = () => {
+    resetFields();
+    dispatch(resetShift());
   };
-  return step === true ? (
+  const saveAndSendData = () => {
+    const formattedDate = selectedDate.toISOString().split('T')[0];
+
+    if (step === 'stepOne') {
+      dispatch(
+        postShiftStepOneThunk({
+          shift_type: selectedOption,
+          day: formattedDate,
+          location: selectedLocation,
+          telekinesis: user.telekinesis,
+        }),
+      );
+    } else {
+      dispatch(
+        postStoreShift({
+          shift_type: selectedOption,
+          day: formattedDate,
+          location: selectedLocation,
+          telekinesis: user.telekinesis,
+          hour: selectedTime,
+          shift_type_id: shify_id,
+        }),
+      );
+    }
+  };
+  return step === 'stepOne' ? (
     <Grid container spacing={2} mt={5}>
       <TurnosStepOne
-        options={options}
         locations={locations}
         selectedOption={selectedOption}
         selectedLocation={selectedLocation}
@@ -59,8 +124,8 @@ export const TurnosPage = () => {
         setSelectedLocation={setSelectedLocation}
         resetFields={resetFields}
         saveAndSendData={saveAndSendData}
-        setStep={setStep}
         selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
       />
     </Grid>
   ) : (
@@ -69,12 +134,11 @@ export const TurnosPage = () => {
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
         isDayDisabled={isDayDisabled}
-        optionsHoras={optionsHoras}
+        optionsHoras={getAvailableHours()}
         selectedTime={selectedTime}
         setSelectedTime={setSelectedTime}
-        resetFields={resetFields}
+        resetFields={cancelButton}
         saveAndSendData={saveAndSendData}
-        setStep={setStep}
       />
     </Grid>
   );

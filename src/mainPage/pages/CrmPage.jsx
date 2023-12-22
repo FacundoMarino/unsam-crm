@@ -1,16 +1,15 @@
 import { useSelector } from 'react-redux';
 import { CrmLayout } from '../layout/CrmLayout';
 import { TurnosPage } from './TurnosPage';
-import { TurnosAdminPage } from './admin/TurnosAdminPage';
 import { TurnosAdminDetail } from './admin/TurnosAdminDetail';
 import { useState } from 'react';
-import { TurnosForm } from './admin/TurnosForm';
-import { TurnosDisponibles } from './admin/TurnosAdmin';
+
 import { TurnosAdminLAyout } from './layout/TurnosAdminLayout';
+import { selectRole } from '../../store/auth/authSlider';
 
 export const CrmPage = () => {
   const page = useSelector((state) => state.crm.page);
-  const rol = useSelector((state) => state.auth.rol);
+  const rol = useSelector(selectRole);
 
   const [selectedTurno, setSelectedTurno] = useState(null);
 

@@ -125,3 +125,4 @@ export const {
 export const selectAuthStatus = (state) => state.auth.status;
 export const selectUserStep = (state) => state.auth.user_step;
 export const selectErrorMessage = (state) => state.auth.errorMessage;
+export const selectRole = (state) => state.auth.rol;

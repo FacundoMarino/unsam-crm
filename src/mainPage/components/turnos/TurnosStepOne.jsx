@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Paper,
   Select,
@@ -10,9 +10,9 @@ import {
 } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useSelector } from 'react-redux';
 
 export const TurnosStepOne = ({
-  options,
   locations,
   selectedOption,
   selectedLocation,
@@ -23,7 +23,8 @@ export const TurnosStepOne = ({
   resetFields,
   saveAndSendData,
 }) => {
-  useState(() => {}, []);
+  const shiftsType = useSelector((state) => state.shift.shiftType);
+
   return (
     <Grid container spacing={2}>
       {/* Opción */}
@@ -41,13 +42,14 @@ export const TurnosStepOne = ({
               labelId="opcion-select-label"
               id="opcion-select"
               value={selectedOption}
+              required
               onChange={(event) => {
                 setSelectedOption(event.target.value);
               }}
             >
-              {options.map((opcion) => (
-                <MenuItem key={opcion.value} value={opcion.value}>
-                  {opcion.label}
+              {shiftsType.map((opcion) => (
+                <MenuItem key={opcion} value={opcion}>
+                  {opcion}
                 </MenuItem>
               ))}
             </Select>
@@ -64,6 +66,7 @@ export const TurnosStepOne = ({
             <Select
               labelId="location-select-label"
               id="location-select"
+              required
               value={selectedLocation}
               onChange={(event) => setSelectedLocation(event.target.value)}
             >
@@ -83,8 +86,9 @@ export const TurnosStepOne = ({
           <h2>Selecciona la fecha</h2>
           <DatePicker
             selected={selectedDate}
+            required
             onChange={(date) => setSelectedDate(date)}
-            dateFormat="dd/MM/yyyy"
+            dateFormat="yyyy/MM/dd"
           />
         </Paper>
       </Grid>
