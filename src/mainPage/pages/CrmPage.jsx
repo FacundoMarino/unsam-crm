@@ -4,7 +4,7 @@ import { TurnosPage } from './TurnosPage';
 import { TurnosAdminDetail } from './admin/TurnosAdminDetail';
 import { useState } from 'react';
 
-import { TurnosAdminLAyout } from './layout/TurnosAdminLayout';
+import { TurnosAdminLayout } from './layout/TurnosAdminLayout';
 import { selectRole } from '../../store/auth/authSlider';
 
 export const CrmPage = () => {
@@ -25,7 +25,7 @@ export const CrmPage = () => {
   return (
     <CrmLayout>
       {(page === 'turnos' && rol !== 'admin' && <TurnosPage />) || (
-        <TurnosAdminLAyout onVerDetalle={handleVerDetalle} />
+        <TurnosAdminLayout onVerDetalle={handleVerDetalle} />
       )}
       {selectedTurno && (
         <TurnosAdminDetail
