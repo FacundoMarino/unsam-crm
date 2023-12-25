@@ -167,7 +167,7 @@ export const TurnosAdminPage = ({ onVerDetalle }) => {
         >
           <Paper
             style={{
-              padding: '20px',
+              padding: '10px',
               backgroundColor: 'white',
               maxHeight: '80vh',
               overflowY: 'auto',

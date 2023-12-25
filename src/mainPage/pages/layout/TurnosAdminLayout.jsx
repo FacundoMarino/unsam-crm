@@ -16,6 +16,7 @@ export const TurnosAdminLayout = () => {
   return (
     <>
       <Tabs
+        style={{ margin: '10px' }}
         selectedIndex={selectedIndex}
         onSelect={(index) => setSelectedIndex(index)}
       >

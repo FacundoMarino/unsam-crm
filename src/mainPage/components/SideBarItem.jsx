@@ -24,13 +24,14 @@ export const SideBarItem = ({ title = '', subItems = [], icon }) => {
     <div>
       <ListItem disablePadding>
         <ListItemButton onClick={handleItemClick}>
-          <ListItemIcon>
+          <ListItemIcon style={{ minWidth: 'auto' }}>
             <div
               style={{
                 display: 'flex',
                 justifyContent: 'center',
                 color: 'white',
                 marginRight: '10px',
+                width: 'auto',
               }}
             >
               {icon}

@@ -10,7 +10,16 @@ import {
   TableRow,
   Button,
 } from '@mui/material';
+import { styled } from '@mui/system';
 
+const StyledTableCell = styled(TableCell)({
+  padding: '10px',
+  fontSize: '12px',
+});
+
+const StyledButton = styled(Button)({
+  fontSize: '12px',
+});
 export const TurnosDisponibles = () => {
   const [orden, setOrden] = useState('asc');
   const [campoOrden, setCampoOrden] = useState('fecha');
@@ -85,85 +94,89 @@ export const TurnosDisponibles = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell align="center">
-              <Button onClick={() => handleOrdenarTabla('nombre')}>
+            <StyledTableCell align="center">
+              <StyledButton onClick={() => handleOrdenarTabla('nombre')}>
                 Nombre
-              </Button>
-            </TableCell>
-            <TableCell align="center">
-              <Button onClick={() => handleOrdenarTabla('tipo')}>
+              </StyledButton>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <StyledButton onClick={() => handleOrdenarTabla('tipo')}>
                 Tipo de Turno
-              </Button>
-            </TableCell>
-            <TableCell align="center">
-              <Button onClick={() => handleOrdenarTabla('servicio')}>
+              </StyledButton>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <StyledButton onClick={() => handleOrdenarTabla('servicio')}>
                 Servicio
-              </Button>
-            </TableCell>
-            <TableCell align="center">
-              <Button onClick={() => handleOrdenarTabla('modalidad')}>
+              </StyledButton>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <StyledButton onClick={() => handleOrdenarTabla('modalidad')}>
                 Modalidad
-              </Button>
-            </TableCell>
-            <TableCell align="center">
-              <Button onClick={() => handleOrdenarTabla('fecha')}>Fecha</Button>
-            </TableCell>
+              </StyledButton>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <StyledButton onClick={() => handleOrdenarTabla('fecha')}>
+                Fecha
+              </StyledButton>
+            </StyledTableCell>
 
-            <TableCell align="center">
-              <Button onClick={() => handleOrdenarTabla('horaInicio')}>
+            <StyledTableCell align="center">
+              <StyledButton onClick={() => handleOrdenarTabla('horaInicio')}>
                 Hora
-              </Button>
-            </TableCell>
-            <TableCell align="center">
-              <Button onClick={() => handleOrdenarTabla('estado')}>
+              </StyledButton>
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              <StyledButton onClick={() => handleOrdenarTabla('estado')}>
                 Estado
-              </Button>
-            </TableCell>
-            <TableCell align="center">Acciones</TableCell>
+              </StyledButton>
+            </StyledTableCell>
+            <StyledTableCell align="center">Acciones</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {turnosOrdenados.map((turno) => (
             <TableRow key={turno.id}>
-              <TableCell align="center">{turno.nombre}</TableCell>
-              <TableCell align="center">{turno.tipo}</TableCell>
-              <TableCell align="center">{turno.servicio}</TableCell>
-              <TableCell align="center">{turno.modalidad}</TableCell>
-              <TableCell align="center">{turno.fecha}</TableCell>
-              <TableCell align="center">
+              <StyledTableCell align="center">{turno.nombre}</StyledTableCell>
+              <StyledTableCell align="center">{turno.tipo}</StyledTableCell>
+              <StyledTableCell align="center">{turno.servicio}</StyledTableCell>
+              <StyledTableCell align="center">
+                {turno.modalidad}
+              </StyledTableCell>
+              <StyledTableCell align="center">{turno.fecha}</StyledTableCell>
+              <StyledTableCell align="center">
                 {turno.horaInicio} - {turno.horaFinal}
-              </TableCell>
-              <TableCell align="center">{turno.estado}</TableCell>
-              <TableCell align="center">
+              </StyledTableCell>
+              <StyledTableCell align="center">{turno.estado}</StyledTableCell>
+              <StyledTableCell align="center">
                 {turno.estado !== 'Asignado' && (
                   <>
-                    <Button
+                    <StyledButton
                       variant="contained"
                       color="primary"
                       onClick={() => handleTomarTurno(turno.id)}
-                      style={{ marginRight: '10px' }}
+                      style={{ margin: '5px' }}
                     >
                       Tomar Turno
-                    </Button>
-                    <Button
+                    </StyledButton>
+                    <StyledButton
                       variant="contained"
                       color="secondary"
                       onClick={() => handleCancelarTurno(turno.id)}
                     >
                       Cancelar Turno
-                    </Button>
+                    </StyledButton>
                   </>
                 )}
                 {turno.estado === 'Asignado' && (
-                  <Button
+                  <StyledButton
                     variant="contained"
                     color="secondary"
                     onClick={() => handleDesasignarTurno(turno.id)}
                   >
                     Desasignar Turno
-                  </Button>
+                  </StyledButton>
                 )}
-              </TableCell>
+              </StyledTableCell>
             </TableRow>
           ))}
         </TableBody>

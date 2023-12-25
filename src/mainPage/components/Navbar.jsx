@@ -34,9 +34,12 @@ export const Navbar = ({ draweWidth }) => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="h6" noWrap component="div" color="white">
-            CRM UNSAM
-          </Typography>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            color="white"
+          ></Typography>
 
           <IconButton color="error" onClick={onLogout}>
             <LogoutOutlined />

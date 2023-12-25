@@ -1,4 +1,4 @@
-import { Box, Divider, Drawer, List, Toolbar, Typography } from '@mui/material';
+import { Box, Divider, Drawer, List, Toolbar } from '@mui/material';
 import { SideBarItem } from './SideBarItem';
 import logo from '../../public/logo-auth-crm.png';
 import { MdOutlineHomeRepairService } from 'react-icons/md';
