@@ -122,7 +122,7 @@ export const TurnosForm = () => {
       <TextField
         label="Hora de Inicio"
         type="time"
-        name="hourStart"
+        name="start_time"
         value={start_time}
         onChange={inputHandler}
         fullWidth
@@ -132,7 +132,7 @@ export const TurnosForm = () => {
       <TextField
         label="Hora Final"
         type="time"
-        name="hourEnd"
+        name="end_time"
         value={end_time}
         onChange={inputHandler}
         fullWidth
