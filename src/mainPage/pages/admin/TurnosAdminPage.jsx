@@ -1,19 +1,36 @@
 import React, { useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import 'moment/locale/es';
+
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+
 import {
   Modal,
   Button,
   Typography,
   Paper,
-  Divider,
   Card,
   CardContent,
 } from '@mui/material';
+moment.locale('es');
 
 const localizer = momentLocalizer(moment);
 
+const customMessages = {
+  today: 'Hoy',
+  previous: 'Atrás',
+  month: 'Mes',
+  week: 'Semana',
+  day: 'Día',
+  agenda: 'Agenda',
+  date: 'Fecha',
+  time: 'Hora',
+  event: 'Evento',
+  allDay: 'Todo el día',
+  next: 'Siguiente',
+  showMore: (total) => `+${total} más`,
+};
 export const TurnosAdminPage = ({ onVerDetalle }) => {
   const data = [
     {
@@ -133,6 +150,8 @@ export const TurnosAdminPage = ({ onVerDetalle }) => {
         selectable
         onSelectSlot={handleSelectSlot}
         style={{ height: 500 }}
+        culture="es"
+        messages={customMessages}
       />
 
       <Modal open={openModal} onClose={handleCloseModal}>

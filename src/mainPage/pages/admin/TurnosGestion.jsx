@@ -25,7 +25,7 @@ export const TurnosGestion = ({ handleNuevoTurnoClick }) => {
   // Aquí deberías hacer la llamada a tu API para obtener la lista de turnos
   useEffect(() => {
     dispatch(getShiftsTypes({ telekinesis }));
-  }, [telekinesis]);
+  }, [dispatch, telekinesis]);
 
   const handleEditar = (id) => {
     // Lógica para editar el turno con el ID proporcionado

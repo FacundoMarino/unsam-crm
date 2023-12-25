@@ -84,7 +84,7 @@ export const TurnosForm = () => {
       </FormControl>
 
       <TextField
-        label="Tiempo Modalidad Virtual"
+        label="Tiempo Modalidad Virtual (minutos)"
         name="virtual_appointments_duration"
         value={virtual_appointments_duration}
         onChange={inputHandler}
@@ -102,7 +102,7 @@ export const TurnosForm = () => {
       />
 
       <TextField
-        label="Tiempo Modalidad Presencial"
+        label="Tiempo Modalidad Presencial (minutos)"
         name="in_personn_appointments_duration"
         value={in_personn_appointments_duration}
         onChange={inputHandler}

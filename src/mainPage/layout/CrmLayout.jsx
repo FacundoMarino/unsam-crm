@@ -1,7 +1,7 @@
 import { Box, Toolbar } from '@mui/material';
 import { Navbar, Sidebar } from '../components';
 
-const draweWidth = 240;
+const draweWidth = '14%';
 
 export const CrmLayout = ({ children }) => {
   return (
