@@ -1,10 +1,16 @@
 import {
-  postShiftStepOne,
+  postShiftStepTWo,
   postShiftsTypes,
+  postShiftsTypesOne,
   postStore,
 } from '../../services/shiftProvider';
 import { errorApi } from '../auth/authSlider';
-import { resetShift, setShift, setShiftType } from './shiftSlider';
+import {
+  resetShift,
+  setDayIsNotAvailable,
+  setShift,
+  setShiftType,
+} from './shiftSlider';
 
 export const getShiftsTypes = ({ telekinesis }) => {
   const token = localStorage.getItem('browser_token');
@@ -18,7 +24,21 @@ export const getShiftsTypes = ({ telekinesis }) => {
   };
 };
 
-export const postShiftStepOneThunk = ({
+export const getDaysNotAvailable = ({ telekinesis, shift_type, location }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    const data = await postShiftsTypesOne({
+      telekinesis,
+      token,
+      location,
+      shift_type,
+    });
+
+    data.error ? errorApi(data.error) : dispatch(setDayIsNotAvailable(data));
+  };
+};
+
+export const postShiftStepTwo = ({
   location,
   shift_type,
   telekinesis,
@@ -26,7 +46,7 @@ export const postShiftStepOneThunk = ({
 }) => {
   const token = localStorage.getItem('browser_token');
   return async (dispatch) => {
-    const data = await postShiftStepOne({
+    const data = await postShiftStepTWo({
       location,
       shift_type,
       telekinesis,
@@ -58,6 +78,6 @@ export const postStoreShift = ({
       shift_type_id,
     });
 
-    data.error ? errorApi(data.error) : dispatch(resetShift(data));
+    data.error ? errorApi(data.error) : dispatch(resetShift());
   };
 };

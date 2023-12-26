@@ -9,6 +9,7 @@ export const shiftSlice = createSlice({
     quota: 0,
     shift_type_id: 0,
     daysNotAvailable: [{}],
+    location: '',
   },
   reducers: {
     setShiftType: (state, { payload }) => {
@@ -20,11 +21,22 @@ export const shiftSlice = createSlice({
       state.quota = payload.quota;
       state.shift_type_id = payload.shift_type_id;
       state.daysNotAvailable = payload.daysNotAvailable;
+      state.location = payload.location;
     },
-    resetShift: (state, { payload }) => {
+    resetShift: (state) => {
       state.status = 'stepOne';
+      state.hoursNotAvailable = [];
+      state.quota = 0;
+      state.shift_type_id = 0;
+      state.daysNotAvailable = [{}];
+      state.location = '';
+    },
+    setDayIsNotAvailable: (state, { payload }) => {
+      state.status = 'stepTwo';
+      state.daysNotAvailable = payload.daysNotAvailable;
     },
   },
 });
 
-export const { setShiftType, setShift, resetShift } = shiftSlice.actions;
+export const { setShiftType, setShift, resetShift, setDayIsNotAvailable } =
+  shiftSlice.actions;

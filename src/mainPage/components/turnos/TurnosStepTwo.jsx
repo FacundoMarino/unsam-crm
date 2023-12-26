@@ -53,11 +53,13 @@ export const TurnosStepTwo = ({
               onChange={(event) => setSelectedTime(event.target.value)}
               disabled={!selectedDate}
             >
-              {optionsHoras.map((hora) => (
-                <MenuItem key={hora} value={hora}>
-                  {hora}
-                </MenuItem>
-              ))}
+              {Array.isArray(optionsHoras) &&
+                optionsHoras.length > 0 &&
+                optionsHoras.map((hora) => (
+                  <MenuItem key={hora} value={hora}>
+                    {hora}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </Paper>
