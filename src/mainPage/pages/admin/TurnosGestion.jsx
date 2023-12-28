@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   List,
@@ -14,33 +14,40 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getShiftsTypes } from '../../../store/shift/thunks';
+import {
+  deleteShift,
+  getShiftId,
+  getShiftsTypes,
+} from '../../../store/shift/thunks';
 import { useDispatch, useSelector } from 'react-redux';
+import { TurnosModalEdit } from '../../components/turnos/TurnosModalEdit';
 
 export const TurnosGestion = ({ handleNuevoTurnoClick }) => {
   const dispatch = useDispatch();
   const shifts = useSelector((state) => state.shift.shiftType);
   const telekinesis = useSelector((state) => state.auth.telekinesis);
 
-  // Aquí deberías hacer la llamada a tu API para obtener la lista de turnos
+  const [isModalOpen, setModalOpen] = useState(false);
+
   useEffect(() => {
     dispatch(getShiftsTypes({ telekinesis }));
-  }, [dispatch, telekinesis]);
+  }, [dispatch]);
 
   const handleEditar = (id) => {
-    // Lógica para editar el turno con el ID proporcionado
-    console.log(`Editar turno con ID: ${id}`);
+    dispatch(getShiftId({ telekinesis, id }));
+
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   const handleEliminar = (id) => {
-    // Lógica para eliminar el turno con el ID proporcionado
-    console.log(`Eliminar turno con ID: ${id}`);
+    dispatch(deleteShift({ telekinesis, id }));
   };
 
   const handleNuevoTurno = () => {
-    // Lógica para agregar un nuevo turno
-    console.log('Agregar nuevo turno');
-    // Llama a la función proporcionada para cambiar al índice correspondiente
     handleNuevoTurnoClick();
   };
 
@@ -62,9 +69,9 @@ export const TurnosGestion = ({ handleNuevoTurnoClick }) => {
       </AppBar>
 
       <List>
-        {shifts.map((turno) => (
-          <ListItem key={turno}>
-            <ListItemText primary={turno} />
+        {shifts?.map((turno) => (
+          <ListItem key={turno.shift_type}>
+            <ListItemText primary={turno.shift_type} />
             <ListItemSecondaryAction>
               <IconButton
                 edge="end"
@@ -84,6 +91,8 @@ export const TurnosGestion = ({ handleNuevoTurnoClick }) => {
           </ListItem>
         ))}
       </List>
+
+      <TurnosModalEdit open={isModalOpen} handleClose={handleCloseModal} />
     </Container>
   );
 };

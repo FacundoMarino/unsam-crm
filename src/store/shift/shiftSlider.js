@@ -10,6 +10,7 @@ export const shiftSlice = createSlice({
     shift_type_id: 0,
     daysNotAvailable: [{}],
     location: '',
+    currentShift: [],
   },
   reducers: {
     setShiftType: (state, { payload }) => {
@@ -35,8 +36,16 @@ export const shiftSlice = createSlice({
       state.status = 'stepTwo';
       state.daysNotAvailable = payload.daysNotAvailable;
     },
+    setCurrentShift: (state, { payload }) => {
+      state.currentShift = payload;
+    },
   },
 });
 
-export const { setShiftType, setShift, resetShift, setDayIsNotAvailable } =
-  shiftSlice.actions;
+export const {
+  setShiftType,
+  setShift,
+  resetShift,
+  setDayIsNotAvailable,
+  setCurrentShift,
+} = shiftSlice.actions;

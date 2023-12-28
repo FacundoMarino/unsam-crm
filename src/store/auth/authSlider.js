@@ -4,6 +4,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState: {
     status: 'checking',
+    user_id: 0,
     apellido: '',
     email: '',
     email_verified_at: null,
@@ -44,6 +45,7 @@ export const authSlice = createSlice({
       state.telekinesis = payload.telekinesis;
       state.errorMessage = null;
       state.user_enterprise = payload.user_enterprise;
+      state.user_id = payload.info.user_id;
     },
     logout: (state, { payload }) => {
       state.status = 'checking';

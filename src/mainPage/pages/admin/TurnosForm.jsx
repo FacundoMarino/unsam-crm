@@ -8,6 +8,8 @@ import {
   Button,
 } from '@mui/material';
 import { useForm } from '../../../hooks/useForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { postShiftType } from '../../../store/shift/thunks';
 
 const startData = {
   name: '',
@@ -17,25 +19,29 @@ const startData = {
   shift_type: '',
   virtual_appointments_duration: 0,
   virtual_quota: 0,
-  in_personn_appointments_duration: 0,
-  in_personn_quota: 0,
+  in_person_appointments_duration: 0,
+  in_person_quota: 0,
+  in_admin_inbox: 0,
+  in_admission_inbox: 0,
+  in_consultancy_inbox: 0,
   inbox: [],
 };
 
 export const TurnosForm = () => {
+  const dispatch = useDispatch();
+  const { telekinesis, user_id } = useSelector((state) => state.auth);
   const {
-    name,
-    days,
     start_time,
     end_time,
     shift_type,
     virtual_appointments_duration,
     virtual_quota,
-    in_personn_appointments_duration,
-    in_personn_quota,
+    in_person_appointments_duration,
+    in_person_quota,
     inputHandler,
     formState,
     inbox,
+    days,
   } = useForm(startData);
 
   const diasSemana = [
@@ -48,18 +54,74 @@ export const TurnosForm = () => {
     'Domingo',
   ];
 
-  const asociados = ['Admisión', 'Consultor'];
+  const asociados = ['Admin', 'Admisión', 'Consultor'];
+
+  const contarAsociados = (asociados, seleccionados) => {
+    const contadorAsociados = {};
+
+    const asociadosEnIngles = {
+      Admin: 'in_admin_inbox',
+      Admisión: 'in_admission_inbox',
+      Consultor: 'in_consultancy_inbox',
+    };
+
+    asociados.forEach((asociado) => {
+      const claveEnIngles = asociadosEnIngles[asociado] || asociado;
+
+      contadorAsociados[claveEnIngles] =
+        (contadorAsociados[claveEnIngles] || 0) +
+        (seleccionados.includes(asociado) ? 1 : 2);
+    });
+
+    return contadorAsociados;
+  };
+
+  const contarDiasEnma = (days) => {
+    const contadorDiasEnma = {};
+
+    const diasEnIngles = {
+      Lunes: 'monday',
+      Martes: 'tuesday',
+      Miércoles: 'wednesday',
+      Jueves: 'thursday',
+      Viernes: 'friday',
+      Sábado: 'saturday',
+      Domingo: 'sunday',
+    };
+
+    days.forEach((dia) => {
+      const claveEnIngles = diasEnIngles[dia];
+
+      if (claveEnIngles) {
+        contadorDiasEnma[claveEnIngles] =
+          (contadorDiasEnma[claveEnIngles] || 0) + 1;
+      }
+    });
+
+    return contadorDiasEnma;
+  };
 
   const handleSave = () => {
-    console.log(formState);
+    let resultDays = contarDiasEnma(days);
+    let resultInbox = contarAsociados(asociados, inbox);
+
+    dispatch(
+      postShiftType({
+        ...formState,
+        telekinesis,
+        user_id,
+        ...resultDays,
+        ...resultInbox,
+      }),
+    );
   };
 
   return (
     <form>
       <TextField
         label="Nombre del Turno"
-        name="name"
-        value={name}
+        name="shift_type"
+        value={shift_type}
         onChange={inputHandler}
         fullWidth
         margin="normal"
@@ -103,8 +165,8 @@ export const TurnosForm = () => {
 
       <TextField
         label="Tiempo Modalidad Presencial (minutos)"
-        name="in_personn_appointments_duration"
-        value={in_personn_appointments_duration}
+        name="in_person_appointments_duration"
+        value={in_person_appointments_duration}
         onChange={inputHandler}
         fullWidth
         margin="normal"
@@ -112,8 +174,8 @@ export const TurnosForm = () => {
 
       <TextField
         label="Cupo Modalidad Presencial"
-        name="in_personn_quota"
-        value={in_personn_quota}
+        name="in_person_quota"
+        value={in_person_quota}
         onChange={inputHandler}
         fullWidth
         margin="normal"
@@ -138,15 +200,6 @@ export const TurnosForm = () => {
         fullWidth
         margin="normal"
       />
-
-      <FormControl fullWidth margin="normal">
-        <InputLabel>Tipo de Turno</InputLabel>
-        <Select value={shift_type} name={'shift_type'} onChange={inputHandler}>
-          <MenuItem value="presencial">Presencial</MenuItem>
-          <MenuItem value="virtual">Virtual</MenuItem>
-          <MenuItem value="ambos">Ambos</MenuItem>
-        </Select>
-      </FormControl>
 
       <FormControl fullWidth margin="normal">
         <InputLabel>Asociado</InputLabel>
