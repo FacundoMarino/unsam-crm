@@ -45,8 +45,8 @@ export const TurnosStepOne = ({
               }}
             >
               {shiftsType.map((opcion) => (
-                <MenuItem key={opcion} value={opcion}>
-                  {opcion}
+                <MenuItem key={opcion.shift_type} value={opcion.shift_type}>
+                  {opcion.shift_type}
                 </MenuItem>
               ))}
             </Select>

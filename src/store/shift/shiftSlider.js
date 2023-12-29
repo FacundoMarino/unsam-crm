@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const shiftSlice = createSlice({
   name: 'shift',
   initialState: {
+    adminStatus: '',
     status: 'stepOne',
     shiftType: [],
     hoursNotAvailable: [],
@@ -39,6 +40,9 @@ export const shiftSlice = createSlice({
     setCurrentShift: (state, { payload }) => {
       state.currentShift = payload;
     },
+    setAdminStatus: (state, { payload }) => {
+      state.adminStatus = payload;
+    },
   },
 });
 
@@ -48,4 +52,5 @@ export const {
   resetShift,
   setDayIsNotAvailable,
   setCurrentShift,
+  setAdminStatus,
 } = shiftSlice.actions;

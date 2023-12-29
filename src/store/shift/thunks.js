@@ -11,11 +11,14 @@ import {
 import { errorApi } from '../auth/authSlider';
 import {
   resetShift,
+  setAdminStatus,
   setCurrentShift,
   setDayIsNotAvailable,
   setShift,
   setShiftType,
 } from './shiftSlider';
+
+import Swal from 'sweetalert2';
 
 export const getShiftsTypes = ({ telekinesis }) => {
   const token = localStorage.getItem('browser_token');
@@ -112,30 +115,53 @@ export const postShiftType = ({
   const token = localStorage.getItem('browser_token');
 
   return async (dispatch) => {
-    const data = await postShiftsTypesServices({
-      token,
-      telekinesis,
-      name,
-      monday,
-      tuesday,
-      wednesday,
-      thursday,
-      friday,
-      saturday,
-      sunday,
-      start_time,
-      end_time,
-      shift_type,
-      virtual_appointments_duration,
-      virtual_quota,
-      in_person_appointments_duration,
-      in_person_quota,
-      user_id,
-      in_admin_inbox,
-      in_admission_inbox,
-      in_consultancy_inbox,
-    });
-    data.error ? errorApi(data.error) : errorApi(null);
+    try {
+      const data = await postShiftsTypesServices({
+        token,
+        telekinesis,
+        name,
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday,
+        sunday,
+        start_time,
+        end_time,
+        shift_type,
+        virtual_appointments_duration,
+        virtual_quota,
+        in_person_appointments_duration,
+        in_person_quota,
+        user_id,
+        in_admin_inbox,
+        in_admission_inbox,
+        in_consultancy_inbox,
+      });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al procesar la solicitud.',
+        });
+        errorApi(data.error);
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'La solicitud se procesó correctamente.',
+        });
+        dispatch(setAdminStatus('ok'));
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al realizar la solicitud.',
+      });
+    }
   };
 };
 
@@ -171,37 +197,83 @@ export const updateShift = ({
 }) => {
   const token = localStorage.getItem('browser_token');
   return async (dispatch) => {
-    const data = await postShiftUpdate({
-      token,
-      telekinesis,
-      id,
-      monday,
-      tuesday,
-      wednesday,
-      thursday,
-      friday,
-      saturday,
-      sunday,
-      start_time,
-      end_time,
-      shift_type,
-      virtual_appointments_duration,
-      virtual_quota,
-      in_person_appointments_duration,
-      in_person_quota,
-      user_id,
-      in_admin_inbox,
-      in_admission_inbox,
-      in_consultancy_inbox,
-    });
-    data.error ? errorApi(data.error) : errorApi('');
+    try {
+      const data = await postShiftUpdate({
+        token,
+        telekinesis,
+        id,
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday,
+        sunday,
+        start_time,
+        end_time,
+        shift_type,
+        virtual_appointments_duration,
+        virtual_quota,
+        in_person_appointments_duration,
+        in_person_quota,
+        user_id,
+        in_admin_inbox,
+        in_admission_inbox,
+        in_consultancy_inbox,
+      });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al procesar la solicitud.',
+        });
+        errorApi(data.error);
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Exito',
+          text: 'La solicitud se procesó correctamente.',
+        });
+        dispatch(setAdminStatus('ok'));
+      }
+    } catch (error) {
+      console.error('Error al eliminar el turno::', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al realizar la solicitud.',
+      });
+    }
   };
 };
 
 export const deleteShift = ({ telekinesis, id }) => {
   const token = localStorage.getItem('browser_token');
   return async (dispatch) => {
-    const data = await deleteShiftProvider({ token, telekinesis, id });
-    data.error ? errorApi(data.error) : errorApi('');
+    try {
+      const data = await deleteShiftProvider({ token, telekinesis, id });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al eliminar el turno.',
+        });
+        errorApi(data.error);
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'El turno se eliminó correctamente.',
+        });
+        dispatch(setAdminStatus('ok'));
+      }
+    } catch (error) {
+      console.error('Error al eliminar el turno:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al eliminar el turno.',
+      });
+    }
   };
 };

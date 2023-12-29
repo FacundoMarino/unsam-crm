@@ -21,10 +21,12 @@ import {
 } from '../../../store/shift/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import { TurnosModalEdit } from '../../components/turnos/TurnosModalEdit';
+import { setAdminStatus } from '../../../store/shift/shiftSlider';
 
 export const TurnosGestion = ({ handleNuevoTurnoClick }) => {
   const dispatch = useDispatch();
   const shifts = useSelector((state) => state.shift.shiftType);
+  const adminStatus = useSelector((state) => state.shift.adminStatus);
   const telekinesis = useSelector((state) => state.auth.telekinesis);
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -32,6 +34,13 @@ export const TurnosGestion = ({ handleNuevoTurnoClick }) => {
   useEffect(() => {
     dispatch(getShiftsTypes({ telekinesis }));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (adminStatus === 'ok') {
+      dispatch(getShiftsTypes({ telekinesis }));
+    }
+    setAdminStatus('');
+  }, [adminStatus]);
 
   const handleEditar = (id) => {
     dispatch(getShiftId({ telekinesis, id }));

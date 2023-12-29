@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { useForm } from '../../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { postShiftType, updateShift } from '../../../store/shift/thunks';
+import { updateShift } from '../../../store/shift/thunks';
 import { useEffect, useState } from 'react';
 
 const startData = {
@@ -136,6 +136,7 @@ export const TurnosModalEdit = ({ open, handleClose }) => {
         ...resultInbox,
       }),
     );
+    handleClose();
   };
 
   return (

@@ -9,7 +9,9 @@ import {
 } from '@mui/material';
 import { useForm } from '../../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { postShiftType } from '../../../store/shift/thunks';
+import { getShiftsTypes, postShiftType } from '../../../store/shift/thunks';
+import { useEffect } from 'react';
+import { setAdminStatus } from '../../../store/shift/shiftSlider';
 
 const startData = {
   name: '',
@@ -30,6 +32,8 @@ const startData = {
 export const TurnosForm = () => {
   const dispatch = useDispatch();
   const { telekinesis, user_id } = useSelector((state) => state.auth);
+  const adminStatus = useSelector((state) => state.shift.adminStatus);
+
   const {
     start_time,
     end_time,
@@ -42,6 +46,7 @@ export const TurnosForm = () => {
     formState,
     inbox,
     days,
+    resetHandler,
   } = useForm(startData);
 
   const diasSemana = [
@@ -115,6 +120,13 @@ export const TurnosForm = () => {
       }),
     );
   };
+
+  useEffect(() => {
+    if (adminStatus === 'ok') {
+      resetHandler(startData);
+    }
+    setAdminStatus('');
+  }, [adminStatus]);
 
   return (
     <form>
