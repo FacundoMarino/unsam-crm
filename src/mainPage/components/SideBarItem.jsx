@@ -14,7 +14,7 @@ export const SideBarItem = ({ title = '', subItems = [], icon }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
-  subItems = ['Turnos'];
+  subItems = ['Turnos', 'Formularios'];
 
   const handleItemClick = () => {
     setOpen(!open);
