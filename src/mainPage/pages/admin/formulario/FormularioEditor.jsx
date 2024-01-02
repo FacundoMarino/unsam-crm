@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FormularioCreate } from './FormularioCreate';
+import { FormularioEditorItem } from './FormularioEditorItem';
 
 export const FormularioEditor = ({ formData }) => {
-  const [formFields, setFormFields] = useState([]);
+  const [formFields, setFormFields] = useState([formData]);
 
   useEffect(() => {
     // Inicializa el estado con los datos del formulario guardado
@@ -50,6 +51,12 @@ export const FormularioEditor = ({ formData }) => {
     setFormFields(updatedFields);
   };
 
+  const handleFieldChange = (index, property, value) => {
+    const updatedFields = formFields.map((field, i) =>
+      i === index ? { ...field, [property]: value } : field,
+    );
+    setFormFields(updatedFields);
+  };
   const handleSubmit = () => {
     // Aquí puedes enviar los datos editados del formulario a tu API
     console.log('Datos editados del formulario:', formFields);
@@ -59,13 +66,14 @@ export const FormularioEditor = ({ formData }) => {
   return (
     <div>
       <h2>Editor de Formulario</h2>
-      <FormularioCreate
+      <FormularioEditorItem
         formFields={formFields}
         onAddField={handleAddField}
         onRemoveField={handleRemoveField}
         onAddOption={handleAddOption}
         onRemoveOption={handleRemoveOption}
         onSubmit={handleSubmit}
+        onFieldChanged={handleFieldChange}
       />
     </div>
   );

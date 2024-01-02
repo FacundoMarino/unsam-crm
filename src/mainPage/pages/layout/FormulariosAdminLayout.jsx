@@ -3,6 +3,7 @@ import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { FormularioCreate } from '../admin/formulario/FormularioCreate';
 import { FormularioEditor } from '../admin/formulario/FormularioEditor';
+import { FormularioGestion } from '../admin/formulario/FormularioGestion';
 
 export const FormulariosAdminLayout = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -62,7 +63,9 @@ export const FormulariosAdminLayout = () => {
           <Tab>Crear Tipo Formulario</Tab>
         </TabList>
 
-        <TabPanel></TabPanel>
+        <TabPanel>
+          <FormularioGestion />
+        </TabPanel>
         <TabPanel>
           <FormularioEditor formData={datosFormularioGuardado} />{' '}
         </TabPanel>
