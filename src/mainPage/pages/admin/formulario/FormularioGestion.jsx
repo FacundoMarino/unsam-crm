@@ -42,14 +42,14 @@ export const FormularioGestion = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Turnos
+            Formularios
           </Typography>
           <Button
             color="inherit"
             onClick={handleNuevoTurno}
             startIcon={<AddIcon />}
           >
-            Nuevo Turno
+            Nuevo Formulario
           </Button>
         </Toolbar>
       </AppBar>
