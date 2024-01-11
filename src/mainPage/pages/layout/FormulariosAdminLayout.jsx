@@ -4,51 +4,14 @@ import 'react-tabs/style/react-tabs.css';
 import { FormularioCreate } from '../admin/formulario/FormularioCreate';
 import { FormularioEditor } from '../admin/formulario/FormularioEditor';
 import { FormularioGestion } from '../admin/formulario/FormularioGestion';
+import { FormularioComplete } from '../../components/formularios/FormularioComplete';
 
 export const FormulariosAdminLayout = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const handleNuevoTurnoClick = () => {
-    setSelectedIndex(2);
+  const handleNewFormClick = () => {
+    setSelectedIndex(1);
   };
-
-  const datosFormularioGuardado = [
-    {
-      id: 1704139199592,
-      tipo: 'texto',
-      pregunta: 'pregunta 1 ',
-      opciones: [''],
-      requerido: true,
-    },
-    {
-      id: 1704139242805,
-      tipo: 'numero',
-      pregunta: 'pregunta 2',
-      opciones: [''],
-      requerido: true,
-    },
-    {
-      id: 1704139258778,
-      tipo: 'checkbox',
-      pregunta: 'pregunta 3',
-      opciones: ['opcion 1', 'opcion 2'],
-      requerido: false,
-    },
-    {
-      id: 1704139273267,
-      tipo: 'textarea',
-      pregunta: 'pregunta 4',
-      opciones: [''],
-      requerido: false,
-    },
-    {
-      id: 1704139284446,
-      tipo: 'radio',
-      pregunta: 'pregunta 5',
-      opciones: ['opcion 3', 'opcion 4'],
-      requerido: false,
-    },
-  ];
 
   return (
     <>
@@ -61,16 +24,20 @@ export const FormulariosAdminLayout = () => {
           <Tab>Administración de Formularios</Tab>
           <Tab>Gestión de Formularios</Tab>
           <Tab>Crear Tipo Formulario</Tab>
+          <Tab>Ver Formularios</Tab>
         </TabList>
 
         <TabPanel>
-          <FormularioGestion />
+          <FormularioGestion handleNewFormClick={handleNewFormClick} />
         </TabPanel>
         <TabPanel>
-          <FormularioEditor formData={datosFormularioGuardado} />{' '}
+          <FormularioEditor />
         </TabPanel>
         <TabPanel>
           <FormularioCreate />
+        </TabPanel>
+        <TabPanel>
+          <FormularioComplete />
         </TabPanel>
       </Tabs>
     </>

@@ -13,30 +13,58 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Swal from 'sweetalert2';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { deleteFormId, getAllForms } from '../../../../store/forms/thunks';
+import {
+  setForm,
+  setFormId,
+  setStatusForm,
+} from '../../../../store/forms/formSlider';
 
-const forms = [
-  {
-    id: 1,
-    form_type: 'Formulario 1',
-  },
-  {
-    id: 2,
-    form_type: 'Formulario 2',
-  },
-  {
-    id: 3,
-    form_type: 'Formulario 3',
-  },
-];
+export const FormularioGestion = ({ handleNewFormClick }) => {
+  const telekinesis = useSelector((state) => state.auth.telekinesis);
+  const formsStore = useSelector((state) => state.forms.form);
+  const formStatus = useSelector((state) => state.forms.status);
+  const dispatch = useDispatch();
 
-export const FormularioGestion = () => {
-  const handleEditar = (id) => {};
+  useEffect(() => {
+    dispatch(getAllForms({ telekinesis }));
+    setForm(formsStore);
+  }, []);
+
+  useEffect(() => {
+    if (formStatus === 'ok') {
+      dispatch(getAllForms({ telekinesis }));
+    }
+    setStatusForm('');
+  }, [formStatus]);
+
+  const handleEditar = (id) => {
+    dispatch(setFormId(id));
+    handleNewFormClick();
+  };
 
   const handleCloseModal = () => {};
 
-  const handleEliminar = (id) => {};
+  const handleEliminar = (id) => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción no se puede deshacer',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteFormId({ telekinesis, id }));
+      }
+    });
+  };
 
-  const handleNuevoTurno = () => {};
   return (
     <Container>
       <AppBar position="static">
@@ -44,32 +72,25 @@ export const FormularioGestion = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Formularios
           </Typography>
-          <Button
-            color="inherit"
-            onClick={handleNuevoTurno}
-            startIcon={<AddIcon />}
-          >
-            Nuevo Formulario
-          </Button>
         </Toolbar>
       </AppBar>
 
       <List>
-        {forms?.map((turno) => (
-          <ListItem key={turno.form_type}>
-            <ListItemText primary={turno.form_type} />
+        {formsStore.forms?.map((form) => (
+          <ListItem key={form.id}>
+            <ListItemText primary={form.name} />
             <ListItemSecondaryAction>
               <IconButton
                 edge="end"
                 aria-label="edit"
-                onClick={() => handleEditar(turno.id)}
+                onClick={() => handleEditar(form.id)}
               >
                 <EditIcon />
               </IconButton>
               <IconButton
                 edge="end"
                 aria-label="delete"
-                onClick={() => handleEliminar(turno.id)}
+                onClick={() => handleEliminar(form.id)}
               >
                 <DeleteIcon />
               </IconButton>

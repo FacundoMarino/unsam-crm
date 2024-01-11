@@ -13,48 +13,13 @@ import {
   Typography,
 } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 
 export const FormularioComplete = () => {
-  const data = [
-    {
-      id: 1704139199592,
-      tipo: 'texto',
-      pregunta: 'pregunta 1 ',
-      opciones: [''],
-      requerido: true,
-    },
-    {
-      id: 1704139242805,
-      tipo: 'numero',
-      pregunta: 'pregunta 2',
-      opciones: [''],
-      requerido: true,
-    },
-    {
-      id: 1704139258778,
-      tipo: 'checkbox',
-      pregunta: 'pregunta 3',
-      opciones: ['opcion 1', 'opcion 2'],
-      requerido: false,
-    },
-    {
-      id: 1704139273267,
-      tipo: 'textarea',
-      pregunta: 'pregunta 4',
-      opciones: [''],
-      requerido: false,
-    },
-    {
-      id: 1704139284446,
-      tipo: 'radio',
-      pregunta: 'pregunta 5',
-      opciones: ['opcion 3', 'opcion 4'],
-      requerido: false,
-    },
-  ];
+  const formIndividual = useSelector((state) => state.forms.individualForm);
 
   const [radioValues, setRadioValues] = useState({});
-  const [formFields, setFormFields] = useState([data]);
+  const [formFields, setFormFields] = useState([formIndividual[1]]);
 
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({
@@ -64,7 +29,7 @@ export const FormularioComplete = () => {
   };
 
   const handleResetForm = () => {
-    setFormFields([data]);
+    setFormFields([formIndividual]);
   };
 
   const handleSubmit = () => {
@@ -80,7 +45,7 @@ export const FormularioComplete = () => {
           </Typography>
           <Divider />
 
-          {data.map((item) => (
+          {formFields.map((item) => (
             <div key={item.id}>
               {(() => {
                 switch (item.tipo) {
