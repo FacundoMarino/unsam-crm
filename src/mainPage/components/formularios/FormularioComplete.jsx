@@ -19,7 +19,7 @@ export const FormularioComplete = () => {
   const formIndividual = useSelector((state) => state.forms.individualForm);
 
   const [radioValues, setRadioValues] = useState({});
-  const [formFields, setFormFields] = useState([formIndividual[1]]);
+  const [formFields, setFormFields] = useState(formIndividual[1]);
 
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({

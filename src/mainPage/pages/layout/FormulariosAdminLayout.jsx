@@ -22,9 +22,9 @@ export const FormulariosAdminLayout = () => {
       >
         <TabList>
           <Tab>Administración de Formularios</Tab>
-          <Tab>Gestión de Formularios</Tab>
+          <Tab>Edición de Formulario</Tab>
           <Tab>Crear Tipo Formulario</Tab>
-          <Tab>Ver Formularios</Tab>
+          <Tab>Pre Visualización Formulario</Tab>
         </TabList>
 
         <TabPanel>
