@@ -45,7 +45,7 @@ export const FormularioComplete = () => {
           </Typography>
           <Divider />
 
-          {formFields.map((item) => (
+          {formFields?.map((item) => (
             <div key={item.id}>
               {(() => {
                 switch (item.tipo) {
@@ -130,6 +130,54 @@ export const FormularioComplete = () => {
                         ))}
                       </RadioGroup>
                     );
+                  case 'fecha':
+                    return (
+                      <>
+                        <div>
+                          <Typography
+                            marginBottom={2}
+                            marginTop={2}
+                            variant="h5"
+                          >
+                            {item.pregunta}
+                          </Typography>
+                          <TextField
+                            key={item.id}
+                            label={item.pregunta}
+                            variant="outlined"
+                            fullWidth
+                            required={item.requerido}
+                            type="date"
+                          />
+                        </div>
+                        <Divider />
+                      </>
+                    );
+
+                  case 'min':
+                  case 'max':
+                    return (
+                      <>
+                        <div>
+                          <Typography
+                            marginBottom={2}
+                            marginTop={2}
+                            variant="h5"
+                          >
+                            {item.pregunta}
+                          </Typography>
+                          <TextField
+                            key={item.id}
+                            label={item.pregunta}
+                            variant="outlined"
+                            fullWidth
+                            required={item.requerido}
+                            type="number"
+                          />
+                        </div>
+                        <Divider />
+                      </>
+                    );
                   default:
                     return null;
                 }
@@ -141,6 +189,7 @@ export const FormularioComplete = () => {
             color="primary"
             onClick={handleResetForm}
             startIcon={<Refresh />}
+            disabled
             style={{ marginRight: '10px', marginTop: '20px' }}
           >
             Reiniciar Formulario
@@ -149,6 +198,7 @@ export const FormularioComplete = () => {
             variant="contained"
             color="primary"
             onClick={handleSubmit}
+            disabled
             style={{ marginTop: '20px' }}
           >
             Enviar Formulario

@@ -163,38 +163,74 @@ export const FormularioEditor = () => {
                   }
                   label="Requerido"
                 />
-                {['min', 'max', 'step'].includes(field.tipo) && (
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    fullWidth
-                    label={
-                      field.tipo === 'min'
-                        ? 'Mínimo'
-                        : field.tipo === 'max'
-                          ? 'Máximo'
-                          : 'Step'
-                    }
-                    type="number"
-                    value={field[field.tipo]}
-                    onChange={(e) =>
-                      handleFieldChange(field.id, field.tipo, e.target.value)
-                    }
-                  />
+                {['numero', 'fecha'].includes(field.tipo) && (
+                  <>
+                    <TextField
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      label={field.tipo === 'numero' ? 'Número' : 'Fecha'}
+                      type={field.tipo === 'numero' ? 'number' : 'date'}
+                      value={field[field.tipo]}
+                      onChange={(e) =>
+                        handleFieldChange(field.id, field.tipo, e.target.value)
+                      }
+                    />
+                    {field.tipo === 'numero' && (
+                      <>
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          fullWidth
+                          label="Mínimo"
+                          type="number"
+                          value={field.min}
+                          onChange={(e) =>
+                            handleFieldChange(field.id, 'min', e.target.value)
+                          }
+                        />
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          fullWidth
+                          label="Máximo"
+                          type="number"
+                          value={field.max}
+                          onChange={(e) =>
+                            handleFieldChange(field.id, 'max', e.target.value)
+                          }
+                        />
+                      </>
+                    )}
+                    {field.tipo === 'fecha' && (
+                      <>
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          fullWidth
+                          label="Fecha Mínima"
+                          type="date"
+                          value={field.min}
+                          onChange={(e) =>
+                            handleFieldChange(field.id, 'min', e.target.value)
+                          }
+                        />
+                        <TextField
+                          variant="outlined"
+                          margin="normal"
+                          fullWidth
+                          label="Fecha Máxima"
+                          type="date"
+                          value={field.max}
+                          onChange={(e) =>
+                            handleFieldChange(field.id, 'max', e.target.value)
+                          }
+                        />
+                      </>
+                    )}
+                  </>
                 )}
-                {field.tipo === 'fecha' && (
-                  <TextField
-                    variant="outlined"
-                    margin="normal"
-                    fullWidth
-                    label="Fecha"
-                    type="date"
-                    value={field.fecha}
-                    onChange={(e) =>
-                      handleFieldChange(field.id, 'fecha', e.target.value)
-                    }
-                  />
-                )}
+
                 {field.tipo === 'checkbox' && (
                   <div style={{ marginTop: '10px' }}>
                     {field.opciones.map((opcion, index) => (
