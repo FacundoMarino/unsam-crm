@@ -54,7 +54,7 @@ export const FormularioGestion = ({ handleNewFormClick }) => {
   };
 
   const handlePreView = (id) => {
-    console.log(id);
+    dispatch(setFormId(id));
     handleNewFormClick(3);
   };
   const handleEliminar = (id) => {

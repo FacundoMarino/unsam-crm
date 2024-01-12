@@ -21,7 +21,7 @@ export const FormularioComplete = () => {
 
   const [radioValues, setRadioValues] = useState({});
   const [formIndex, setFormIndex] = useState(0);
-  const [formFields, setFormFields] = useState(formIndividual);
+  const [formFields, setFormFields] = useState([formIndividual]);
 
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({
@@ -53,7 +53,7 @@ export const FormularioComplete = () => {
           <Divider />
 
           <Grid container spacing={2}>
-            {Object.keys(formIndividual).map((key, index) => (
+            {Object.keys(formIndividual)?.map((key, index) => (
               <Grid item xs={3} key={index}>
                 <Button
                   variant="outlined"

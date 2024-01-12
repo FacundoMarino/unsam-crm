@@ -100,7 +100,6 @@ export const FormularioEditor = () => {
 
   useEffect(() => {
     if (formIndividual) {
-      console.log('se ejecuto');
       setFormFields(formIndividual[1]);
     }
   }, [formIndividual]);
@@ -125,7 +124,7 @@ export const FormularioEditor = () => {
           </Typography>
 
           <Grid container spacing={2}>
-            {formIndividual?.map((key, index) => (
+            {Object.keys(formIndividual).map((key, index) => (
               <Grid item xs={3} key={index}>
                 <Button
                   variant="outlined"
