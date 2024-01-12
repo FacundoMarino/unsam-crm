@@ -25,8 +25,6 @@ export const FormularioComplete = () => {
     formIndividual[Object.keys(formIndividual)[formIndex]],
   );
 
-  console.log(formIndividual);
-
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({
       ...prevValues,
@@ -52,7 +50,7 @@ export const FormularioComplete = () => {
       <Paper elevation={3} style={{ padding: '20px' }}>
         <form>
           <Typography marginBottom={2} marginTop={2} variant="h5">
-            Edición
+            Pre Visualización
           </Typography>
           <Divider />
 
@@ -64,7 +62,7 @@ export const FormularioComplete = () => {
                 onClick={() => handleFormChange(index)}
                 style={{ marginBottom: '10px' }}
               >
-                Formulario {index + 1}
+                Formulario Step {index + 1}
               </Button>
             </div>
           ))}
