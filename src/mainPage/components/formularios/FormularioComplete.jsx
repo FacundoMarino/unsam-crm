@@ -6,6 +6,7 @@ import {
   Container,
   Divider,
   FormControlLabel,
+  Grid,
   Paper,
   Radio,
   RadioGroup,
@@ -19,7 +20,8 @@ export const FormularioComplete = () => {
   const formIndividual = useSelector((state) => state.forms.individualForm);
 
   const [radioValues, setRadioValues] = useState({});
-  const [formFields, setFormFields] = useState(formIndividual[1]);
+  const [formIndex, setFormIndex] = useState(0);
+  const [formFields, setFormFields] = useState(formIndividual);
 
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({
@@ -29,11 +31,16 @@ export const FormularioComplete = () => {
   };
 
   const handleResetForm = () => {
-    setFormFields([formIndividual]);
+    setFormFields(formIndividual[Object.keys(formIndividual)[formIndex]]);
   };
 
   const handleSubmit = () => {
     console.log('Datos del formulario:', formFields);
+  };
+
+  const handleFormChange = (index) => {
+    setFormIndex(index);
+    setFormFields(formIndividual[Object.keys(formIndividual)[index]]);
   };
 
   return (
@@ -45,6 +52,20 @@ export const FormularioComplete = () => {
           </Typography>
           <Divider />
 
+          <Grid container spacing={2}>
+            {Object.keys(formIndividual).map((key, index) => (
+              <Grid item xs={3} key={index}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => handleFormChange(index)}
+                  style={{ marginBottom: '10px' }}
+                >
+                  Formulario Step {index + 1}
+                </Button>
+              </Grid>
+            ))}
+          </Grid>
           {formFields?.map((item) => (
             <div key={item.id}>
               {(() => {

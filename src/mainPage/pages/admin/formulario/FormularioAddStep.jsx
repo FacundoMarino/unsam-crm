@@ -23,13 +23,34 @@ import {
   updateQuestionForm,
 } from '../../../../store/forms/thunks';
 import { setFormId, setFormIdCreate } from '../../../../store/forms/formSlider';
+import Swal from 'sweetalert2';
 
-export const FormularioEditor = () => {
+export const FormularioAddStep = () => {
   const dispatch = useDispatch();
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const form_id = useSelector((state) => state.forms.formId);
   const formIndividual = useSelector((state) => state.forms.individualForm);
   const form = useSelector((state) => state.forms.form);
+
+  const [isNewStep, setIsNewStep] = useState(0);
+
+  useEffect(() => {
+    const showConfirmation = async () => {
+      const { value: newStepNumber } = await Swal.fire({
+        title: 'Crear Nuevo Step',
+        input: 'number',
+        inputLabel: 'Ingrese el número del nuevo step',
+        inputPlaceholder: 'Número del Step',
+      });
+
+      if (newStepNumber) {
+        setIsNewStep(newStepNumber);
+        setFormFields([{ ...initialState, step: newStepNumber }]);
+      }
+    };
+
+    showConfirmation();
+  }, []);
 
   const initialState = {
     id: Date.now(),
@@ -40,11 +61,13 @@ export const FormularioEditor = () => {
     min: '',
     max: '',
     fecha: '',
-    step: '',
+    step: isNewStep,
   };
 
-  const [formFields, setFormFields] = useState([]);
-  const [formIndex, setFormIndex] = useState(0);
+  const [formFields, setFormFields] = useState([
+    { ...initialState, step: isNewStep },
+  ]);
+  const [formIndividualForm, setFormIndividualForm] = useState([]);
 
   const handleFieldChange = (id, property, value) => {
     const updatedFields = formFields.map((field) =>
@@ -54,10 +77,10 @@ export const FormularioEditor = () => {
   };
 
   const handleAddField = () => {
-    const newField = { ...initialState, id: Date.now() };
+    const newField = { ...initialState, id: Date.now(), step: isNewStep };
+    console.log(newField);
     setFormFields([...formFields, newField]);
   };
-
   const handleRemoveField = (id) => {
     const updatedFields = formFields.filter((field) => field.id !== id);
     setFormFields(updatedFields);
@@ -70,11 +93,6 @@ export const FormularioEditor = () => {
     setFormFields(updatedFields);
   };
 
-  const handleFormChange = (index) => {
-    setFormIndex(index);
-
-    setFormFields(formIndividual[index]);
-  };
   const handleRemoveOption = (id, optionIndex) => {
     const updatedFields = formFields.map((field) =>
       field.id === id
@@ -90,8 +108,12 @@ export const FormularioEditor = () => {
   };
 
   const handleSubmit = () => {
-    dispatch(updateQuestionForm({ telekinesis, form_id, data: formFields }));
-    dispatch(setFormId(''));
+    const formData = [...formFields, ...formIndividualForm];
+
+    console.log(formData);
+
+    /* dispatch(updateQuestionForm({ telekinesis, form_id, data: formData }));
+    dispatch(setFormId(''));*/
   };
 
   useEffect(() => {
@@ -100,8 +122,7 @@ export const FormularioEditor = () => {
 
   useEffect(() => {
     if (formIndividual) {
-      console.log('se ejecuto');
-      setFormFields(formIndividual[1]);
+      setFormIndividualForm(formIndividual[1]);
     }
   }, [formIndividual]);
 
@@ -120,24 +141,7 @@ export const FormularioEditor = () => {
       )}
       {form_id && (
         <Paper elevation={3} style={{ padding: '20px' }}>
-          <Typography variant="h5">
-            {`Edita el Formulario: ${form.forms[0].name}`}
-          </Typography>
-
-          <Grid container spacing={2}>
-            {formIndividual?.map((key, index) => (
-              <Grid item xs={3} key={index}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => handleFormChange(index)}
-                  style={{ marginBottom: '10px' }}
-                >
-                  Formulario Step {index + 1}
-                </Button>
-              </Grid>
-            ))}
-          </Grid>
+          <Typography variant="h5">Crea tu formulario</Typography>
           <Grid container spacing={2}>
             {formFields?.map((field) => (
               <Grid item xs={12} key={field.id}>
@@ -251,7 +255,6 @@ export const FormularioEditor = () => {
                     )}
                   </>
                 )}
-
                 {field.tipo === 'checkbox' && (
                   <div style={{ marginTop: '10px' }}>
                     {field.opciones.map((opcion, index) => (
@@ -338,7 +341,6 @@ export const FormularioEditor = () => {
               </Grid>
             ))}
           </Grid>
-
           <Button
             variant="contained"
             color="primary"
@@ -348,13 +350,14 @@ export const FormularioEditor = () => {
           >
             Agregar Pregunta
           </Button>
+
           <Button
             variant="contained"
             color="primary"
             onClick={handleSubmit}
             style={{ marginTop: '20px' }}
           >
-            Actualizar Formulario
+            Enviar Formulario
           </Button>
         </Paper>
       )}

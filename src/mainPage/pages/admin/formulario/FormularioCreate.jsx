@@ -21,12 +21,8 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Refresh } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  addQuestionForm,
-  getFormFromId,
-  postNewForm,
-} from '../../../../store/forms/thunks';
-import { setFormId, setFormIdCreate } from '../../../../store/forms/formSlider';
+import { addQuestionForm, postNewForm } from '../../../../store/forms/thunks';
+import { setFormId } from '../../../../store/forms/formSlider';
 import Swal from 'sweetalert2';
 
 export const FormularioCreate = () => {

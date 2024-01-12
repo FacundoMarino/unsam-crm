@@ -8,9 +8,11 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Toolbar,
+  Tooltip,
   Typography,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from 'sweetalert2';
@@ -43,11 +45,18 @@ export const FormularioGestion = ({ handleNewFormClick }) => {
 
   const handleEditar = (id) => {
     dispatch(setFormId(id));
-    handleNewFormClick();
+    handleNewFormClick(1);
   };
 
-  const handleCloseModal = () => {};
+  const handleAgregarStep = (id) => {
+    dispatch(setFormId(id));
+    handleNewFormClick(4);
+  };
 
+  const handlePreView = (id) => {
+    console.log(id);
+    handleNewFormClick(3);
+  };
   const handleEliminar = (id) => {
     Swal.fire({
       title: '¿Estás seguro?',
@@ -80,20 +89,45 @@ export const FormularioGestion = ({ handleNewFormClick }) => {
           <ListItem key={form.id}>
             <ListItemText primary={form.name} />
             <ListItemSecondaryAction>
-              <IconButton
-                edge="end"
-                aria-label="edit"
-                onClick={() => handleEditar(form.id)}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={() => handleEliminar(form.id)}
-              >
-                <DeleteIcon />
-              </IconButton>
+              <Tooltip title="Editar" arrow>
+                <IconButton
+                  edge="end"
+                  aria-label="edit"
+                  onClick={() => handleEditar(form.id)}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Agregar Step" arrow>
+                <IconButton
+                  edge="end"
+                  aria-label="add-step"
+                  hovered="Agregar step"
+                  onClick={() => handleAgregarStep(form.id)}
+                >
+                  <AddCircleOutlineIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="Pre Visualización" arrow>
+                <IconButton
+                  edge="end"
+                  aria-label="view"
+                  onClick={() => handlePreView(form.id)}
+                >
+                  <RemoveRedEyeIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="Borrar" arrow>
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => handleEliminar(form.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
             </ListItemSecondaryAction>
           </ListItem>
         ))}
