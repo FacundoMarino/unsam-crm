@@ -44,7 +44,6 @@ export const FormularioEditor = () => {
   };
 
   const [formFields, setFormFields] = useState([]);
-  const [formIndex, setFormIndex] = useState(0);
 
   const handleFieldChange = (id, property, value) => {
     const updatedFields = formFields.map((field) =>
@@ -70,11 +69,6 @@ export const FormularioEditor = () => {
     setFormFields(updatedFields);
   };
 
-  const handleFormChange = (index) => {
-    setFormIndex(index);
-
-    setFormFields(formIndividual[index]);
-  };
   const handleRemoveOption = (id, optionIndex) => {
     const updatedFields = formFields.map((field) =>
       field.id === id
@@ -120,23 +114,9 @@ export const FormularioEditor = () => {
       {form_id && (
         <Paper elevation={3} style={{ padding: '20px' }}>
           <Typography variant="h5">
+            {' '}
             {`Edita el Formulario: ${form.forms[0].name}`}
           </Typography>
-
-          <Grid container spacing={2}>
-            {Object.keys(formIndividual).map((key, index) => (
-              <Grid item xs={3} key={index}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => handleFormChange(index)}
-                  style={{ marginBottom: '10px' }}
-                >
-                  Formulario Step {index + 1}
-                </Button>
-              </Grid>
-            ))}
-          </Grid>
           <Grid container spacing={2}>
             {formFields?.map((field) => (
               <Grid item xs={12} key={field.id}>
@@ -337,7 +317,6 @@ export const FormularioEditor = () => {
               </Grid>
             ))}
           </Grid>
-
           <Button
             variant="contained"
             color="primary"
@@ -347,6 +326,7 @@ export const FormularioEditor = () => {
           >
             Agregar Pregunta
           </Button>
+
           <Button
             variant="contained"
             color="primary"

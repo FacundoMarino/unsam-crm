@@ -21,7 +21,11 @@ export const FormularioComplete = () => {
 
   const [radioValues, setRadioValues] = useState({});
   const [formIndex, setFormIndex] = useState(0);
-  const [formFields, setFormFields] = useState([formIndividual]);
+  const [formFields, setFormFields] = useState(
+    formIndividual[Object.keys(formIndividual)[formIndex]],
+  );
+
+  console.log(formIndividual);
 
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({
@@ -52,20 +56,19 @@ export const FormularioComplete = () => {
           </Typography>
           <Divider />
 
-          <Grid container spacing={2}>
-            {Object.keys(formIndividual)?.map((key, index) => (
-              <Grid item xs={3} key={index}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => handleFormChange(index)}
-                  style={{ marginBottom: '10px' }}
-                >
-                  Formulario Step {index + 1}
-                </Button>
-              </Grid>
-            ))}
-          </Grid>
+          {Object.keys(formIndividual).map((key, index) => (
+            <div key={index}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => handleFormChange(index)}
+                style={{ marginBottom: '10px' }}
+              >
+                Formulario {index + 1}
+              </Button>
+            </div>
+          ))}
+
           {formFields?.map((item) => (
             <div key={item.id}>
               {(() => {

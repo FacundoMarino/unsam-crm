@@ -131,7 +131,7 @@ export const FormularioCreate = () => {
         <Paper elevation={3} style={{ padding: '20px' }}>
           <Typography variant="h5">Crea tu formulario</Typography>
           <Grid container spacing={2}>
-            {formFields.map((field) => (
+            {formFields?.map((field) => (
               <Grid item xs={12} key={field.id}>
                 <TextField
                   variant="outlined"
