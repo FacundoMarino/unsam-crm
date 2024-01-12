@@ -98,6 +98,10 @@ export const FormularioEditor = () => {
     }
   }, [formIndividual]);
 
+  const findFormNameById = (formArray, targetFormId) => {
+    const foundForm = formArray.find((form) => form.id === targetFormId);
+    return foundForm ? foundForm.name : null;
+  };
   useEffect(() => {
     dispatch(setFormIdCreate(''));
   }, []);
@@ -114,8 +118,7 @@ export const FormularioEditor = () => {
       {form_id && (
         <Paper elevation={3} style={{ padding: '20px' }}>
           <Typography variant="h5">
-            {' '}
-            {`Edita el Formulario: ${form.forms[0].name}`}
+            {`Edita el Formulario: ${findFormNameById(form.forms, form_id)}`}
           </Typography>
           <Grid container spacing={2}>
             {formFields?.map((field) => (

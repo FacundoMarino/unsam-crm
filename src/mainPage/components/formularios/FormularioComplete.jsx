@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import {
   Button,
@@ -14,16 +14,19 @@ import {
   Typography,
 } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFormFromId } from '../../../store/forms/thunks';
 
 export const FormularioComplete = () => {
   const formIndividual = useSelector((state) => state.forms.individualForm);
+  const telekinesis = useSelector((state) => state.auth.telekinesis);
+  const form_id = useSelector((state) => state.forms.formId);
+
+  const dispatch = useDispatch();
 
   const [radioValues, setRadioValues] = useState({});
   const [formIndex, setFormIndex] = useState(0);
-  const [formFields, setFormFields] = useState(
-    formIndividual[Object.keys(formIndividual)[formIndex]],
-  );
+  const [formFields, setFormFields] = useState([]);
 
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({
@@ -44,6 +47,16 @@ export const FormularioComplete = () => {
     setFormIndex(index);
     setFormFields(formIndividual[Object.keys(formIndividual)[index]]);
   };
+
+  useEffect(() => {
+    dispatch(getFormFromId({ telekinesis, form_id }));
+  }, [form_id]);
+
+  useEffect(() => {
+    if (formIndividual) {
+      setFormFields(formIndividual[Object.keys(formIndividual)[formIndex]]);
+    }
+  }, [formIndividual]);
 
   return (
     <Container component="main" maxWidth="md" style={{ marginTop: '20px' }}>
