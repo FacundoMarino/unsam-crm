@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
 import {
   Button,
@@ -25,8 +26,8 @@ export const FormularioComplete = () => {
   const dispatch = useDispatch();
 
   const [radioValues, setRadioValues] = useState({});
-  const [formIndex, setFormIndex] = useState(0);
-  const [formFields, setFormFields] = useState([]);
+  const [currentForm, setCurrentForm] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Nuevo estado para la carga
 
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({
@@ -36,25 +37,27 @@ export const FormularioComplete = () => {
   };
 
   const handleResetForm = () => {
-    setFormFields(formIndividual[Object.keys(formIndividual)[formIndex]]);
+    setRadioValues({});
+    setCurrentForm(formIndividual[Object.keys(formIndividual)[0]]);
   };
 
   const handleSubmit = () => {
-    console.log('Datos del formulario:', formFields);
+    console.log('Datos del formulario:', radioValues);
   };
 
   const handleFormChange = (index) => {
-    setFormIndex(index);
-    setFormFields(formIndividual[Object.keys(formIndividual)[index]]);
+    setCurrentForm(formIndividual[Object.keys(formIndividual)[index]]);
   };
 
   useEffect(() => {
+    setIsLoading(true); // Indica que la carga está en progreso
     dispatch(getFormFromId({ telekinesis, form_id }));
   }, [form_id]);
 
   useEffect(() => {
     if (formIndividual) {
-      setFormFields(formIndividual[Object.keys(formIndividual)[formIndex]]);
+      setCurrentForm(formIndividual[Object.keys(formIndividual)[0]]);
+      setIsLoading(false); // Indica que la carga ha finalizado
     }
   }, [formIndividual]);
 
@@ -66,51 +69,80 @@ export const FormularioComplete = () => {
             Pre Visualización
           </Typography>
           <Divider />
-
-          {Object.keys(formIndividual).map((key, index) => (
-            <div key={index}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => handleFormChange(index)}
-                style={{ marginBottom: '10px' }}
-              >
-                Formulario Step {index + 1}
-              </Button>
-            </div>
-          ))}
-
-          {formFields?.map((item) => (
-            <div key={item.id}>
-              {(() => {
-                switch (item.tipo) {
-                  case 'texto':
-                  case 'numero':
-                    return (
-                      <>
-                        <div>
-                          <Typography
-                            marginBottom={2}
-                            marginTop={4}
-                            variant="h5"
-                          >
-                            {item.pregunta}
-                          </Typography>
-                          <TextField
-                            key={item.id}
-                            label={item.pregunta}
-                            variant="outlined"
-                            fullWidth
-                            required={item.requerido}
-                          />
-                        </div>
-                        <Divider />
-                      </>
-                    );
-                  case 'checkbox':
-                    return (
-                      <>
-                        <div>
+          {isLoading && (
+            <Grid container justifyContent="center">
+              <CircularProgress />
+            </Grid>
+          )}
+          {!isLoading &&
+            form_id &&
+            Object.keys(formIndividual).map((key, index) => (
+              <div key={index}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => handleFormChange(index)}
+                  style={{ marginBottom: '10px' }}
+                >
+                  Formulario Step {index + 1}
+                </Button>
+              </div>
+            ))}
+          {!isLoading &&
+            form_id &&
+            currentForm &&
+            currentForm.map((item) => (
+              <div key={item.id}>
+                {(() => {
+                  switch (item.tipo) {
+                    case 'texto':
+                    case 'numero':
+                      return (
+                        <>
+                          <div>
+                            <Typography
+                              marginBottom={2}
+                              marginTop={4}
+                              variant="h5"
+                            >
+                              {item.pregunta}
+                            </Typography>
+                            <TextField
+                              key={item.id}
+                              label={item.pregunta}
+                              variant="outlined"
+                              fullWidth
+                              required={item.requerido}
+                            />
+                          </div>
+                          <Divider />
+                        </>
+                      );
+                    case 'checkbox':
+                      return (
+                        <>
+                          <div>
+                            <Typography
+                              marginBottom={2}
+                              marginTop={2}
+                              variant="h5"
+                            >
+                              {item.pregunta}
+                            </Typography>
+                            {item.opciones.map((opcion, index) => (
+                              <FormControlLabel
+                                key={index}
+                                control={<Checkbox />}
+                                label={opcion}
+                              />
+                            ))}
+                          </div>
+                          <Divider />
+                        </>
+                      );
+                    case 'textarea':
+                      return (
+                        <>
                           <Typography
                             marginBottom={2}
                             marginTop={2}
@@ -118,107 +150,94 @@ export const FormularioComplete = () => {
                           >
                             {item.pregunta}
                           </Typography>
+                          <TextareaAutosize
+                            aria-label={item.pregunta}
+                            minRows={3}
+                            placeholder={item.pregunta}
+                          />
+                          <Divider />
+                        </>
+                      );
+                    case 'radio':
+                      return (
+                        <RadioGroup
+                          value={radioValues[item.id] || ''}
+                          onChange={(e) =>
+                            handleRadioChange(item.id, e.target.value)
+                          }
+                        >
+                          <Typography
+                            marginBottom={2}
+                            marginTop={2}
+                            variant="h5"
+                          >
+                            {item.pregunta}
+                          </Typography>
+
                           {item.opciones.map((opcion, index) => (
                             <FormControlLabel
                               key={index}
-                              control={<Checkbox />}
+                              control={<Radio />}
                               label={opcion}
+                              value={opcion}
                             />
                           ))}
-                        </div>
-                        <Divider />
-                      </>
-                    );
-                  case 'textarea':
-                    return (
-                      <>
-                        <Typography marginBottom={2} marginTop={2} variant="h5">
-                          {item.pregunta}
-                        </Typography>
-                        <TextareaAutosize
-                          aria-label={item.pregunta}
-                          minRows={3}
-                          placeholder={item.pregunta}
-                        />
-                        <Divider />
-                      </>
-                    );
-                  case 'radio':
-                    return (
-                      <RadioGroup
-                        value={radioValues[item.id] || ''}
-                        onChange={(e) =>
-                          handleRadioChange(item.id, e.target.value)
-                        }
-                      >
-                        <Typography marginBottom={2} marginTop={2} variant="h5">
-                          {item.pregunta}
-                        </Typography>
+                        </RadioGroup>
+                      );
+                    case 'fecha':
+                      return (
+                        <>
+                          <div>
+                            <Typography
+                              marginBottom={2}
+                              marginTop={2}
+                              variant="h5"
+                            >
+                              {item.pregunta}
+                            </Typography>
+                            <TextField
+                              key={item.id}
+                              label={item.pregunta}
+                              variant="outlined"
+                              fullWidth
+                              required={item.requerido}
+                              type="date"
+                            />
+                          </div>
+                          <Divider />
+                        </>
+                      );
 
-                        {item.opciones.map((opcion, index) => (
-                          <FormControlLabel
-                            key={index}
-                            control={<Radio />}
-                            label={opcion}
-                            value={opcion}
-                          />
-                        ))}
-                      </RadioGroup>
-                    );
-                  case 'fecha':
-                    return (
-                      <>
-                        <div>
-                          <Typography
-                            marginBottom={2}
-                            marginTop={2}
-                            variant="h5"
-                          >
-                            {item.pregunta}
-                          </Typography>
-                          <TextField
-                            key={item.id}
-                            label={item.pregunta}
-                            variant="outlined"
-                            fullWidth
-                            required={item.requerido}
-                            type="date"
-                          />
-                        </div>
-                        <Divider />
-                      </>
-                    );
-
-                  case 'min':
-                  case 'max':
-                    return (
-                      <>
-                        <div>
-                          <Typography
-                            marginBottom={2}
-                            marginTop={2}
-                            variant="h5"
-                          >
-                            {item.pregunta}
-                          </Typography>
-                          <TextField
-                            key={item.id}
-                            label={item.pregunta}
-                            variant="outlined"
-                            fullWidth
-                            required={item.requerido}
-                            type="number"
-                          />
-                        </div>
-                        <Divider />
-                      </>
-                    );
-                  default:
-                    return null;
-                }
-              })()}
-            </div>
-          ))}
+                    case 'min':
+                    case 'max':
+                      return (
+                        <>
+                          <div>
+                            <Typography
+                              marginBottom={2}
+                              marginTop={2}
+                              variant="h5"
+                            >
+                              {item.pregunta}
+                            </Typography>
+                            <TextField
+                              key={item.id}
+                              label={item.pregunta}
+                              variant="outlined"
+                              fullWidth
+                              required={item.requerido}
+                              type="number"
+                            />
+                          </div>
+                          <Divider />
+                        </>
+                      );
+                    default:
+                      return null;
+                  }
+                })()}
+              </div>
+            ))}
           <Button
             variant="contained"
             color="primary"
