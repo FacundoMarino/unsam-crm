@@ -157,8 +157,6 @@ export const FormularioCreate = () => {
                     <MenuItem value="textarea">Área de Texto</MenuItem>
                     <MenuItem value="radio">Opción Unica</MenuItem>
                     <MenuItem value="fecha">Fecha</MenuItem>
-                    <MenuItem value="min">Mínimo</MenuItem>
-                    <MenuItem value="max">Máximo</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControlLabel

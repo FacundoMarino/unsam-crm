@@ -14,6 +14,7 @@ import {
   Checkbox,
   FormControlLabel,
   Divider,
+  CircularProgress,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -43,58 +44,98 @@ export const FormularioEditor = () => {
     step: '',
   };
 
+  const [currentStep, setCurrentStep] = useState(1);
   const [formFields, setFormFields] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  const MAX_STEP = 2;
+
   const handleFieldChange = (id, property, value) => {
-    const updatedFields = formFields.map((field) =>
-      field.id === id ? { ...field, [property]: value } : field,
-    );
-    setFormFields(updatedFields);
+    setFormFields((prevFormFields) => {
+      const updatedFields = JSON.parse(JSON.stringify(prevFormFields)); // Copia profunda
+
+      const currentStepFields = updatedFields[0][currentStep];
+      const fieldIndex = currentStepFields.findIndex(
+        (field) => field.id === id,
+      );
+
+      if (fieldIndex !== -1) {
+        currentStepFields[fieldIndex][property] = value;
+      }
+
+      return updatedFields;
+    });
   };
 
   const handleAddField = () => {
-    const newField = { ...initialState, id: Date.now() };
-    setFormFields([...formFields, newField]);
+    setFormFields((prevFormFields) => {
+      const updatedFields = JSON.parse(JSON.stringify(prevFormFields));
+      const newField = { ...initialState, id: Date.now(), step: currentStep };
+
+      updatedFields[0][currentStep].push(newField);
+      return updatedFields;
+    });
   };
 
   const handleRemoveField = (id) => {
-    const updatedFields = formFields.filter((field) => field.id !== id);
-    setFormFields(updatedFields);
+    setFormFields((prevFormFields) => {
+      const updatedFields = JSON.parse(JSON.stringify(prevFormFields));
+      updatedFields[0][currentStep] = updatedFields[0][currentStep].filter(
+        (field) => field.id !== id,
+      );
+      return updatedFields;
+    });
   };
 
   const handleAddOption = (id) => {
-    const updatedFields = formFields.map((field) =>
-      field.id === id ? { ...field, opciones: [...field.opciones, ''] } : field,
-    );
-    setFormFields(updatedFields);
+    setFormFields((prevFormFields) => {
+      const updatedFields = JSON.parse(JSON.stringify(prevFormFields));
+      updatedFields[0][currentStep] = updatedFields[0][currentStep].map(
+        (field) =>
+          field.id === id
+            ? { ...field, opciones: [...field.opciones, ''] }
+            : field,
+      );
+
+      return updatedFields;
+    });
   };
 
   const handleRemoveOption = (id, optionIndex) => {
-    const updatedFields = formFields.map((field) =>
-      field.id === id
-        ? {
-            ...field,
-            opciones: field.opciones.filter(
-              (_, index) => index !== optionIndex,
-            ),
-          }
-        : field,
-    );
-    setFormFields(updatedFields);
+    setFormFields((prevFormFields) => {
+      const updatedFields = JSON.parse(JSON.stringify(prevFormFields));
+      updatedFields[0][currentStep] = updatedFields[0][currentStep].map(
+        (field) =>
+          field.id === id
+            ? {
+                ...field,
+                opciones: field.opciones.filter(
+                  (_, index) => index !== optionIndex,
+                ),
+              }
+            : field,
+      );
+      return updatedFields;
+    });
   };
 
   const handleSubmit = () => {
-    dispatch(updateQuestionForm({ telekinesis, form_id, data: formFields }));
+    dispatch(
+      updateQuestionForm({ telekinesis, form_id, data: formFields[0][1] }),
+    );
     dispatch(setFormId(''));
   };
 
   useEffect(() => {
+    setIsLoading(true);
     dispatch(getFormFromId({ telekinesis, form_id }));
   }, [form_id]);
 
   useEffect(() => {
     if (formIndividual) {
-      setFormFields(formIndividual[1]);
+      setFormFields([formIndividual]);
+      setIsLoading(false);
     }
   }, [formIndividual]);
 
@@ -102,6 +143,7 @@ export const FormularioEditor = () => {
     const foundForm = formArray.find((form) => form.id === targetFormId);
     return foundForm ? foundForm.name : null;
   };
+
   useEffect(() => {
     dispatch(setFormIdCreate(''));
   }, []);
@@ -115,13 +157,19 @@ export const FormularioEditor = () => {
           </Typography>
         </Paper>
       )}
-      {form_id && (
+
+      {isLoading && (
+        <Grid container justifyContent="center">
+          <CircularProgress />
+        </Grid>
+      )}
+      {!isLoading && form_id && (
         <Paper elevation={3} style={{ padding: '20px' }}>
           <Typography variant="h5">
             {`Edita el Formulario: ${findFormNameById(form.forms, form_id)}`}
           </Typography>
           <Grid container spacing={2}>
-            {formFields?.map((field) => (
+            {formFields[0][currentStep]?.map((field) => (
               <Grid item xs={12} key={field.id}>
                 <TextField
                   variant="outlined"
@@ -147,8 +195,6 @@ export const FormularioEditor = () => {
                     <MenuItem value="textarea">Área de Texto</MenuItem>
                     <MenuItem value="radio">Opción Unica</MenuItem>
                     <MenuItem value="fecha">Fecha</MenuItem>
-                    <MenuItem value="min">Mínimo</MenuItem>
-                    <MenuItem value="max">Máximo</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControlLabel
@@ -337,6 +383,28 @@ export const FormularioEditor = () => {
             style={{ marginTop: '20px' }}
           >
             Actualizar Formulario
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => setCurrentStep(currentStep - 1)}
+            style={{
+              marginTop: '20px',
+              marginRight: '10px',
+              marginLeft: '10px',
+            }}
+            disabled={currentStep === 1}
+          >
+            Paso Anterior
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => setCurrentStep(currentStep + 1)}
+            style={{ marginTop: '20px' }}
+            disabled={currentStep === MAX_STEP}
+          >
+            Siguiente Paso
           </Button>
         </Paper>
       )}

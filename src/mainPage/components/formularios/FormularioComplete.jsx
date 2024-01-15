@@ -27,7 +27,7 @@ export const FormularioComplete = () => {
 
   const [radioValues, setRadioValues] = useState({});
   const [currentForm, setCurrentForm] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // Nuevo estado para la carga
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({
@@ -50,14 +50,14 @@ export const FormularioComplete = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true); // Indica que la carga está en progreso
+    setIsLoading(true);
     dispatch(getFormFromId({ telekinesis, form_id }));
   }, [form_id]);
 
   useEffect(() => {
     if (formIndividual) {
       setCurrentForm(formIndividual[Object.keys(formIndividual)[0]]);
-      setIsLoading(false); // Indica que la carga ha finalizado
+      setIsLoading(false);
     }
   }, [formIndividual]);
 
