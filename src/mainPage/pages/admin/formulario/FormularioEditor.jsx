@@ -46,10 +46,9 @@ export const FormularioEditor = () => {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [formFields, setFormFields] = useState([]);
+  const [MAX_STEP, setMAX_STEP] = useState(2);
 
   const [isLoading, setIsLoading] = useState(true);
-
-  const MAX_STEP = 2;
 
   const handleFieldChange = (id, property, value) => {
     setFormFields((prevFormFields) => {
@@ -125,6 +124,7 @@ export const FormularioEditor = () => {
       updateQuestionForm({ telekinesis, form_id, data: formFields[0][1] }),
     );
     dispatch(setFormId(''));
+    setMAX_STEP(formFields[0][1]?.length);
   };
 
   useEffect(() => {

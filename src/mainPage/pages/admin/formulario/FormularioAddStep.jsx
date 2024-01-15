@@ -110,10 +110,8 @@ export const FormularioAddStep = () => {
   const handleSubmit = () => {
     const formData = [...formFields, ...formIndividualForm];
 
-    console.log(formData);
-
-    /* dispatch(updateQuestionForm({ telekinesis, form_id, data: formData }));
-    dispatch(setFormId(''));*/
+    dispatch(updateQuestionForm({ telekinesis, form_id, data: formData }));
+    dispatch(setFormId(''));
   };
 
   useEffect(() => {
