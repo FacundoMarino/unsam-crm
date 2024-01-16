@@ -78,7 +78,6 @@ export const FormularioAddStep = () => {
 
   const handleAddField = () => {
     const newField = { ...initialState, id: Date.now(), step: isNewStep };
-    console.log(newField);
     setFormFields([...formFields, newField]);
   };
   const handleRemoveField = (id) => {
@@ -108,7 +107,9 @@ export const FormularioAddStep = () => {
   };
 
   const handleSubmit = () => {
-    const formData = [...formFields, ...formIndividualForm];
+    let data = formIndividualForm.flatMap((innerArray) => innerArray);
+
+    const formData = [...formFields, ...data];
 
     dispatch(updateQuestionForm({ telekinesis, form_id, data: formData }));
     dispatch(setFormId(''));
@@ -120,7 +121,7 @@ export const FormularioAddStep = () => {
 
   useEffect(() => {
     if (formIndividual) {
-      setFormIndividualForm(formIndividual[1]);
+      setFormIndividualForm(formIndividual);
     }
   }, [formIndividual]);
 
@@ -128,6 +129,7 @@ export const FormularioAddStep = () => {
     dispatch(setFormIdCreate(''));
   }, []);
 
+  console.log(formIndividualForm);
   return (
     <Container component="main" maxWidth="md" style={{ marginTop: '20px' }}>
       {!form_id && (

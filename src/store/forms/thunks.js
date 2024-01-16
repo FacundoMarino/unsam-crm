@@ -138,7 +138,7 @@ export const getFormFromId = ({ telekinesis, form_id }) => {
     const data = await getFormId({ token, telekinesis, form_id });
     data.error
       ? errorApi(data.error)
-      : dispatch(setIndividualForm(data.form_components));
+      : dispatch(setIndividualForm([...Object.values(data.form_components)]));
   };
 };
 

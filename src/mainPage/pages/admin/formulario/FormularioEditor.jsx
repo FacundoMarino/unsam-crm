@@ -44,25 +44,21 @@ export const FormularioEditor = () => {
     step: '',
   };
 
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
   const [formFields, setFormFields] = useState([]);
-  const [MAX_STEP, setMAX_STEP] = useState(2);
+  const [MAX_STEP, setMAX_STEP] = useState(1);
 
   const [isLoading, setIsLoading] = useState(true);
 
   const handleFieldChange = (id, property, value) => {
     setFormFields((prevFormFields) => {
-      const updatedFields = JSON.parse(JSON.stringify(prevFormFields)); // Copia profunda
+      const updatedFields = JSON.parse(JSON.stringify(prevFormFields));
 
-      const currentStepFields = updatedFields[0][currentStep];
-      const fieldIndex = currentStepFields.findIndex(
-        (field) => field.id === id,
+      updatedFields[currentStep] = updatedFields[currentStep].map((field) =>
+        field.id === id ? { ...field, [property]: value } : field,
       );
 
-      if (fieldIndex !== -1) {
-        currentStepFields[fieldIndex][property] = value;
-      }
-
+      console.log(updatedFields);
       return updatedFields;
     });
   };
@@ -72,7 +68,7 @@ export const FormularioEditor = () => {
       const updatedFields = JSON.parse(JSON.stringify(prevFormFields));
       const newField = { ...initialState, id: Date.now(), step: currentStep };
 
-      updatedFields[0][currentStep].push(newField);
+      updatedFields[currentStep].push(newField);
       return updatedFields;
     });
   };
@@ -80,7 +76,7 @@ export const FormularioEditor = () => {
   const handleRemoveField = (id) => {
     setFormFields((prevFormFields) => {
       const updatedFields = JSON.parse(JSON.stringify(prevFormFields));
-      updatedFields[0][currentStep] = updatedFields[0][currentStep].filter(
+      updatedFields[currentStep] = updatedFields[currentStep].filter(
         (field) => field.id !== id,
       );
       return updatedFields;
@@ -90,11 +86,10 @@ export const FormularioEditor = () => {
   const handleAddOption = (id) => {
     setFormFields((prevFormFields) => {
       const updatedFields = JSON.parse(JSON.stringify(prevFormFields));
-      updatedFields[0][currentStep] = updatedFields[0][currentStep].map(
-        (field) =>
-          field.id === id
-            ? { ...field, opciones: [...field.opciones, ''] }
-            : field,
+      updatedFields[currentStep] = updatedFields[currentStep].map((field) =>
+        field.id === id
+          ? { ...field, opciones: [...field.opciones, ''] }
+          : field,
       );
 
       return updatedFields;
@@ -104,27 +99,23 @@ export const FormularioEditor = () => {
   const handleRemoveOption = (id, optionIndex) => {
     setFormFields((prevFormFields) => {
       const updatedFields = JSON.parse(JSON.stringify(prevFormFields));
-      updatedFields[0][currentStep] = updatedFields[0][currentStep].map(
-        (field) =>
-          field.id === id
-            ? {
-                ...field,
-                opciones: field.opciones.filter(
-                  (_, index) => index !== optionIndex,
-                ),
-              }
-            : field,
+      updatedFields[currentStep] = updatedFields[currentStep].map((field) =>
+        field.id === id
+          ? {
+              ...field,
+              opciones: field.opciones.filter(
+                (_, index) => index !== optionIndex,
+              ),
+            }
+          : field,
       );
       return updatedFields;
     });
   };
 
   const handleSubmit = () => {
-    dispatch(
-      updateQuestionForm({ telekinesis, form_id, data: formFields[0][1] }),
-    );
+    dispatch(updateQuestionForm({ telekinesis, form_id, data: formFields[0] }));
     dispatch(setFormId(''));
-    setMAX_STEP(formFields[0][1]?.length);
   };
 
   useEffect(() => {
@@ -134,8 +125,9 @@ export const FormularioEditor = () => {
 
   useEffect(() => {
     if (formIndividual) {
-      setFormFields([formIndividual]);
+      setFormFields(formIndividual);
       setIsLoading(false);
+      setMAX_STEP(formFields?.length);
     }
   }, [formIndividual]);
 
@@ -169,7 +161,7 @@ export const FormularioEditor = () => {
             {`Edita el Formulario: ${findFormNameById(form.forms, form_id)}`}
           </Typography>
           <Grid container spacing={2}>
-            {formFields[0][currentStep]?.map((field) => (
+            {formFields[currentStep]?.map((field) => (
               <Grid item xs={12} key={field.id}>
                 <TextField
                   variant="outlined"
@@ -393,7 +385,7 @@ export const FormularioEditor = () => {
               marginRight: '10px',
               marginLeft: '10px',
             }}
-            disabled={currentStep === 1}
+            disabled={currentStep === 0}
           >
             Paso Anterior
           </Button>

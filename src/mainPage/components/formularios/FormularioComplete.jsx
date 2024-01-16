@@ -28,6 +28,8 @@ export const FormularioComplete = () => {
   const [radioValues, setRadioValues] = useState({});
   const [currentForm, setCurrentForm] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [MAX_STEP, setMAX_STEP] = useState(1);
 
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({
@@ -38,7 +40,7 @@ export const FormularioComplete = () => {
 
   const handleResetForm = () => {
     setRadioValues({});
-    setCurrentForm(formIndividual[Object.keys(formIndividual)[0]]);
+    setCurrentForm(formIndividual);
   };
 
   const handleSubmit = () => {
@@ -46,7 +48,7 @@ export const FormularioComplete = () => {
   };
 
   const handleFormChange = (index) => {
-    setCurrentForm(formIndividual[Object.keys(formIndividual)[index]]);
+    setCurrentForm(formIndividual);
   };
 
   useEffect(() => {
@@ -56,7 +58,8 @@ export const FormularioComplete = () => {
 
   useEffect(() => {
     if (formIndividual) {
-      setCurrentForm(formIndividual[Object.keys(formIndividual)[0]]);
+      setCurrentForm(formIndividual);
+      setMAX_STEP(currentForm?.length - 1);
       setIsLoading(false);
     }
   }, [formIndividual]);
@@ -76,22 +79,8 @@ export const FormularioComplete = () => {
           )}
           {!isLoading &&
             form_id &&
-            Object.keys(formIndividual).map((key, index) => (
-              <div key={index}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => handleFormChange(index)}
-                  style={{ marginBottom: '10px' }}
-                >
-                  Formulario Step {index + 1}
-                </Button>
-              </div>
-            ))}
-          {!isLoading &&
-            form_id &&
             currentForm &&
-            currentForm.map((item) => (
+            currentForm[currentStep].map((item) => (
               <div key={item.id}>
                 {(() => {
                   switch (item.tipo) {
@@ -256,6 +245,28 @@ export const FormularioComplete = () => {
             style={{ marginTop: '20px' }}
           >
             Enviar Formulario
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => setCurrentStep(currentStep - 1)}
+            style={{
+              marginTop: '20px',
+              marginRight: '10px',
+              marginLeft: '10px',
+            }}
+            disabled={currentStep === 0}
+          >
+            Paso Anterior
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => setCurrentStep(currentStep + 1)}
+            style={{ marginTop: '20px' }}
+            disabled={currentStep === MAX_STEP}
+          >
+            Siguiente Paso
           </Button>
         </form>
       </Paper>
