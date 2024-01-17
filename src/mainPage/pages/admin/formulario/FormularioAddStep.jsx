@@ -33,19 +33,55 @@ export const FormularioAddStep = () => {
   const form = useSelector((state) => state.forms.form);
 
   const [isNewStep, setIsNewStep] = useState(0);
+  const [isNewStepName, setIsNewStepName] = useState('');
 
   useEffect(() => {
     const showConfirmation = async () => {
-      const { value: newStepNumber } = await Swal.fire({
-        title: 'Crear Nuevo Step',
-        input: 'number',
-        inputLabel: 'Ingrese el número del nuevo step',
-        inputPlaceholder: 'Número del Step',
-      });
+      try {
+        const { value } = await Swal.fire({
+          title: 'Crear Nuevo Step',
+          html:
+            '<input id="swal-input-number" class="swal2-input" placeholder="Número del Step">' +
+            '<input id="swal-input-name" class="swal2-input" placeholder="Nombre del Step">',
+          focusConfirm: false,
+          preConfirm: () => {
+            const stepNumberInput =
+              Swal.getPopup().querySelector('#swal-input-number');
+            const stepNameInput =
+              Swal.getPopup().querySelector('#swal-input-name');
 
-      if (newStepNumber) {
-        setIsNewStep(newStepNumber);
-        setFormFields([{ ...initialState, step: newStepNumber }]);
+            if (!stepNumberInput || !stepNameInput) {
+              console.error(
+                'Error: No se encontraron los elementos de entrada.',
+              );
+              return { stepNumber: undefined, stepName: undefined };
+            }
+
+            const stepNumber = stepNumberInput.value;
+            const stepName = stepNameInput.value;
+            return { stepNumber, stepName };
+          },
+        });
+
+        if (
+          value &&
+          value.stepNumber !== undefined &&
+          value.stepName !== undefined
+        ) {
+          console.log('Paso 1:', value.stepNumber, value.stepName);
+          setIsNewStep(value.stepNumber);
+          setIsNewStepName(value.stepName);
+          setFormFields([
+            {
+              ...initialState,
+              step: value.stepNumber,
+              step_name: value.stepName,
+            },
+          ]);
+          console.log('Paso 2:', value.stepNumber, value.stepName);
+        }
+      } catch (error) {
+        console.error('Error al mostrar la confirmación:', error);
       }
     };
 
@@ -62,10 +98,11 @@ export const FormularioAddStep = () => {
     max: '',
     fecha: '',
     step: isNewStep,
+    step_name: isNewStepName,
   };
 
   const [formFields, setFormFields] = useState([
-    { ...initialState, step: isNewStep },
+    { ...initialState, step: isNewStep, step_name: isNewStepName },
   ]);
   const [formIndividualForm, setFormIndividualForm] = useState([]);
 
@@ -77,7 +114,12 @@ export const FormularioAddStep = () => {
   };
 
   const handleAddField = () => {
-    const newField = { ...initialState, id: Date.now(), step: isNewStep };
+    const newField = {
+      ...initialState,
+      id: Date.now(),
+      step: isNewStep,
+      step_name: isNewStepName,
+    };
     setFormFields([...formFields, newField]);
   };
   const handleRemoveField = (id) => {

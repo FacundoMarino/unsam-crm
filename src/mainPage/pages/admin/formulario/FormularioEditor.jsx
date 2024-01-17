@@ -36,7 +36,7 @@ export const FormularioEditor = () => {
     id: Date.now(),
     tipo: 'texto',
     pregunta: '',
-    opciones: [''],
+    opciones: [{ value: '', step: '' }],
     requerido: false,
     min: '',
     max: '',
@@ -47,6 +47,7 @@ export const FormularioEditor = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formFields, setFormFields] = useState([]);
   const [MAX_STEP, setMAX_STEP] = useState(1);
+  const [stepName, setStepName] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -54,11 +55,21 @@ export const FormularioEditor = () => {
     setFormFields((prevFormFields) => {
       const updatedFields = JSON.parse(JSON.stringify(prevFormFields));
 
-      updatedFields[currentStep] = updatedFields[currentStep].map((field) =>
-        field.id === id ? { ...field, [property]: value } : field,
-      );
+      updatedFields[currentStep] = updatedFields[currentStep].map((field) => {
+        if (field.id === id && field.tipo === 'radio') {
+          return {
+            ...field,
+            [property]: value,
+            step_redirect: value,
+            step_name:
+              stepName?.uniqueStepNames[stepName?.uniqueSteps.indexOf(value)] ||
+              '',
+          };
+        } else {
+          return field.id === id ? { ...field, [property]: value } : field;
+        }
+      });
 
-      console.log(updatedFields);
       return updatedFields;
     });
   };
@@ -114,7 +125,9 @@ export const FormularioEditor = () => {
   };
 
   const handleSubmit = () => {
-    dispatch(updateQuestionForm({ telekinesis, form_id, data: formFields[0] }));
+    const data = formFields.flatMap((innerArray) => innerArray);
+
+    dispatch(updateQuestionForm({ telekinesis, form_id, data }));
     dispatch(setFormId(''));
   };
 
@@ -137,8 +150,30 @@ export const FormularioEditor = () => {
   };
 
   useEffect(() => {
+    if (formFields) {
+      const stepNames = formFields.flatMap((i) => i);
+      const uniqueStepsSet = new Set();
+      const replacedNullValues = stepNames.map((i) => {
+        if (i.step !== null && !uniqueStepsSet.has(i.step)) {
+          uniqueStepsSet.add(i.step);
+          return i.step_name !== null ? i.step_name : i.step;
+        }
+        return null;
+      });
+
+      setStepName({
+        uniqueStepNames: replacedNullValues.filter((name) => name !== null),
+        uniqueSteps: Array.from(uniqueStepsSet),
+      });
+    }
+    setFormIdCreate('');
+  }, [formIndividual]);
+
+  useEffect(() => {
     dispatch(setFormIdCreate(''));
   }, []);
+
+  console.log(stepName);
 
   return (
     <Container component="main" maxWidth="md" style={{ marginTop: '20px' }}>
@@ -313,30 +348,66 @@ export const FormularioEditor = () => {
                 {field.tipo === 'radio' && (
                   <div style={{ marginTop: '10px' }}>
                     {field.opciones.map((opcion, index) => (
-                      <div key={index} style={{ marginBottom: '10px' }}>
-                        <TextField
-                          variant="outlined"
-                          margin="normal"
-                          fullWidth
-                          label={`Opción ${index + 1}`}
-                          value={opcion}
-                          onChange={(e) =>
-                            handleFieldChange(
-                              field.id,
-                              'opciones',
-                              field.opciones.map((opt, idx) =>
-                                idx === index ? e.target.value : opt,
-                              ),
-                            )
-                          }
-                        />
+                      <Grid
+                        container
+                        spacing={2}
+                        key={index}
+                        style={{ marginBottom: '10px' }}
+                      >
+                        <Grid item xs={6}>
+                          <TextField
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            label={`Opción ${index + 1}`}
+                            value={opcion}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                field.id,
+                                'opciones',
+                                field.opciones.map((opt, idx) =>
+                                  idx === index ? e.target.value : opt,
+                                ),
+                              )
+                            }
+                          />
+                        </Grid>
+
+                        <Grid
+                          item
+                          xs={6}
+                          style={{ marginBottom: '8px', marginTop: '16px' }}
+                        >
+                          <FormControl fullWidth>
+                            <InputLabel>Seleccionar Step</InputLabel>
+                            <Select
+                              value={field.selectedStep}
+                              onChange={(e) =>
+                                handleFieldChange(
+                                  field.id,
+                                  'selectedStep',
+                                  e.target.value,
+                                )
+                              }
+                            >
+                              {stepName?.uniqueStepNames.map((step, index) => (
+                                <MenuItem
+                                  key={index}
+                                  value={stepName?.uniqueSteps[index]}
+                                >
+                                  {step}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </Grid>
                         <IconButton
                           color="secondary"
                           onClick={() => handleRemoveOption(field.id, index)}
                         >
                           <DeleteIcon />
                         </IconButton>
-                      </div>
+                      </Grid>
                     ))}
                     <Button
                       variant="outlined"

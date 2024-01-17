@@ -30,21 +30,41 @@ export const FormularioComplete = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
   const [MAX_STEP, setMAX_STEP] = useState(1);
+  const [selectedRadioStep, setSelectedRadioStep] = useState(null);
 
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({
       ...prevValues,
       [id]: value,
     }));
+
+    // Check if the selected radio option has a step_redirect
+    const selectedOption = currentForm[currentStep].find(
+      (item) => item.id === id,
+    );
+    if (selectedOption && selectedOption.step_redirect) {
+      const resultStep = Number(selectedOption.step_redirect) - 1;
+      console.log('Selected Radio Step Before:', resultStep);
+
+      setSelectedRadioStep(resultStep);
+      console.log('Selected Radio Step:', selectedRadioStep);
+    } else {
+      setSelectedRadioStep(null);
+    }
   };
 
   const handleResetForm = () => {
     setRadioValues({});
     setCurrentForm(formIndividual);
   };
-
   const handleSubmit = () => {
-    console.log('Datos del formulario:', radioValues);
+    if (selectedRadioStep) {
+      // If there's a selectedRadioStep, navigate to that step
+      setCurrentStep(selectedRadioStep);
+    } else {
+      // Otherwise, proceed to the next step
+      setCurrentStep((prevStep) => prevStep + 1);
+    }
   };
 
   const handleFormChange = (index) => {
@@ -241,7 +261,6 @@ export const FormularioComplete = () => {
             variant="contained"
             color="primary"
             onClick={handleSubmit}
-            disabled
             style={{ marginTop: '20px' }}
           >
             Enviar Formulario
