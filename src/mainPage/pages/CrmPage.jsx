@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { TurnosAdminLayout } from './layout/TurnosAdminLayout';
 import { selectRole } from '../../store/auth/authSlider';
 import { FormulariosAdminLayout } from './layout/FormulariosAdminLayout';
+import { FormularioComplete } from '../components/formularios/FormularioComplete';
 
 export const CrmPage = () => {
   const page = useSelector((state) => state.crm.page);
@@ -28,7 +29,9 @@ export const CrmPage = () => {
 
   if (page === 'turnos' && rol !== 'Admin') {
     contentComponent = <TurnosPage />;
-  } else if (page === 'turnos' && rol === 'Admin') {
+  } else if (page === 'formularios' && rol !== 'Admin') {
+    contentComponent = <FormularioComplete />;
+  } else if (page === 'turnos' && rol !== 'Admin') {
     contentComponent = <TurnosAdminLayout onVerDetalle={handleVerDetalle} />;
   } else if (page === 'formularios' && rol === 'Admin') {
     contentComponent = <FormulariosAdminLayout />;

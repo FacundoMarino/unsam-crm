@@ -22,6 +22,7 @@ export const FormularioComplete = () => {
   const formIndividual = useSelector((state) => state.forms.individualForm);
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const form_id = useSelector((state) => state.forms.formId);
+  const role = useSelector((state) => state.auth.role);
 
   const dispatch = useDispatch();
 
@@ -252,12 +253,13 @@ export const FormularioComplete = () => {
             color="primary"
             onClick={handleResetForm}
             startIcon={<Refresh />}
-            disabled
+            disabled={role === 'External'}
             style={{ marginRight: '10px', marginTop: '20px' }}
           >
             Reiniciar Formulario
           </Button>
           <Button
+            disabled={role === 'External'}
             variant="contained"
             color="primary"
             onClick={handleSubmit}
@@ -265,28 +267,32 @@ export const FormularioComplete = () => {
           >
             Enviar Formulario
           </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => setCurrentStep(currentStep - 1)}
-            style={{
-              marginTop: '20px',
-              marginRight: '10px',
-              marginLeft: '10px',
-            }}
-            disabled={currentStep === 0}
-          >
-            Paso Anterior
-          </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => setCurrentStep(currentStep + 1)}
-            style={{ marginTop: '20px' }}
-            disabled={currentStep === MAX_STEP}
-          >
-            Siguiente Paso
-          </Button>
+          {role === 'External' && (
+            <>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => setCurrentStep(currentStep - 1)}
+                style={{
+                  marginTop: '20px',
+                  marginRight: '10px',
+                  marginLeft: '10px',
+                }}
+                disabled={currentStep === 0}
+              >
+                Paso Anterior
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => setCurrentStep(currentStep + 1)}
+                style={{ marginTop: '20px' }}
+                disabled={currentStep === MAX_STEP}
+              >
+                Siguiente Paso
+              </Button>
+            </>
+          )}
         </form>
       </Paper>
     </Container>
