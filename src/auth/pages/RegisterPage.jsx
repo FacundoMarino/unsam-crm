@@ -37,6 +37,7 @@ const startData = {
   nombre: '',
   apellido: '',
   telefono: '',
+  razon_social: '',
 };
 export const RegisterPage = () => {
   const {
@@ -51,6 +52,7 @@ export const RegisterPage = () => {
     nombre,
     apellido,
     telefono,
+    razon_social,
     inputHandler,
     formState,
   } = useForm(startData);
@@ -136,6 +138,18 @@ export const RegisterPage = () => {
                   fullWidth
                   name="cuit"
                   value={cuit}
+                  onChange={inputHandler}
+                />
+              </Grid>
+
+              <Grid item xs={12} sx={{ mt: 3 }}>
+                <TextField
+                  label="Razón Social"
+                  type="text"
+                  placeholder="Razón Social"
+                  fullWidth
+                  name="razon_social"
+                  value={razon_social}
                   onChange={inputHandler}
                 />
               </Grid>

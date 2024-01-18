@@ -2,92 +2,58 @@ import React, { useState } from 'react';
 import {
   Card,
   CardContent,
-  Divider,
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
+  Divider,
+  Grid,
+  Button,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { useSelector } from 'react-redux';
+import { selectRole } from '../../../../store/auth/authSlider';
 
 export const Legajo = () => {
-  const [notas, setNotas] = useState([]);
+  const rol = useSelector(selectRole);
+  const [cards, setCards] = useState([
+    { title: 'Empresa', content: 'Contenido de la Empresa' },
+    { title: 'Turno admision', content: 'Contenido del Turno admision' },
+    {
+      title: 'Tarea Documentación',
+      content: 'Contenido de la Tarea Documentación',
+    },
+    { title: 'Formularios', content: 'Contenido de los Formularios' },
+  ]);
 
-  const agregarNota = () => {
-    setNotas([...notas, { title: 'Nota', content: 'Contenido de la nota' }]);
+  const handleAddCard = () => {
+    const newCard = { title: 'Nota', content: 'Contenido de la Nota' };
+    setCards((prevCards) => [...prevCards, newCard]);
   };
 
   return (
     <div>
-      <Typography variant="h5" gutterBottom>
-        Legajo
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead fullWidth displayFlex>
-            <IconButton color="primary" onClick={agregarNota}>
-              <AddIcon />
-              Notas
-            </IconButton>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6">Empresa</Typography>
-                    <Divider />
-                    {/* Contenido específico para Empresa */}
-                  </CardContent>
-                </Card>
-              </TableCell>
-              <TableCell>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6">Turno admisión</Typography>
-                    <Divider />
-                    {/* Contenido específico para Turno admisión */}
-                  </CardContent>
-                </Card>
-              </TableCell>
-              <TableCell>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6">Tarea Documentación</Typography>
-                    <Divider />
-                    {/* Contenido específico para Tarea Documentación */}
-                  </CardContent>
-                </Card>
-              </TableCell>
-              <TableCell>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6">Formularios</Typography>
-                    <Divider />
-                    {/* Contenido específico para Formularios */}
-                  </CardContent>
-                </Card>
-              </TableCell>
-              <TableCell>
-                {notas.map((nota, index) => (
-                  <Card key={index}>
-                    <CardContent>
-                      <Typography variant="h6">{nota.title}</Typography>
-                      <Divider />
-                      <Typography>{nota.content}</Typography>
-                    </CardContent>
-                  </Card>
-                ))}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Grid container spacing={2}>
+        {cards.map((card, index) => (
+          <Grid key={index} item xs={12} sm={6} md={3}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  {card.title}
+                </Typography>
+                <Divider />
+                <Typography>{card.content}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+
+      {rol === 'Admin' && (
+        <Button
+          style={{ marginTop: '20px' }}
+          variant="outlined"
+          onClick={handleAddCard}
+        >
+          Agregar Nota
+        </Button>
+      )}
     </div>
   );
 };

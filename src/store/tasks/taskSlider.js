@@ -5,6 +5,7 @@ export const taskSlice = createSlice({
   initialState: {
     tasks: [],
     status: '',
+    enterprises: [],
   },
   reducers: {
     setTasks: (state, { payload }) => {
@@ -13,7 +14,10 @@ export const taskSlice = createSlice({
     setStatusTask: (state, { payload }) => {
       state.status = payload;
     },
+    setEnterprises: (state, { payload }) => {
+      state.enterprises = payload;
+    },
   },
 });
 
-export const { setTasks, setStatusTask } = taskSlice.actions;
+export const { setTasks, setStatusTask, setEnterprises } = taskSlice.actions;
