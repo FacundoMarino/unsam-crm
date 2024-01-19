@@ -19,8 +19,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getEnterprises } from '../../../../store/tasks/thunks';
 import { TareasModal } from '../../../components/tareas/TareasModal';
 export const TareasGestion = () => {
-  const dispatch = useDispatch();
-  const telekinesis = useSelector((state) => state.auth.telekinesis);
   const rows = [
     {
       id: 1,
@@ -60,10 +58,6 @@ export const TareasGestion = () => {
   const handleModalClose = () => {
     setModalOpen(false);
   };
-
-  useEffect(() => {
-    dispatch(getEnterprises({ telekinesis }));
-  }, []);
 
   return (
     <>

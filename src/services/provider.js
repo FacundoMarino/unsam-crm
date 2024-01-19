@@ -109,6 +109,7 @@ export const postRegisterStepTwo = async ({
   rubro,
   token,
   telekinesis,
+  razon_social,
 }) => {
   const requestOptions = {
     method: 'POST',
@@ -122,6 +123,7 @@ export const postRegisterStepTwo = async ({
       category: rubro,
       browser_token: token,
       telekinesis,
+      razon_social,
     }),
   };
 

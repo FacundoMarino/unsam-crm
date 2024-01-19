@@ -76,6 +76,7 @@ export const startRegisterStepTwo = ({
   sucursales,
   rubro,
   telekinesis,
+  razon_social,
 }) => {
   const token = localStorage.getItem('browser_token');
   return async (dispatch) => {
@@ -88,6 +89,7 @@ export const startRegisterStepTwo = ({
       rubro,
       telekinesis,
       token,
+      razon_social,
     });
 
     if (!data.error) {

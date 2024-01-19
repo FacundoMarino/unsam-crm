@@ -6,10 +6,11 @@ export const taskSlice = createSlice({
     tasks: [],
     status: '',
     enterprises: [],
+    tasksEnterprises: [],
   },
   reducers: {
     setTasks: (state, { payload }) => {
-      state.form = payload;
+      state.tasks = payload;
     },
     setStatusTask: (state, { payload }) => {
       state.status = payload;
@@ -17,7 +18,11 @@ export const taskSlice = createSlice({
     setEnterprises: (state, { payload }) => {
       state.enterprises = payload;
     },
+    setTasksEnterprises: (state, { payload }) => {
+      state.tasksEnterprises = payload;
+    },
   },
 });
 
-export const { setTasks, setStatusTask, setEnterprises } = taskSlice.actions;
+export const { setTasks, setStatusTask, setEnterprises, setTasksEnterprises } =
+  taskSlice.actions;
