@@ -82,3 +82,32 @@ export const getTaskProvider = async ({
     console.error('Error:', error);
   }
 };
+
+export const updateTaskProvider = async ({
+  token,
+  telekinesis,
+  enterprise_id,
+  status,
+  id,
+}) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      browser_token: token,
+      telekinesis,
+      enterprise_id,
+      status,
+      id,
+    }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/task/update/${id}`,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};

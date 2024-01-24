@@ -19,15 +19,19 @@ import {
   getEnterprises,
   getTasks,
   storeTasks,
+  updateTask,
 } from '../../../store/tasks/thunks';
 import { getAllForms } from '../../../store/forms/thunks';
 
-export const TareasModal = ({ open, handleClose, iconTitle }) => {
+export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
   const [selectedTurno, setSelectedTurno] = useState();
   const [selectedEmpresa, setSelectedEmpresa] = useState();
   const [textareaValue, setTextareaValue] = useState('');
   const [taskType, setTaskType] = useState('');
   const [selectedForm, setSelectedForm] = useState('');
+  const [update, setUpdate] = useState(props);
+  const [selectedEstado, setSelectedEstado] = useState();
+  const [estados, setEstados] = useState([]);
 
   const dispatch = useDispatch();
   const telekinesis = useSelector((state) => state.auth.telekinesis);
@@ -60,8 +64,14 @@ export const TareasModal = ({ open, handleClose, iconTitle }) => {
   useEffect(() => {
     if (iconTitle === 'Ver Servicios') {
       dispatch(getEnterprises({ telekinesis }));
+      setEstados([
+        { value: '1', label: 'Pendiente' },
+        { value: '2', label: 'Completa' },
+        { value: '3', label: 'Cancelada' },
+      ]);
     }
   }, [iconTitle]);
+
   const handleSubmit = (iconTitle) => {
     handleClose(false);
     if (iconTitle === 'Solicitar Turno') {
@@ -94,12 +104,23 @@ export const TareasModal = ({ open, handleClose, iconTitle }) => {
         }),
       );
     }
+    handleClose(false);
+    setTextareaValue('');
+    setSelectedEmpresa('');
   };
 
   const handleSearchTasks = () => {
-    dispatch(getTasks({ telekinesis, enterprise_id: selectedEmpresa }));
+    dispatch(
+      updateTask({
+        telekinesis,
+        enterprise_id: selectedEmpresa,
+        status: selectedEstado,
+        id: props[0].id,
+      }),
+    );
     handleClose(false);
   };
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <Container component="main" maxWidth="xs" style={{ width: '500px' }}>
@@ -223,7 +244,7 @@ export const TareasModal = ({ open, handleClose, iconTitle }) => {
                   onChange={(e) => setSelectedForm(e.target.value)}
                 >
                   {forms?.map((form) => (
-                    <MenuItem key={form.id} value={form.name}>
+                    <MenuItem key={form.id} value={form.id}>
                       {form.name}
                     </MenuItem>
                   ))}
@@ -281,20 +302,37 @@ export const TareasModal = ({ open, handleClose, iconTitle }) => {
           )}
 
           {iconTitle === 'Ver Servicios' && (
-            <FormControl fullWidth margin="normal">
-              <InputLabel id="empresa-select-label">Empresa</InputLabel>
-              <Select
-                labelId="empresa-select-label"
-                id="empresa-select"
-                value={selectedEmpresa}
-                onChange={(e) => setSelectedEmpresa(e.target.value)}
-              >
-                {enterprises?.map((empresa) => (
-                  <MenuItem key={empresa.id} value={empresa.id}>
-                    {empresa.razon_social}
-                  </MenuItem>
-                ))}
-              </Select>
+            <>
+              <FormControl fullWidth margin="normal">
+                <InputLabel id="estado-select-label">Estado</InputLabel>
+                <Select
+                  labelId="estado-select-label"
+                  id="estado-select"
+                  value={selectedEstado}
+                  onChange={(e) => setSelectedEstado(e.target.value)}
+                >
+                  {estados.map((estado) => (
+                    <MenuItem key={estado.value} value={estado.value}>
+                      {estado.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth margin="normal">
+                <InputLabel id="empresa-select-label">Empresa</InputLabel>
+                <Select
+                  labelId="empresa-select-label"
+                  id="empresa-select"
+                  value={selectedEmpresa}
+                  onChange={(e) => setSelectedEmpresa(e.target.value)}
+                >
+                  {enterprises?.map((empresa) => (
+                    <MenuItem key={empresa.id} value={empresa.id}>
+                      {empresa.razon_social}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               <Button
                 variant="contained"
                 color="primary"
@@ -302,9 +340,9 @@ export const TareasModal = ({ open, handleClose, iconTitle }) => {
                 onClick={handleSearchTasks}
                 style={{ marginTop: '20px' }}
               >
-                Buscar Servicio
+                Actualizar Servicio
               </Button>
-            </FormControl>
+            </>
           )}
         </DialogContent>
       </Container>

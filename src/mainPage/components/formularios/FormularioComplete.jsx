@@ -16,14 +16,17 @@ import {
 } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFormFromId } from '../../../store/forms/thunks';
+import { getFormFromId, updateQuestionForm } from '../../../store/forms/thunks';
+import { setFormId } from '../../../store/forms/formSlider';
+import { updateTask } from '../../../store/tasks/thunks';
 
 export const FormularioComplete = () => {
   const formIndividual = useSelector((state) => state.forms.individualForm);
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const form_id = useSelector((state) => state.forms.formId);
   const role = useSelector((state) => state.auth.role);
-
+  const enterprise_id = useSelector((state) => state.auth.enterprise_id);
+  const idTask = useSelector((state) => state.tasks.taskId);
   const dispatch = useDispatch();
 
   const [radioValues, setRadioValues] = useState({});
@@ -66,6 +69,19 @@ export const FormularioComplete = () => {
       // Otherwise, proceed to the next step
       setCurrentStep((prevStep) => prevStep + 1);
     }
+    if (currentStep === MAX_STEP) {
+      dispatch(
+        updateQuestionForm({ telekinesis, form_id, data: currentForm[0] }),
+      );
+      dispatch(
+        updateTask({
+          telekinesis,
+          enterprise_id,
+          status: 2,
+          id: idTask,
+        }),
+      );
+    }
   };
 
   const handleFormChange = (index) => {
@@ -90,7 +106,7 @@ export const FormularioComplete = () => {
       <Paper elevation={3} style={{ padding: '20px' }}>
         <form>
           <Typography marginBottom={2} marginTop={2} variant="h5">
-            Pre Visualización
+            {role === 'Admin' ? 'Pre Visualización' : 'Complete el Formulario'}
           </Typography>
           <Divider />
           {isLoading && (
@@ -101,7 +117,7 @@ export const FormularioComplete = () => {
           {!isLoading &&
             form_id &&
             currentForm &&
-            currentForm[currentStep].map((item) => (
+            currentForm[currentStep]?.map((item) => (
               <div key={item.id}>
                 {(() => {
                   switch (item.tipo) {

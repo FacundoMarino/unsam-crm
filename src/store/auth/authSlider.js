@@ -112,6 +112,9 @@ export const authSlice = createSlice({
       state.type_user = payload.info.user_type_user;
       state.telekinesis = payload.telekinesis;
     },
+    setEnterpriseId: (state, { payload }) => {
+      state.enterprise_id = payload;
+    },
   },
 });
 
@@ -122,6 +125,7 @@ export const {
   registerStepTwo,
   errorApi,
   registerStepThree,
+  setEnterpriseId,
 } = authSlice.actions;
 
 export const selectAuthStatus = (state) => state.auth.status;

@@ -3,6 +3,7 @@ import {
   getEnterprisesProvider,
   getTaskProvider,
   postTask,
+  updateTaskProvider,
 } from '../../services/tasksProvider';
 import { errorApi } from '../auth/authSlider';
 import {
@@ -87,13 +88,40 @@ export const getTasks = ({ telekinesis, enterprise_id }) => {
         });
         errorApi(data.error);
       } else {
-        Swal.fire({
-          icon: 'success',
-          title: 'Éxito',
-          text: 'La solicitud se procesó correctamente.',
-        });
         dispatch(setStatusTask('ok'));
         dispatch(setTasks(data.tareas));
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al realizar la solicitud.',
+      });
+    }
+  };
+};
+
+export const updateTask = ({ telekinesis, enterprise_id, status, id }) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem('browser_token');
+      const data = await updateTaskProvider({
+        token,
+        telekinesis,
+        enterprise_id,
+        id,
+        status,
+      });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al procesar la solicitud.',
+        });
+        errorApi(data.error);
+      } else {
+        dispatch(setStatusTask('ok'));
       }
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);

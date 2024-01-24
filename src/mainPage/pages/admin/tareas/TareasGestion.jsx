@@ -16,28 +16,10 @@ import ChecklistIcon from '@mui/icons-material/Checklist';
 import EditIcon from '@mui/icons-material/Edit';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useDispatch, useSelector } from 'react-redux';
-import { getEnterprises } from '../../../../store/tasks/thunks';
+import { getEnterprises, getTasks } from '../../../../store/tasks/thunks';
 import { TareasModal } from '../../../components/tareas/TareasModal';
+import { format } from 'date-fns';
 export const TareasGestion = () => {
-  const rows = [
-    {
-      id: 1,
-      servicio: 'Servicio 1',
-      empresas: 'Empresa 1',
-      contacto: 'Contacto 1',
-      fechaHora: '01/01/2024 10:00 AM',
-      estado: 'En progreso',
-    },
-    {
-      id: 2,
-      servicio: 'Servicio 2',
-      empresas: 'Empresa 2',
-      contacto: 'Contacto 2',
-      fechaHora: '01/01/2024 11:30 AM',
-      estado: 'Completado',
-    },
-  ];
-
   const columns = [
     'Servicio',
     'Empresas',
@@ -47,16 +29,62 @@ export const TareasGestion = () => {
     'Acciones',
   ];
 
+  const tasks = useSelector((state) => state.tasks.tasks);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
+  const [rows, setRows] = useState([]);
+  const [props, setProps] = useState([]);
 
-  const handleModalOpen = (title) => {
+  const dispatch = useDispatch();
+  const telekinesis = useSelector((state) => state.auth.telekinesis);
+  const enterprises = useSelector((state) => state.tasks.enterprises[0]);
+
+  useEffect(() => {
+    dispatch(getTasks({ telekinesis, enterprise_id: '1' }));
+  }, [dispatch, telekinesis]);
+
+  useEffect(() => {
+    dispatch(getEnterprises({ telekinesis }));
+  }, [dispatch, telekinesis]);
+
+  useEffect(() => {
+    if (tasks) {
+      setRows(tasks);
+    }
+  }, [tasks]);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'dd/MM/yyyy');
+  };
+  const handleModalOpen = (title, id, status, enterprise_id) => {
     setModalTitle(title);
     setModalOpen(true);
+    setProps([{ id, status, enterprise_id }]);
   };
 
   const handleModalClose = () => {
     setModalOpen(false);
+  };
+  const filteredRows = (status) => {
+    if (status === 1) {
+      return 'Pendiente';
+    } else if (status === 2) {
+      return 'Completado';
+    } else {
+      return 'Cancelada';
+    }
+  };
+
+  const filterServices = (services) => {
+    if (services === 1) {
+      return 'Solicitar Turno';
+    } else if (services === 2) {
+      return 'Enviar Tarea';
+    } else if (services === 3) {
+      return 'Enviar Formulario';
+    }
   };
 
   return (
@@ -75,17 +103,24 @@ export const TareasGestion = () => {
           <TableBody>
             {rows.map((row) => (
               <TableRow key={row.id}>
-                <TableCell>{row.servicio}</TableCell>
-                <TableCell>{row.empresas}</TableCell>
-                <TableCell>{row.contacto}</TableCell>
-                <TableCell>{row.fechaHora}</TableCell>
-                <TableCell>{row.estado}</TableCell>
+                <TableCell>{filterServices(row.tipo_tarea)}</TableCell>
+                <TableCell>{enterprises?.razon_social}</TableCell>
+                <TableCell>{enterprises?.email}</TableCell>
+                <TableCell>{formatDate(row.created_at)}</TableCell>
+                <TableCell>{filteredRows(row.status)}</TableCell>
                 <TableCell>
                   <Tooltip title="Ver Servicio Solitado" arrow>
                     <IconButton
                       edge="end"
                       aria-label="view"
-                      onClick={() => handleModalOpen('Ver Servicios')}
+                      onClick={() =>
+                        handleModalOpen(
+                          'Ver Servicios',
+                          row.id,
+                          row.status,
+                          row.enterprise_id,
+                        )
+                      }
                     >
                       <RemoveRedEyeIcon />
                     </IconButton>
@@ -130,6 +165,7 @@ export const TareasGestion = () => {
         open={modalOpen}
         handleClose={handleModalClose}
         iconTitle={modalTitle}
+        props={props}
       />
     </>
   );
