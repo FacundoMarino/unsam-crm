@@ -121,6 +121,11 @@ export const updateTask = ({ telekinesis, enterprise_id, status, id }) => {
         });
         errorApi(data.error);
       } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'La solicitud se procesó correctamente.',
+        });
         dispatch(setStatusTask('ok'));
       }
     } catch (error) {
