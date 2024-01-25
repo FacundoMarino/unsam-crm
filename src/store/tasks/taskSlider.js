@@ -24,6 +24,9 @@ export const taskSlice = createSlice({
     setTaskId: (state, { payload }) => {
       state.taskId = payload;
     },
+    setEntepriseId: (state, { payload }) => {
+      state.entepriseId = payload;
+    },
   },
 });
 
@@ -33,4 +36,5 @@ export const {
   setEnterprises,
   setTasksEnterprises,
   setTaskId,
+  setEntepriseId,
 } = taskSlice.actions;

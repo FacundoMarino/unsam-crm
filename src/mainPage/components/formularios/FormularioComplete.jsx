@@ -70,9 +70,10 @@ export const FormularioComplete = () => {
       setCurrentStep((prevStep) => prevStep + 1);
     }
     if (currentStep === MAX_STEP) {
-      dispatch(
+      console.log('currentForm:', currentForm[0]);
+      /*dispatch(
         updateQuestionForm({ telekinesis, form_id, data: currentForm[0] }),
-      );
+      );*/
       dispatch(
         updateTask({
           telekinesis,
@@ -138,7 +139,7 @@ export const FormularioComplete = () => {
                               label={item.pregunta}
                               variant="outlined"
                               fullWidth
-                              required={item.requerido}
+                              required={item.requerido === 1}
                             />
                           </div>
                           <Divider />

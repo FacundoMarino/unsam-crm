@@ -22,11 +22,17 @@ export const Legajo = () => {
   const dispatch = useDispatch();
   const tasksRedux = useSelector((state) => state.tasks.tasks);
   const enterprises = useSelector((state) => state.tasks.enterprises);
+  const enterpriseExternal = useSelector((state) => state.auth.enterprise);
+  const enterpriseId = useSelector((state) => state.tasks.entepriseId);
 
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    dispatch(getTasks({ telekinesis, enterprise_id: '1' }));
+    if (rol === 'Admin') {
+      dispatch(getTasks({ telekinesis, enterprise_id: enterpriseId }));
+    } else {
+      dispatch(getTasks({ telekinesis, enterprise_id: '1' }));
+    }
   }, [dispatch, telekinesis]);
 
   useEffect(() => {
@@ -99,13 +105,21 @@ export const Legajo = () => {
       };
     });
 
-    const empresasCard = {
-      title: enterprises[0]?.razon_social,
-      content: `Nombre: ${enterprises[0]?.razon_social}\n Descripción: ${enterprises[0]?.description}\n Dirección: ${enterprises[0]?.address} `,
-      color: 'black',
-    };
-
-    mappedCards.unshift(empresasCard);
+    if (rol === 'Admin') {
+      const empresasCard = {
+        title: enterprises[0]?.razon_social,
+        content: `Nombre: ${enterprises[0]?.razon_social}\n Descripción: ${enterprises[0]?.description}\n Dirección: ${enterprises[0]?.address} `,
+        color: 'black',
+      };
+      mappedCards.unshift(empresasCard);
+    } else {
+      const empresaCard = {
+        title: enterpriseExternal.enterprise_razon_social,
+        content: `Nombre: ${enterpriseExternal.enterprise_razon_social}\n Descripción: ${enterpriseExternal.enterprise_description}\n Dirección: ${enterpriseExternal.enterprise_address} `,
+        color: 'black',
+      };
+      mappedCards.unshift(empresaCard);
+    }
 
     setCards(mappedCards);
   }, [tasksRedux]);
