@@ -31,7 +31,12 @@ export const Legajo = () => {
     if (rol === 'Admin') {
       dispatch(getTasks({ telekinesis, enterprise_id: enterpriseId }));
     } else {
-      dispatch(getTasks({ telekinesis, enterprise_id: '1' }));
+      dispatch(
+        getTasks({
+          telekinesis,
+          enterprise_id: enterpriseExternal.enterprise_id,
+        }),
+      );
     }
   }, [dispatch, telekinesis]);
 
@@ -133,7 +138,6 @@ export const Legajo = () => {
     if (page === 'formularios') {
       dispatch(setCrmPage(page));
       dispatch(setEnterpriseId(enterprise_id));
-      console.log(form_id);
       dispatch(setFormId(form_id));
     }
     dispatch(setCrmPage(page));
