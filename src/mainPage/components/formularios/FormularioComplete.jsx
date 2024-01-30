@@ -35,7 +35,26 @@ export const FormularioComplete = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [MAX_STEP, setMAX_STEP] = useState(1);
   const [selectedRadioStep, setSelectedRadioStep] = useState(null);
+  const [inputError, setInputError] = useState('');
 
+  const handleNumberChange = (id, value, min, max) => {
+    const parsedValue = parseFloat(value);
+
+    if (isNaN(parsedValue)) {
+      setRadioValues((prevValues) => ({
+        ...prevValues,
+        [id]: '', // Limpiar el valor si no es un número válido
+      }));
+    } else if (parsedValue < min || parsedValue > max) {
+      setInputError(`El valor debe estar entre ${min} y ${max}`);
+    } else {
+      setInputError('');
+      setRadioValues((prevValues) => ({
+        ...prevValues,
+        [id]: parsedValue,
+      }));
+    }
+  };
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({
       ...prevValues,
@@ -123,6 +142,27 @@ export const FormularioComplete = () => {
                 {(() => {
                   switch (item.tipo) {
                     case 'texto':
+                      return (
+                        <>
+                          <div>
+                            <Typography
+                              marginBottom={2}
+                              marginTop={4}
+                              variant="h5"
+                            >
+                              {item.pregunta}
+                            </Typography>
+                            <TextField
+                              fullWidth
+                              key={item.id}
+                              label={item.pregunta}
+                              variant="outlined"
+                              required={item.requerido === 1}
+                            />
+                          </div>
+                          <Divider />
+                        </>
+                      );
                     case 'numero':
                       return (
                         <>
@@ -135,11 +175,27 @@ export const FormularioComplete = () => {
                               {item.pregunta}
                             </Typography>
                             <TextField
+                              fullWidth
                               key={item.id}
                               label={item.pregunta}
                               variant="outlined"
-                              fullWidth
                               required={item.requerido === 1}
+                              type="number"
+                              error={Boolean(inputError)}
+                              helperText={inputError}
+                              inputProps={{
+                                min: item.min,
+                                max: item.max,
+                              }}
+                              value={radioValues[item.id] || ''}
+                              onChange={(e) =>
+                                handleNumberChange(
+                                  item.id,
+                                  e.target.value,
+                                  item.min,
+                                  item.max,
+                                )
+                              }
                             />
                           </div>
                           <Divider />
@@ -180,6 +236,11 @@ export const FormularioComplete = () => {
                           <TextareaAutosize
                             aria-label={item.pregunta}
                             minRows={3}
+                            style={{
+                              width: '100%',
+                              height: '100px',
+                              resize: 'none',
+                            }}
                             placeholder={item.pregunta}
                           />
                           <Divider />
@@ -227,7 +288,7 @@ export const FormularioComplete = () => {
                               label={item.pregunta}
                               variant="outlined"
                               fullWidth
-                              required={item.requerido}
+                              required={item.requerido === 1}
                               type="date"
                             />
                           </div>
@@ -252,7 +313,7 @@ export const FormularioComplete = () => {
                               label={item.pregunta}
                               variant="outlined"
                               fullWidth
-                              required={item.requerido}
+                              required={item.requerido === 1}
                               type="number"
                             />
                           </div>
@@ -270,13 +331,13 @@ export const FormularioComplete = () => {
             color="primary"
             onClick={handleResetForm}
             startIcon={<Refresh />}
-            disabled={role === 'External'}
+            disabled={role !== 'External'}
             style={{ marginRight: '10px', marginTop: '20px' }}
           >
             Reiniciar Formulario
           </Button>
           <Button
-            disabled={role === 'External'}
+            disabled={role !== 'External'}
             variant="contained"
             color="primary"
             onClick={handleSubmit}
@@ -284,7 +345,7 @@ export const FormularioComplete = () => {
           >
             Enviar Formulario
           </Button>
-          {role === 'External' && (
+          {role !== 'External' && (
             <>
               <Button
                 variant="outlined"
