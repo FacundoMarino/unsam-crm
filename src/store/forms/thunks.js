@@ -13,6 +13,7 @@ import {
   setFormId,
   setFormIdCreate,
   setIndividualForm,
+  setMaxStep,
   setStatusForm,
 } from './formSlider';
 
@@ -139,6 +140,7 @@ export const getFormFromId = ({ telekinesis, form_id }) => {
     data.error
       ? errorApi(data.error)
       : dispatch(setIndividualForm([...Object.values(data.form_components)]));
+    dispatch(setMaxStep(data.max_step));
   };
 };
 

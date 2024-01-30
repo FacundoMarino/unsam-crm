@@ -36,6 +36,7 @@ export const FormularioCreate = () => {
     pregunta: '',
     opciones: [''],
     requerido: false,
+    step_name: 'Primera etapa',
     min: '',
     max: '',
     fecha: '',
@@ -176,17 +177,6 @@ export const FormularioCreate = () => {
                 />
                 {['numero', 'fecha'].includes(field.tipo) && (
                   <>
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
-                      label={field.tipo === 'numero' ? 'Número' : 'Fecha'}
-                      type={field.tipo === 'numero' ? 'number' : 'date'}
-                      value={field[field.tipo]}
-                      onChange={(e) =>
-                        handleFieldChange(field.id, field.tipo, e.target.value)
-                      }
-                    />
                     {field.tipo === 'numero' && (
                       <>
                         <TextField

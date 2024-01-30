@@ -24,6 +24,7 @@ import {
 } from '../../../../store/forms/thunks';
 import { setFormId, setFormIdCreate } from '../../../../store/forms/formSlider';
 import Swal from 'sweetalert2';
+import { max } from 'date-fns';
 
 export const FormularioAddStep = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ export const FormularioAddStep = () => {
   const form_id = useSelector((state) => state.forms.formId);
   const formIndividual = useSelector((state) => state.forms.individualForm);
   const form = useSelector((state) => state.forms.form);
+  const maxStep = useSelector((state) => state.forms.maxStep);
 
   const [isNewStep, setIsNewStep] = useState(0);
   const [isNewStepName, setIsNewStepName] = useState('');
@@ -40,45 +42,36 @@ export const FormularioAddStep = () => {
       try {
         const { value } = await Swal.fire({
           title: 'Crear Nuevo Step',
-          html:
-            '<input id="swal-input-number" class="swal2-input" placeholder="Número del Step">' +
-            '<input id="swal-input-name" class="swal2-input" placeholder="Nombre del Step">',
+          html: '<input id="swal-input-name" class="swal2-input" placeholder="Nombre del Step">',
           focusConfirm: false,
           preConfirm: () => {
-            const stepNumberInput =
-              Swal.getPopup().querySelector('#swal-input-number');
             const stepNameInput =
               Swal.getPopup().querySelector('#swal-input-name');
 
-            if (!stepNumberInput || !stepNameInput) {
+            if (!stepNameInput) {
               console.error(
                 'Error: No se encontraron los elementos de entrada.',
               );
               return { stepNumber: undefined, stepName: undefined };
             }
 
-            const stepNumber = stepNumberInput.value;
             const stepName = stepNameInput.value;
-            return { stepNumber, stepName };
+            return { stepName };
           },
         });
 
-        if (
-          value &&
-          value.stepNumber !== undefined &&
-          value.stepName !== undefined
-        ) {
-          console.log('Paso 1:', value.stepNumber, value.stepName);
-          setIsNewStep(value.stepNumber);
+        let stepNumber = maxStep + 1;
+
+        if (maxStep && value && value.stepName !== undefined) {
+          setIsNewStep(stepNumber);
           setIsNewStepName(value.stepName);
           setFormFields([
             {
               ...initialState,
-              step: value.stepNumber,
+              step: stepNumber,
               step_name: value.stepName,
             },
           ]);
-          console.log('Paso 2:', value.stepNumber, value.stepName);
         }
       } catch (error) {
         console.error('Error al mostrar la confirmación:', error);
@@ -152,7 +145,6 @@ export const FormularioAddStep = () => {
     let data = formIndividualForm.flatMap((innerArray) => innerArray);
 
     const formData = [...formFields, ...data];
-
     dispatch(updateQuestionForm({ telekinesis, form_id, data: formData }));
     dispatch(setFormId(''));
   };
@@ -171,7 +163,6 @@ export const FormularioAddStep = () => {
     dispatch(setFormIdCreate(''));
   }, []);
 
-  console.log(formIndividualForm);
   return (
     <Container component="main" maxWidth="md" style={{ marginTop: '20px' }}>
       {!form_id && (
@@ -211,8 +202,6 @@ export const FormularioAddStep = () => {
                     <MenuItem value="textarea">Área de Texto</MenuItem>
                     <MenuItem value="radio">Opción Unica</MenuItem>
                     <MenuItem value="fecha">Fecha</MenuItem>
-                    <MenuItem value="min">Mínimo</MenuItem>
-                    <MenuItem value="max">Máximo</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControlLabel
@@ -232,17 +221,6 @@ export const FormularioAddStep = () => {
                 />
                 {['numero', 'fecha'].includes(field.tipo) && (
                   <>
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
-                      label={field.tipo === 'numero' ? 'Número' : 'Fecha'}
-                      type={field.tipo === 'numero' ? 'number' : 'date'}
-                      value={field[field.tipo]}
-                      onChange={(e) =>
-                        handleFieldChange(field.id, field.tipo, e.target.value)
-                      }
-                    />
                     {field.tipo === 'numero' && (
                       <>
                         <TextField

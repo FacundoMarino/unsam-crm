@@ -36,7 +36,7 @@ export const FormularioEditor = () => {
     id: Date.now(),
     tipo: 'texto',
     pregunta: '',
-    opciones: [{ value: '', step: '' }],
+    opciones: [],
     requerido: false,
     min: '',
     max: '',
@@ -140,7 +140,7 @@ export const FormularioEditor = () => {
     if (formIndividual) {
       setFormFields(formIndividual);
       setIsLoading(false);
-      setMAX_STEP(formFields?.length);
+      setMAX_STEP(formFields?.length - 1);
     }
   }, [formIndividual]);
 
@@ -173,8 +173,6 @@ export const FormularioEditor = () => {
     dispatch(setFormIdCreate(''));
   }, []);
 
-  console.log(stepName);
-
   return (
     <Container component="main" maxWidth="md" style={{ marginTop: '20px' }}>
       {!form_id && (
@@ -193,7 +191,10 @@ export const FormularioEditor = () => {
       {!isLoading && form_id && (
         <Paper elevation={3} style={{ padding: '20px' }}>
           <Typography variant="h5">
-            {`Edita el Formulario: ${findFormNameById(form.forms, form_id)}`}
+            {`Edita el Formulario: ${findFormNameById(form.forms, form_id)} - ${
+              formIndividual[currentStep][0].step_name
+            }
+            `}
           </Typography>
           <Grid container spacing={2}>
             {formFields[currentStep]?.map((field) => (
@@ -241,17 +242,6 @@ export const FormularioEditor = () => {
                 />
                 {['numero', 'fecha'].includes(field.tipo) && (
                   <>
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      fullWidth
-                      label={field.tipo === 'numero' ? 'Número' : 'Fecha'}
-                      type={field.tipo === 'numero' ? 'number' : 'date'}
-                      value={field[field.tipo]}
-                      onChange={(e) =>
-                        handleFieldChange(field.id, field.tipo, e.target.value)
-                      }
-                    />
                     {field.tipo === 'numero' && (
                       <>
                         <TextField

@@ -22,6 +22,9 @@ export const formSlice = createSlice({
     setFormIdCreate: (state, { payload }) => {
       state.formIdCreate = payload;
     },
+    setMaxStep: (state, { payload }) => {
+      state.maxStep = payload;
+    },
   },
 });
 
@@ -31,4 +34,5 @@ export const {
   setFormId,
   setIndividualForm,
   setFormIdCreate,
+  setMaxStep,
 } = formSlice.actions;
