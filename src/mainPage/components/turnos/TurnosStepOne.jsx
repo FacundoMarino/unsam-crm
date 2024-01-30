@@ -67,7 +67,7 @@ export const TurnosStepOne = ({
               value={selectedLocation}
               onChange={(event) => setSelectedLocation(event.target.value)}
             >
-              {locations.map((location) => (
+              {locations?.map((location) => (
                 <MenuItem key={location} value={location}>
                   {location}
                 </MenuItem>

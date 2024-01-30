@@ -76,17 +76,39 @@ export const postStoreShift = ({
 }) => {
   const token = localStorage.getItem('browser_token');
   return async (dispatch) => {
-    const data = await postStore({
-      location,
-      shift_type,
-      telekinesis,
-      token,
-      day,
-      hour,
-      shift_type_id,
-    });
-
-    data.error ? errorApi(data.error) : dispatch(resetShift());
+    try {
+      const data = await postStore({
+        location,
+        shift_type,
+        telekinesis,
+        token,
+        day,
+        hour,
+        shift_type_id,
+      });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al procesar la solicitud.',
+        });
+        errorApi(data.error);
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'La solicitud se procesó correctamente.',
+        });
+        dispatch(resetShift());
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al realizar la solicitud.',
+      });
+    }
   };
 };
 
