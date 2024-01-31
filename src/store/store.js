@@ -4,6 +4,7 @@ import { crmSlice } from './crm/crmSlider';
 import { shiftSlice } from './shift/shiftSlider';
 import { formSlice } from './forms/formSlider';
 import { taskSlice } from './tasks/taskSlider';
+import { servicesSlice } from './servicios/servicesSlider';
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     shift: shiftSlice.reducer,
     forms: formSlice.reducer,
     tasks: taskSlice.reducer,
+    services: servicesSlice.reducer,
   },
 });

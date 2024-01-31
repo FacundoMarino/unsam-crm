@@ -29,7 +29,7 @@ export const TareasGestion = () => {
     'Acciones',
   ];
 
-  const tasks = useSelector((state) => state.tasks.tasks);
+  const services = useSelector((state) => state.services.services);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -41,18 +41,10 @@ export const TareasGestion = () => {
   const enterprises = useSelector((state) => state.tasks.enterprises[0]);
 
   useEffect(() => {
-    dispatch(getTasks({ telekinesis, enterprise_id: '1' }));
-  }, [dispatch, telekinesis]);
-
-  useEffect(() => {
-    dispatch(getEnterprises({ telekinesis }));
-  }, [dispatch, telekinesis]);
-
-  useEffect(() => {
-    if (tasks) {
-      setRows(tasks);
+    if (services) {
+      setRows(services);
     }
-  }, [tasks]);
+  }, [services]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

@@ -11,6 +11,7 @@ import { FormularioComplete } from '../components/formularios/FormularioComplete
 import { TareasAdminLayout } from './layout/TareasAdminLayout';
 import { Legajo } from './admin/tareas/Legajo';
 import { ServiciosAdminLayout } from './layout/ServiciosAdminLayout';
+import { ServiciosExternal } from '../components/servicios/ServiciosExternal';
 
 export const CrmPage = () => {
   const page = useSelector((state) => state.crm.page);
@@ -38,12 +39,14 @@ export const CrmPage = () => {
     contentComponent = <TurnosAdminLayout onVerDetalle={handleVerDetalle} />;
   } else if (page === 'formularios' && rol === 'Admin') {
     contentComponent = <FormulariosAdminLayout />;
-  } else if (page === 'tareas' && rol === 'Admin') {
+  } else if (page === 'bandejadesolicitudes' && rol === 'Admin') {
     contentComponent = <TareasAdminLayout />;
-  } else if (page === 'tareas' && rol !== 'Admin') {
+  } else if (page === 'bandejadesolicitudes' && rol !== 'Admin') {
     contentComponent = <Legajo />;
   } else if (page === 'servicios' && rol === 'Admin') {
     contentComponent = <ServiciosAdminLayout />;
+  } else if (page === 'servicios' && rol !== 'Admin') {
+    contentComponent = <ServiciosExternal />;
   } else {
     contentComponent = <TurnosAdminLayout onVerDetalle={handleVerDetalle} />;
   }
