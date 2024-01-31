@@ -24,7 +24,7 @@ export const FormularioComplete = () => {
   const formIndividual = useSelector((state) => state.forms.individualForm);
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const form_id = useSelector((state) => state.forms.formId);
-  const role = useSelector((state) => state.auth.role);
+  const role = useSelector((state) => state.auth.rol);
   const enterprise_id = useSelector((state) => state.auth.enterprise_id);
   const idTask = useSelector((state) => state.tasks.taskId);
   const dispatch = useDispatch();
@@ -60,17 +60,8 @@ export const FormularioComplete = () => {
       ...prevValues,
       [id]: value,
     }));
-
-    // Check if the selected radio option has a step_redirect
-    const selectedOption = currentForm[currentStep].find(
-      (item) => item.id === id,
-    );
-    if (selectedOption && selectedOption.step_redirect) {
-      const resultStep = Number(selectedOption.step_redirect) - 1;
-      console.log('Selected Radio Step Before:', resultStep);
-
-      setSelectedRadioStep(resultStep);
-      console.log('Selected Radio Step:', selectedRadioStep);
+    if (value) {
+      setSelectedRadioStep(value - 1);
     } else {
       setSelectedRadioStep(null);
     }
@@ -248,12 +239,7 @@ export const FormularioComplete = () => {
                       );
                     case 'radio':
                       return (
-                        <RadioGroup
-                          value={radioValues[item.id] || ''}
-                          onChange={(e) =>
-                            handleRadioChange(item.id, e.target.value)
-                          }
-                        >
+                        <div key={item.id}>
                           <Typography
                             marginBottom={2}
                             marginTop={2}
@@ -261,17 +247,25 @@ export const FormularioComplete = () => {
                           >
                             {item.pregunta}
                           </Typography>
-
-                          {item.opciones.map((opcion, index) => (
-                            <FormControlLabel
-                              key={index}
-                              control={<Radio />}
-                              label={opcion}
-                              value={opcion}
-                            />
-                          ))}
-                        </RadioGroup>
+                          <RadioGroup
+                            value={radioValues[item.id] || ''}
+                            onChange={(e) =>
+                              handleRadioChange(item.id, e.target.value)
+                            }
+                          >
+                            {item.opciones.map((opcion, index) => (
+                              <FormControlLabel
+                                key={index}
+                                value={opcion.step_redirect}
+                                control={<Radio />}
+                                label={opcion.value}
+                              />
+                            ))}
+                          </RadioGroup>
+                          <Divider />
+                        </div>
                       );
+
                     case 'fecha':
                       return (
                         <>
@@ -331,13 +325,13 @@ export const FormularioComplete = () => {
             color="primary"
             onClick={handleResetForm}
             startIcon={<Refresh />}
-            disabled={role !== 'External'}
+            disabled={role === 'Admin'}
             style={{ marginRight: '10px', marginTop: '20px' }}
           >
             Reiniciar Formulario
           </Button>
           <Button
-            disabled={role !== 'External'}
+            disabled={role === 'Admin'}
             variant="contained"
             color="primary"
             onClick={handleSubmit}
@@ -345,7 +339,7 @@ export const FormularioComplete = () => {
           >
             Enviar Formulario
           </Button>
-          {role !== 'External' && (
+          {role === 'Admin' && (
             <>
               <Button
                 variant="outlined"

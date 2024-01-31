@@ -34,13 +34,13 @@ export const FormularioCreate = () => {
     id: Date.now(),
     tipo: 'texto',
     pregunta: '',
-    opciones: [''],
+    opciones: [{ value: '', step_redirect: '' }],
     requerido: false,
     step_name: 'Primera etapa',
     min: '',
     max: '',
     fecha: '',
-    step: '',
+    step: 1,
   };
 
   const [formFields, setFormFields] = useState([initialState]);
@@ -156,7 +156,6 @@ export const FormularioCreate = () => {
                     <MenuItem value="numero">Número</MenuItem>
                     <MenuItem value="checkbox">Opciones Multiple</MenuItem>
                     <MenuItem value="textarea">Área de Texto</MenuItem>
-                    <MenuItem value="radio">Opción Unica</MenuItem>
                     <MenuItem value="fecha">Fecha</MenuItem>
                   </Select>
                 </FormControl>
@@ -269,44 +268,7 @@ export const FormularioCreate = () => {
                     </Button>
                   </div>
                 )}
-                {field.tipo === 'radio' && (
-                  <div style={{ marginTop: '10px' }}>
-                    {field.opciones.map((opcion, index) => (
-                      <div key={index} style={{ marginBottom: '10px' }}>
-                        <TextField
-                          variant="outlined"
-                          margin="normal"
-                          fullWidth
-                          label={`Opción ${index + 1}`}
-                          value={opcion}
-                          onChange={(e) =>
-                            handleFieldChange(
-                              field.id,
-                              'opciones',
-                              field.opciones.map((opt, idx) =>
-                                idx === index ? e.target.value : opt,
-                              ),
-                            )
-                          }
-                        />
-                        <IconButton
-                          color="secondary"
-                          onClick={() => handleRemoveOption(field.id, index)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </div>
-                    ))}
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => handleAddOption(field.id)}
-                      startIcon={<AddIcon />}
-                    >
-                      Agregar Opción
-                    </Button>
-                  </div>
-                )}
+
                 <IconButton
                   color="secondary"
                   onClick={() => handleRemoveField(field.id)}

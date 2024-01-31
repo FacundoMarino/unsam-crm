@@ -31,12 +31,11 @@ export const FormularioEditor = () => {
   const form_id = useSelector((state) => state.forms.formId);
   const formIndividual = useSelector((state) => state.forms.individualForm);
   const form = useSelector((state) => state.forms.form);
-
   const initialState = {
     id: Date.now(),
     tipo: 'texto',
     pregunta: '',
-    opciones: [],
+    opciones: [{ value: '', step_redirect: '' }],
     requerido: false,
     min: '',
     max: '',
@@ -60,10 +59,11 @@ export const FormularioEditor = () => {
           return {
             ...field,
             [property]: value,
-            step_redirect: value,
-            step_name:
-              stepName?.uniqueStepNames[stepName?.uniqueSteps.indexOf(value)] ||
-              '',
+            // Aquí se actualiza la opción del campo radio con el valor y el paso seleccionado
+            opciones: value.map((opt) => ({
+              value: opt.value,
+              step_redirect: opt.step_redirect || '',
+            })),
           };
         } else {
           return field.id === id ? { ...field, [property]: value } : field;
@@ -126,7 +126,6 @@ export const FormularioEditor = () => {
 
   const handleSubmit = () => {
     const data = formFields.flatMap((innerArray) => innerArray);
-
     dispatch(updateQuestionForm({ telekinesis, form_id, data }));
     dispatch(setFormId(''));
   };
@@ -350,13 +349,15 @@ export const FormularioEditor = () => {
                             margin="normal"
                             fullWidth
                             label={`Opción ${index + 1}`}
-                            value={opcion}
+                            value={opcion.value}
                             onChange={(e) =>
                               handleFieldChange(
                                 field.id,
                                 'opciones',
                                 field.opciones.map((opt, idx) =>
-                                  idx === index ? e.target.value : opt,
+                                  idx === index
+                                    ? { ...opt, value: e.target.value }
+                                    : opt,
                                 ),
                               )
                             }
@@ -371,12 +372,19 @@ export const FormularioEditor = () => {
                           <FormControl fullWidth>
                             <InputLabel>Seleccionar Step</InputLabel>
                             <Select
-                              value={field.selectedStep}
+                              value={opcion.step_redirect}
                               onChange={(e) =>
                                 handleFieldChange(
                                   field.id,
-                                  'selectedStep',
-                                  e.target.value,
+                                  'opciones',
+                                  field.opciones.map((opt, idx) =>
+                                    idx === index
+                                      ? {
+                                          ...opt,
+                                          step_redirect: e.target.value,
+                                        }
+                                      : opt,
+                                  ),
                                 )
                               }
                             >
@@ -409,6 +417,7 @@ export const FormularioEditor = () => {
                     </Button>
                   </div>
                 )}
+
                 <IconButton
                   color="secondary"
                   onClick={() => handleRemoveField(field.id)}
