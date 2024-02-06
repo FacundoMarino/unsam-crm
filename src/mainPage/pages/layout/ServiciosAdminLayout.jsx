@@ -1,75 +1,35 @@
-import React, { useEffect } from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
-  Tooltip,
-  Grid,
-} from '@mui/material';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import { useDispatch, useSelector } from 'react-redux';
-import { getEnterprises } from '../../../store/tasks/thunks';
-import { setCrmPage } from '../../../store/crm/crmSlider';
-import { getServicios } from '../../../store/servicios/thunks';
+import React, { useState } from 'react';
+
+import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
+import { ServicioEmpresas } from '../admin/servicios/ServicioEmpresas';
+import { ServicioGestion } from '../admin/servicios/ServiciosGestion';
 
 export const ServiciosAdminLayout = () => {
-  const telekinesis = useSelector((state) => state.auth.telekinesis);
-  const dispatch = useDispatch();
-  const enterprises = useSelector((state) => state.tasks.enterprises);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  useEffect(() => {
-    dispatch(getEnterprises({ telekinesis }));
-  }, []);
-
-  const handleModalOpen = (enterprise_id) => {
-    dispatch(getServicios({ telekinesis, enterprise_id }));
-    dispatch(setCrmPage('bandejadesolicitudes'));
+  const handleNewFormClick = (num) => {
+    setSelectedIndex(num);
   };
-
-  const columns = ['Servicio', 'Empresas', 'Contacto', 'Acciones'];
 
   return (
     <>
-      <Grid container></Grid>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {columns.map((column, index) => (
-                <TableCell textAlign="center" gr key={index}>
-                  {column}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {enterprises?.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>{row.description}</TableCell>
-                <TableCell>{row?.razon_social}</TableCell>
-                <TableCell>{row?.email}</TableCell>
+      <Tabs
+        style={{ margin: '10px' }}
+        selectedIndex={selectedIndex}
+        onSelect={(index) => setSelectedIndex(index)}
+      >
+        <TabList>
+          <Tab>Administración de Servicios</Tab>
+          <Tab>Empresas</Tab>
+        </TabList>
 
-                <TableCell>
-                  <Tooltip title="Ver Servicio Solicitado" arrow>
-                    <IconButton
-                      edge="end"
-                      aria-label="view"
-                      onClick={() => handleModalOpen(row.id)}
-                    >
-                      <RemoveRedEyeIcon />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+        <TabPanel>
+          <ServicioGestion />
+        </TabPanel>
+        <TabPanel>
+          <ServicioEmpresas />
+        </TabPanel>
+      </Tabs>
     </>
   );
 };

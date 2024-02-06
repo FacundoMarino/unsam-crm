@@ -1,16 +1,23 @@
 import Swal from 'sweetalert2';
 import { errorApi } from '../auth/authSlider';
-import { postServicies } from '../../services/serviciosProvider';
-import { setServices } from './servicesSlider';
+import {
+  deleteService,
+  getServicies,
+  getServiciesById,
+  postServices,
+  updateService,
+} from '../../services/serviciosProvider';
+import { setIndividualService, setServices, setStatus } from './servicesSlider';
 
-export const postServicios = ({ telekinesis, enterprise_id }) => {
+export const createServices = ({ telekinesis, service, description }) => {
   const token = localStorage.getItem('browser_token');
   return async (dispatch) => {
     try {
-      const data = await postServicies({
+      const data = await postServices({
         telekinesis,
         token,
-        enterprise_id,
+        service,
+        description,
       });
       if (data.error) {
         Swal.fire({
@@ -23,8 +30,9 @@ export const postServicios = ({ telekinesis, enterprise_id }) => {
         Swal.fire({
           icon: 'success',
           title: 'Éxito',
-          text: 'La solicitud de servicios se procesó correctamente.',
+          text: 'El servicios se creó correctamente.',
         });
+        dispatch(setStatus('ok'));
       }
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
@@ -37,14 +45,13 @@ export const postServicios = ({ telekinesis, enterprise_id }) => {
   };
 };
 
-export const getServicios = ({ telekinesis, enterprise_id }) => {
+export const getServicios = ({ telekinesis }) => {
   const token = localStorage.getItem('browser_token');
   return async (dispatch) => {
     try {
-      const data = await postServicies({
+      const data = await getServicies({
         telekinesis,
         token,
-        enterprise_id,
       });
       if (data.error) {
         Swal.fire({
@@ -54,7 +61,109 @@ export const getServicios = ({ telekinesis, enterprise_id }) => {
         });
         errorApi(data.error);
       } else {
-        dispatch(setServices(data.services));
+        dispatch(setServices(data));
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al realizar la solicitud.',
+      });
+    }
+  };
+};
+
+export const getServiciosById = ({ telekinesis, id }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    try {
+      const data = await getServiciesById({
+        telekinesis,
+        token,
+        id,
+      });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al procesar la solicitud.',
+        });
+        errorApi(data.error);
+      } else {
+        dispatch(setIndividualService(data.edit_shift));
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al realizar la solicitud.',
+      });
+    }
+  };
+};
+
+export const updateServicio = ({ telekinesis, id, service, description }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    try {
+      const data = await updateService({
+        telekinesis,
+        token,
+        id,
+        service,
+        description,
+      });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al procesar la solicitud.',
+        });
+        errorApi(data.error);
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'El servicios se actualizó correctamente.',
+        });
+        dispatch(setIndividualService([]));
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al realizar la solicitud.',
+      });
+    }
+  };
+};
+
+export const eliminarServicio = ({ telekinesis, id }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    try {
+      const data = await deleteService({
+        telekinesis,
+        token,
+        id,
+      });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al procesar la solicitud.',
+        });
+        errorApi(data.error);
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'El servicios se eliminó correctamente.',
+        });
+        dispatch(setStatus('ok'));
       }
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
