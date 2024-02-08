@@ -7,7 +7,7 @@ export const postServices = async ({
   token,
   telekinesis,
   service,
-  descirption,
+  description,
 }) => {
   const requestOptions = {
     method: 'POST',
@@ -16,7 +16,7 @@ export const postServices = async ({
       browser_token: token,
       telekinesis,
       service,
-      descirption,
+      description,
     }),
   };
 
@@ -122,6 +122,62 @@ export const deleteService = async ({ token, telekinesis, id }) => {
   try {
     const response = await fetch(
       `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/service/resource/delete/${id}`,
+      requestOptions,
+    ).then((response) => response.json());
+
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const takeService = async ({
+  token,
+  telekinesis,
+  servicio_id,
+  enterprise_id,
+}) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      browser_token: token,
+      telekinesis,
+      servicio_id,
+      enterprise_id,
+    }),
+  };
+
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/service/store`,
+      requestOptions,
+    ).then((response) => response.json());
+
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const getServiceByEnterprise = async ({
+  token,
+  telekinesis,
+  enterprise_id,
+}) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      browser_token: token,
+      telekinesis,
+      enterprise_id,
+    }),
+  };
+
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/file/services`,
       requestOptions,
     ).then((response) => response.json());
 

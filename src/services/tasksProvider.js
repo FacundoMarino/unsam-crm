@@ -32,6 +32,7 @@ export const postTask = async ({
   comment,
   form_id,
   shift_type,
+  service_id,
 }) => {
   const requestOptions = {
     method: 'POST',
@@ -45,6 +46,7 @@ export const postTask = async ({
       comment,
       form_id,
       shift_type,
+      service_id,
     }),
   };
   try {

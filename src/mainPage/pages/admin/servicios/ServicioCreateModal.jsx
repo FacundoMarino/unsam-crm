@@ -57,11 +57,11 @@ export const ServicioCreateModal = ({ open, handleClose, id }) => {
           service: title,
           description: textareaValue,
         }),
-        setTextareaValue(''),
-        setTitle(''),
-        setIndividualService(''),
-        setUpdate(false),
       );
+      setUpdate(false);
+      setIndividualService('');
+      setTitle('');
+      setTextareaValue('');
     } else {
       dispatch(
         createServices({

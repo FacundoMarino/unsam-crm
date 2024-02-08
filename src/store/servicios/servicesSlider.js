@@ -17,8 +17,19 @@ export const servicesSlice = createSlice({
     setStatus: (state, { payload }) => {
       state.status = payload;
     },
+    setServicesByEnterprises: (state, { payload }) => {
+      state.servicesByEnterprises = payload;
+    },
+    setIdEnterprise: (state, { payload }) => {
+      state.idEnterprise = payload;
+    },
   },
 });
 
-export const { setServices, setIndividualService, setStatus } =
-  servicesSlice.actions;
+export const {
+  setServices,
+  setIndividualService,
+  setStatus,
+  setServicesByEnterprises,
+  setIdEnterprise,
+} = servicesSlice.actions;

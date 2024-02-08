@@ -14,8 +14,9 @@ import {
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEnterprises } from '../../../../store/tasks/thunks';
-import { getServicios } from '../../../../store/servicios/thunks';
+import { getServiciosByEnterprise } from '../../../../store/servicios/thunks';
 import { setCrmPage } from '../../../../store/crm/crmSlider';
+import { setIdEnterprise } from '../../../../store/servicios/servicesSlider';
 
 export const ServicioEmpresas = () => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
@@ -24,10 +25,18 @@ export const ServicioEmpresas = () => {
 
   useEffect(() => {
     dispatch(getEnterprises({ telekinesis }));
-  }, []);
+  }, [dispatch, telekinesis]);
 
-  const handleModalOpen = (enterprise_id) => {
-    dispatch(getServicios({ telekinesis, enterprise_id }));
+  const handleModalOpen = (
+    enterprise_id,
+    razon_social,
+    address,
+    description,
+  ) => {
+    dispatch(
+      setIdEnterprise({ enterprise_id, razon_social, address, description }),
+    );
+    dispatch(getServiciosByEnterprise({ telekinesis, enterprise_id }));
     dispatch(setCrmPage('bandejadesolicitudes'));
   };
 
@@ -50,7 +59,7 @@ export const ServicioEmpresas = () => {
           <TableBody>
             {enterprises?.map((row) => (
               <TableRow key={row.id}>
-                <TableCell>{row.description}</TableCell>
+                <TableCell>{row?.description}</TableCell>
                 <TableCell>{row?.razon_social}</TableCell>
                 <TableCell>{row?.email}</TableCell>
 
@@ -59,7 +68,14 @@ export const ServicioEmpresas = () => {
                     <IconButton
                       edge="end"
                       aria-label="view"
-                      onClick={() => handleModalOpen(row.id)}
+                      onClick={() =>
+                        handleModalOpen(
+                          row.id,
+                          row.razon_social,
+                          row.address,
+                          row.description,
+                        )
+                      }
                     >
                       <RemoveRedEyeIcon />
                     </IconButton>

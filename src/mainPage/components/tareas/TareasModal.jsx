@@ -11,13 +11,11 @@ import {
   TextField,
   Grid,
   Container,
-  Typography,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getShiftsTypes } from '../../../store/shift/thunks';
 import {
   getEnterprises,
-  getTasks,
   storeTasks,
   updateTask,
 } from '../../../store/tasks/thunks';
@@ -29,7 +27,6 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
   const [textareaValue, setTextareaValue] = useState('');
   const [taskType, setTaskType] = useState('');
   const [selectedForm, setSelectedForm] = useState('');
-  const [update, setUpdate] = useState(props);
   const [selectedEstado, setSelectedEstado] = useState();
   const [estados, setEstados] = useState([]);
 
@@ -38,6 +35,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
   const shifts = useSelector((state) => state.shift.shiftType);
   const enterprises = useSelector((state) => state.tasks.enterprises);
   const forms = useSelector((state) => state.forms.form.forms);
+  const enterpriseId = useSelector((state) => state.services.idEnterprise);
 
   useEffect(() => {
     if (iconTitle === 'Solicitar Turno') {
@@ -45,7 +43,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
       dispatch(getEnterprises({ telekinesis }));
       setTaskType(1);
     }
-  }, [iconTitle]);
+  }, [dispatch, iconTitle, telekinesis]);
 
   useEffect(() => {
     if (iconTitle === 'Enviar Formulario') {
@@ -53,7 +51,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
       dispatch(getEnterprises({ telekinesis }));
       setTaskType(3);
     }
-  }, [iconTitle]);
+  }, [dispatch, iconTitle, telekinesis]);
 
   useEffect(() => {
     if (iconTitle === 'Enviar Tarea') {
@@ -70,7 +68,11 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
         { value: '3', label: 'Cancelada' },
       ]);
     }
-  }, [iconTitle]);
+  }, [dispatch, iconTitle, telekinesis]);
+
+  useEffect(() => {
+    setSelectedEmpresa(enterpriseId.enterprise_id);
+  }, [enterpriseId]);
 
   const handleSubmit = (iconTitle) => {
     handleClose(false);
@@ -81,6 +83,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
           tipo_tarea: taskType,
           enterprise_id: selectedEmpresa,
           shift_type: selectedTurno,
+          service_id: props[0].id,
           comment: textareaValue,
         }),
       );
@@ -89,9 +92,10 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
         storeTasks({
           telekinesis,
           tipo_tarea: taskType,
-          enterprise_id: selectedForm,
+          enterprise_id: selectedEmpresa,
           comment: textareaValue,
           form_id: selectedForm,
+          service_id: props[0].id,
         }),
       );
     } else {
@@ -100,7 +104,8 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
           telekinesis,
           tipo_tarea: taskType,
           comment: textareaValue,
-          enterprise_id: selectedForm,
+          enterprise_id: selectedEmpresa,
+          service_id: props[0].id,
         }),
       );
     }
@@ -143,21 +148,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl fullWidth margin="normal">
-                <InputLabel id="empresa-select-label">Empresa</InputLabel>
-                <Select
-                  labelId="empresa-select-label"
-                  id="empresa-select"
-                  value={selectedEmpresa}
-                  onChange={(e) => setSelectedEmpresa(e.target.value)}
-                >
-                  {enterprises?.map((empresa) => (
-                    <MenuItem key={empresa.id} value={empresa.id}>
-                      {empresa.razon_social}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+
               <TextField
                 label="Comentarios"
                 multiline
@@ -250,21 +241,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl fullWidth margin="normal">
-                <InputLabel id="empresa-select-label">Empresa</InputLabel>
-                <Select
-                  labelId="empresa-select-label"
-                  id="empresa-select"
-                  value={selectedEmpresa}
-                  onChange={(e) => setSelectedEmpresa(e.target.value)}
-                >
-                  {enterprises?.map((empresa) => (
-                    <MenuItem key={empresa} value={empresa.id}>
-                      {empresa.razon_social}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+
               <TextField
                 label="Comentarios"
                 multiline
@@ -318,21 +295,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl fullWidth margin="normal">
-                <InputLabel id="empresa-select-label">Empresa</InputLabel>
-                <Select
-                  labelId="empresa-select-label"
-                  id="empresa-select"
-                  value={selectedEmpresa}
-                  onChange={(e) => setSelectedEmpresa(e.target.value)}
-                >
-                  {enterprises?.map((empresa) => (
-                    <MenuItem key={empresa.id} value={empresa.id}>
-                      {empresa.razon_social}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+
               <Button
                 variant="contained"
                 color="primary"

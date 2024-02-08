@@ -31,6 +31,7 @@ export const storeTasks = ({
   comment,
   shift_type,
   form_id,
+  service_id,
 }) => {
   return async (dispatch) => {
     try {
@@ -44,6 +45,7 @@ export const storeTasks = ({
         comment,
         shift_type,
         form_id,
+        service_id,
       });
       if (data.error) {
         Swal.fire({

@@ -7,7 +7,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
   IconButton,
   Tooltip,
 } from '@mui/material';
@@ -16,10 +15,12 @@ import ChecklistIcon from '@mui/icons-material/Checklist';
 import EditIcon from '@mui/icons-material/Edit';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useDispatch, useSelector } from 'react-redux';
-import { getEnterprises, getTasks } from '../../../../store/tasks/thunks';
 import { TareasModal } from '../../../components/tareas/TareasModal';
 import { format } from 'date-fns';
-export const TareasGestion = () => {
+import { setStatusTask, setTasks } from '../../../../store/tasks/taskSlider';
+import { getServiciosByEnterprise } from '../../../../store/servicios/thunks';
+export const TareasGestion = ({ handleNewFormClick }) => {
+  const dispatch = useDispatch();
   const columns = [
     'Servicio',
     'Empresas',
@@ -29,23 +30,40 @@ export const TareasGestion = () => {
     'Acciones',
   ];
 
-  const services = useSelector((state) => state.services.services);
+  const services = useSelector((state) => state.services.servicesByEnterprises);
+  const status = useSelector((state) => state.tasks.status);
+  const telekinesis = useSelector((state) => state.auth.telekinesis);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [rows, setRows] = useState([]);
   const [props, setProps] = useState([]);
+  const [razonSocial, setRazonSocial] = useState('');
 
-  const dispatch = useDispatch();
-  const telekinesis = useSelector((state) => state.auth.telekinesis);
-  const enterprises = useSelector((state) => state.tasks.enterprises[0]);
+  const enterprises = useSelector(
+    (state) => state.services.servicesByEnterprises,
+  );
+
+  const enterpriseId = useSelector((state) => state.services.idEnterprise);
 
   useEffect(() => {
     if (services) {
       setRows(services);
+      setRazonSocial(enterpriseId.razon_social);
     }
   }, [services]);
 
+  useEffect(() => {
+    if (status === 'ok') {
+      dispatch(
+        getServiciosByEnterprise({
+          telekinesis,
+          enterprise_id: enterpriseId.enterprise_id,
+        }),
+        dispatch(setStatusTask('')),
+      );
+    }
+  }, [status]);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return format(date, 'dd/MM/yyyy');
@@ -59,6 +77,11 @@ export const TareasGestion = () => {
   const handleModalClose = () => {
     setModalOpen(false);
   };
+
+  const handleClick = (task) => {
+    dispatch(setTasks(task));
+    handleNewFormClick(1);
+  };
   const filteredRows = (status) => {
     if (status === 1) {
       return 'Pendiente';
@@ -68,17 +91,6 @@ export const TareasGestion = () => {
       return 'Cancelada';
     }
   };
-
-  const filterServices = (services) => {
-    if (services === 1) {
-      return 'Solicitar Turno';
-    } else if (services === 2) {
-      return 'Enviar Tarea';
-    } else if (services === 3) {
-      return 'Enviar Formulario';
-    }
-  };
-
   return (
     <>
       <TableContainer component={Paper}>
@@ -95,24 +107,17 @@ export const TareasGestion = () => {
           <TableBody>
             {rows.map((row) => (
               <TableRow key={row.id}>
-                <TableCell>{filterServices(row.tipo_tarea)}</TableCell>
-                <TableCell>{enterprises?.razon_social}</TableCell>
+                <TableCell>{row.service}</TableCell>
+                <TableCell>{razonSocial}</TableCell>
                 <TableCell>{enterprises?.email}</TableCell>
                 <TableCell>{formatDate(row.created_at)}</TableCell>
-                <TableCell>{filteredRows(row.status)}</TableCell>
+                <TableCell>{filteredRows(row.status_service)}</TableCell>
                 <TableCell>
                   <Tooltip title="Ver Servicio Solitado" arrow>
                     <IconButton
                       edge="end"
                       aria-label="view"
-                      onClick={() =>
-                        handleModalOpen(
-                          'Ver Servicios',
-                          row.id,
-                          row.status,
-                          row.enterprise_id,
-                        )
-                      }
+                      onClick={() => handleClick(row.task)}
                     >
                       <RemoveRedEyeIcon />
                     </IconButton>
@@ -121,9 +126,16 @@ export const TareasGestion = () => {
                   <Tooltip title="Solicitar Turno" arrow>
                     <IconButton
                       edge="end"
-                      aria-label="add-step"
-                      hovered="Agregar step"
-                      onClick={() => handleModalOpen('Solicitar Turno')}
+                      aria-label="solicitar-turno"
+                      hovered="Solicitar Turno"
+                      onClick={() =>
+                        handleModalOpen(
+                          'Solicitar Turno',
+                          row.id,
+                          row.status,
+                          row.enterprise_id,
+                        )
+                      }
                     >
                       <CalendarMonthIcon />
                     </IconButton>
@@ -133,7 +145,14 @@ export const TareasGestion = () => {
                     <IconButton
                       edge="end"
                       aria-label="Enviar Tarea"
-                      onClick={() => handleModalOpen('Enviar Tarea')}
+                      onClick={() =>
+                        handleModalOpen(
+                          'Enviar Tarea',
+                          row.id,
+                          row.status,
+                          row.enterprise_id,
+                        )
+                      }
                     >
                       <ChecklistIcon />
                     </IconButton>
@@ -142,7 +161,14 @@ export const TareasGestion = () => {
                     <IconButton
                       edge="end"
                       aria-label="edit"
-                      onClick={() => handleModalOpen('Enviar Formulario')}
+                      onClick={() =>
+                        handleModalOpen(
+                          'Enviar Formulario',
+                          row.id,
+                          row.status,
+                          row.enterprise_id,
+                        )
+                      }
                     >
                       <EditIcon />
                     </IconButton>

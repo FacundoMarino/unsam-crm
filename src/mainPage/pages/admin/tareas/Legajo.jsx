@@ -9,28 +9,25 @@ import {
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectRole, setEnterpriseId } from '../../../../store/auth/authSlider';
-import { getTasks } from '../../../../store/tasks/thunks';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import { setCrmPage } from '../../../../store/crm/crmSlider';
 import { setFormId } from '../../../../store/forms/formSlider';
 import { setTaskId } from '../../../../store/tasks/taskSlider';
+import { getTasks } from '../../../../store/tasks/thunks';
 
 export const Legajo = () => {
   const rol = useSelector(selectRole);
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const dispatch = useDispatch();
   const tasksRedux = useSelector((state) => state.tasks.tasks);
-  const enterprises = useSelector((state) => state.tasks.enterprises);
   const enterpriseExternal = useSelector((state) => state.auth.enterprise);
-  const enterpriseId = useSelector((state) => state.tasks.entepriseId);
 
   const [cards, setCards] = useState([]);
+  const enterpriseId = useSelector((state) => state.services.idEnterprise);
 
   useEffect(() => {
-    if (rol === 'Admin') {
-      dispatch(getTasks({ telekinesis, enterprise_id: enterpriseId }));
-    } else {
+    if (rol !== 'Admin') {
       dispatch(
         getTasks({
           telekinesis,
@@ -112,8 +109,8 @@ export const Legajo = () => {
 
     if (rol === 'Admin') {
       const empresasCard = {
-        title: enterprises[0]?.razon_social,
-        content: `Nombre: ${enterprises[0]?.razon_social}\n Descripción: ${enterprises[0]?.description}\n Dirección: ${enterprises[0]?.address} `,
+        title: enterpriseId?.razon_social,
+        content: `Nombre: ${enterpriseId?.razon_social}\n Descripción: ${enterpriseId?.description}\n Dirección: ${enterpriseId?.address} `,
         color: 'black',
       };
       mappedCards.unshift(empresasCard);
