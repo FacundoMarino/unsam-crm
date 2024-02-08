@@ -16,7 +16,11 @@ import {
 } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFormFromId, updateQuestionForm } from '../../../store/forms/thunks';
+import {
+  getFormFromId,
+  responseQuestionForm,
+  updateQuestionForm,
+} from '../../../store/forms/thunks';
 import { setFormId } from '../../../store/forms/formSlider';
 import { updateTask } from '../../../store/tasks/thunks';
 
@@ -36,6 +40,7 @@ export const FormularioComplete = () => {
   const [MAX_STEP, setMAX_STEP] = useState(1);
   const [selectedRadioStep, setSelectedRadioStep] = useState(null);
   const [inputError, setInputError] = useState('');
+  const [response, setResponse] = useState({});
 
   const handleNumberChange = (id, value, min, max) => {
     const parsedValue = parseFloat(value);
@@ -53,6 +58,16 @@ export const FormularioComplete = () => {
         ...prevValues,
         [id]: parsedValue,
       }));
+
+      // Actualizar currentForm con la respuesta del usuario
+      setCurrentForm((prevForm) => {
+        const updatedForm = [...prevForm];
+        updatedForm[currentStep][id] = {
+          ...updatedForm[currentStep][id],
+          response: parsedValue,
+        };
+        return updatedForm;
+      });
     }
   };
   const handleRadioChange = (id, value) => {
@@ -80,10 +95,9 @@ export const FormularioComplete = () => {
       setCurrentStep((prevStep) => prevStep + 1);
     }
     if (currentStep === MAX_STEP) {
-      console.log('currentForm:', currentForm[0]);
-      /*dispatch(
-        updateQuestionForm({ telekinesis, form_id, data: currentForm[0] }),
-      );*/
+      dispatch(
+        responseQuestionForm({ telekinesis, form_id, data: currentForm[0] }),
+      );
       dispatch(
         updateTask({
           telekinesis,
@@ -97,6 +111,36 @@ export const FormularioComplete = () => {
 
   const handleFormChange = (index) => {
     setCurrentForm(formIndividual);
+  };
+  const handleInputChange = (id, value) => {
+    // Actualizar el estado response
+    setResponse((prevResponse) => ({
+      ...prevResponse,
+      [id]: value,
+    }));
+
+    // Actualizar currentForm con la respuesta del usuario
+    setCurrentForm((prevForm) => {
+      const updatedForm = [...prevForm];
+      const currentQuestion = updatedForm[currentStep].find(
+        (question) => question.id === id,
+      );
+
+      console.log('currentQuestion:', currentQuestion);
+      // Verificar si se encontró la pregunta actual
+      if (currentQuestion) {
+        // Construir un nuevo objeto de pregunta con la propiedad "response"
+        const updatedQuestion = {
+          ...currentQuestion,
+          response: value,
+        };
+        // Reemplazar la pregunta original con la actualizada en el formulario
+        updatedForm[currentStep] = updatedForm[currentStep].map((question) =>
+          question.id === id ? updatedQuestion : question,
+        );
+      }
+      return updatedForm;
+    });
   };
 
   useEffect(() => {
@@ -148,6 +192,9 @@ export const FormularioComplete = () => {
                               key={item.id}
                               label={item.pregunta}
                               variant="outlined"
+                              onChange={(e) =>
+                                handleInputChange(item.id, e.target.value)
+                              }
                               required={item.requerido === 1}
                             />
                           </div>
@@ -208,6 +255,9 @@ export const FormularioComplete = () => {
                                 key={index}
                                 control={<Checkbox />}
                                 label={opcion}
+                                onChange={(e) =>
+                                  handleInputChange(item.id, e.target.value)
+                                }
                               />
                             ))}
                           </div>
@@ -233,6 +283,9 @@ export const FormularioComplete = () => {
                               resize: 'none',
                             }}
                             placeholder={item.pregunta}
+                            onChange={(e) =>
+                              handleInputChange(item.id, e.target.value)
+                            }
                           />
                           <Divider />
                         </>
@@ -284,6 +337,9 @@ export const FormularioComplete = () => {
                               fullWidth
                               required={item.requerido === 1}
                               type="date"
+                              onChange={(e) =>
+                                handleInputChange(item.id, e.target.value)
+                              }
                             />
                           </div>
                           <Divider />
@@ -309,6 +365,9 @@ export const FormularioComplete = () => {
                               fullWidth
                               required={item.requerido === 1}
                               type="number"
+                              onChange={(e) =>
+                                handleInputChange(item.id, e.target.value)
+                              }
                             />
                           </div>
                           <Divider />

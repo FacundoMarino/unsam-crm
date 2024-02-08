@@ -47,11 +47,13 @@ export const TareasGestion = ({ handleNewFormClick }) => {
   const enterpriseId = useSelector((state) => state.services.idEnterprise);
 
   useEffect(() => {
-    if (services) {
-      setRows(services);
-      setRazonSocial(enterpriseId.razon_social);
+    if (enterpriseId) {
+      setRazonSocial(enterpriseId?.razon_social || '');
     }
-  }, [services]);
+    if (enterpriseId) {
+      setRows(services);
+    }
+  }, [services, enterpriseId, enterprises]);
 
   useEffect(() => {
     if (status === 'ok') {
@@ -63,7 +65,7 @@ export const TareasGestion = ({ handleNewFormClick }) => {
         dispatch(setStatusTask('')),
       );
     }
-  }, [status]);
+  }, [dispatch, status, telekinesis]);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return format(date, 'dd/MM/yyyy');
@@ -105,7 +107,7 @@ export const TareasGestion = ({ handleNewFormClick }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {rows?.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>{row.service}</TableCell>
                 <TableCell>{razonSocial}</TableCell>

@@ -138,3 +138,25 @@ export const putForm = async ({ token, telekinesis, form_id, data }) => {
     console.error('Error:', error);
   }
 };
+
+export const responseForm = async ({ token, telekinesis, form_id, data }) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      browser_token: token,
+      telekinesis,
+      form_id,
+      data,
+    }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/forms/form-responses/all-store`,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};

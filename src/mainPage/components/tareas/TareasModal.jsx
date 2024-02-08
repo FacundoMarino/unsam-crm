@@ -71,7 +71,9 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
   }, [dispatch, iconTitle, telekinesis]);
 
   useEffect(() => {
-    setSelectedEmpresa(enterpriseId.enterprise_id);
+    if (enterpriseId) {
+      setSelectedEmpresa(enterpriseId.enterprise_id);
+    }
   }, [enterpriseId]);
 
   const handleSubmit = (iconTitle) => {

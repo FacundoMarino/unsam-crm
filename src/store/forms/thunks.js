@@ -6,6 +6,7 @@ import {
   newForm,
   postComponentForm,
   putForm,
+  responseForm,
 } from '../../services/formsProvider';
 import { errorApi } from '../auth/authSlider';
 import {
@@ -149,6 +150,43 @@ export const updateQuestionForm = ({ telekinesis, form_id, data }) => {
   return async (dispatch) => {
     try {
       const resp = await putForm({
+        token,
+        telekinesis,
+        form_id,
+        data,
+      });
+      if (resp.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al actualizar el formulario',
+        });
+        errorApi(resp.error);
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'El formulario se actualizó correctamente.',
+        });
+        dispatch(setStatusForm('ok'));
+        dispatch(setFormIdCreate(''));
+      }
+    } catch (error) {
+      console.error('Error al guardar el formulario:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al actualizar el formulario.',
+      });
+    }
+  };
+};
+
+export const responseQuestionForm = ({ telekinesis, form_id, data }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    try {
+      const resp = await responseForm({
         token,
         telekinesis,
         form_id,
