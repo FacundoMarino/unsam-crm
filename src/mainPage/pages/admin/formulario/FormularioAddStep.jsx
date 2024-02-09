@@ -62,7 +62,7 @@ export const FormularioAddStep = () => {
 
         let stepNumber = maxStep + 1;
 
-        if (maxStep && value && value.stepName !== undefined) {
+        if (maxStep && stepNumber && value && value.stepName !== undefined) {
           setIsNewStep(stepNumber);
           setIsNewStepName(value.stepName);
           setFormFields([
@@ -79,7 +79,7 @@ export const FormularioAddStep = () => {
     };
 
     showConfirmation();
-  }, []);
+  }, [maxStep]);
 
   const initialState = {
     id: Date.now(),
