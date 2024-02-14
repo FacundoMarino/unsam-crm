@@ -139,7 +139,14 @@ export const putForm = async ({ token, telekinesis, form_id, data }) => {
   }
 };
 
-export const responseForm = async ({ token, telekinesis, form_id, data }) => {
+export const responseForm = async ({
+  token,
+  telekinesis,
+  form_id,
+  data,
+  service_id,
+  tarea_id,
+}) => {
   const requestOptions = {
     method: 'POST',
     headers: headers,
@@ -148,6 +155,8 @@ export const responseForm = async ({ token, telekinesis, form_id, data }) => {
       telekinesis,
       form_id,
       data,
+      service_id,
+      tarea_id,
     }),
   };
   try {

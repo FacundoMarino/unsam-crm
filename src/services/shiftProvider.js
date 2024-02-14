@@ -93,6 +93,7 @@ export const postStore = async ({
   day,
   hour,
   shift_type_id,
+  service_id,
 }) => {
   const requestOptions = {
     method: 'POST',
@@ -105,6 +106,7 @@ export const postStore = async ({
       day,
       hour,
       shift_type_id,
+      service_id,
     }),
   };
 

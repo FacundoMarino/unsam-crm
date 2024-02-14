@@ -170,6 +170,7 @@ export const updateQuestionForm = ({ telekinesis, form_id, data }) => {
         });
         dispatch(setStatusForm('ok'));
         dispatch(setFormIdCreate(''));
+        dispatch(setIndividualForm([]));
       }
     } catch (error) {
       console.error('Error al guardar el formulario:', error);
@@ -182,7 +183,13 @@ export const updateQuestionForm = ({ telekinesis, form_id, data }) => {
   };
 };
 
-export const responseQuestionForm = ({ telekinesis, form_id, data }) => {
+export const responseQuestionForm = ({
+  telekinesis,
+  form_id,
+  data,
+  service_id,
+  tarea_id,
+}) => {
   const token = localStorage.getItem('browser_token');
   return async (dispatch) => {
     try {
@@ -191,6 +198,8 @@ export const responseQuestionForm = ({ telekinesis, form_id, data }) => {
         telekinesis,
         form_id,
         data,
+        service_id,
+        tarea_id,
       });
       if (resp.error) {
         Swal.fire({
@@ -207,6 +216,8 @@ export const responseQuestionForm = ({ telekinesis, form_id, data }) => {
         });
         dispatch(setStatusForm('ok'));
         dispatch(setFormIdCreate(''));
+        dispatch(setIndividualForm([]));
+        dispatch(setFormId(''));
       }
     } catch (error) {
       console.error('Error al guardar el formulario:', error);

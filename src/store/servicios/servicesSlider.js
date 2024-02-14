@@ -23,6 +23,9 @@ export const servicesSlice = createSlice({
     setIdEnterprise: (state, { payload }) => {
       state.idEnterprise = payload;
     },
+    setIdService: (state, { payload }) => {
+      state.idService = payload;
+    },
   },
 });
 
@@ -32,4 +35,5 @@ export const {
   setStatus,
   setServicesByEnterprises,
   setIdEnterprise,
+  setIdService,
 } = servicesSlice.actions;

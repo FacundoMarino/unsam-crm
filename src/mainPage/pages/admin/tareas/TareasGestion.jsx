@@ -14,6 +14,8 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import EditIcon from '@mui/icons-material/Edit';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { FaRegFolderOpen } from 'react-icons/fa';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { TareasModal } from '../../../components/tareas/TareasModal';
 import { format } from 'date-fns';
@@ -100,7 +102,7 @@ export const TareasGestion = ({ handleNewFormClick }) => {
           <TableHead>
             <TableRow>
               {columns.map((column, index) => (
-                <TableCell textAlign="center" gr key={index}>
+                <TableCell textAlign="center" key={index}>
                   {column}
                 </TableCell>
               ))}
@@ -115,7 +117,7 @@ export const TareasGestion = ({ handleNewFormClick }) => {
                 <TableCell>{formatDate(row.created_at)}</TableCell>
                 <TableCell>{filteredRows(row.status_service)}</TableCell>
                 <TableCell>
-                  <Tooltip title="Ver Servicio Solitado" arrow>
+                  <Tooltip title="Ver Servicio Solicitado" arrow>
                     <IconButton
                       edge="end"
                       aria-label="view"
@@ -143,20 +145,20 @@ export const TareasGestion = ({ handleNewFormClick }) => {
                     </IconButton>
                   </Tooltip>
 
-                  <Tooltip title="Enviar Tarea" arrow>
+                  <Tooltip title="Subir Documentación" arrow>
                     <IconButton
                       edge="end"
-                      aria-label="Enviar Tarea"
+                      aria-label="Subir Documentación"
                       onClick={() =>
                         handleModalOpen(
-                          'Enviar Tarea',
+                          'Subir Documentación',
                           row.id,
                           row.status,
                           row.enterprise_id,
                         )
                       }
                     >
-                      <ChecklistIcon />
+                      <FaRegFolderOpen />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Enviar Formulario" arrow>
@@ -166,6 +168,22 @@ export const TareasGestion = ({ handleNewFormClick }) => {
                       onClick={() =>
                         handleModalOpen(
                           'Enviar Formulario',
+                          row.id,
+                          row.status,
+                          row.enterprise_id,
+                        )
+                      }
+                    >
+                      <ChecklistIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Editar Estado" arrow>
+                    <IconButton
+                      edge="end"
+                      aria-label="edit"
+                      onClick={() =>
+                        handleModalOpen(
+                          'Editar Estado',
                           row.id,
                           row.status,
                           row.enterprise_id,

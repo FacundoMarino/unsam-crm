@@ -19,9 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   getFormFromId,
   responseQuestionForm,
-  updateQuestionForm,
 } from '../../../store/forms/thunks';
-import { setFormId } from '../../../store/forms/formSlider';
 import { updateTask } from '../../../store/tasks/thunks';
 
 export const FormularioComplete = () => {
@@ -31,6 +29,7 @@ export const FormularioComplete = () => {
   const role = useSelector((state) => state.auth.rol);
   const enterprise_id = useSelector((state) => state.auth.enterprise_id);
   const idTask = useSelector((state) => state.tasks.taskId);
+  const serviceId = useSelector((state) => state.services.idService);
   const dispatch = useDispatch();
 
   const [radioValues, setRadioValues] = useState({});
@@ -62,14 +61,27 @@ export const FormularioComplete = () => {
       // Actualizar currentForm con la respuesta del usuario
       setCurrentForm((prevForm) => {
         const updatedForm = [...prevForm];
-        updatedForm[currentStep][id] = {
-          ...updatedForm[currentStep][id],
-          response: parsedValue,
-        };
+        const currentQuestionIndex = updatedForm[currentStep].findIndex(
+          (question) => question.id === id,
+        );
+
+        if (currentQuestionIndex !== -1) {
+          const updatedQuestion = {
+            ...updatedForm[currentStep][currentQuestionIndex],
+            response: parsedValue,
+          };
+          // Reemplazar la pregunta original con la actualizada en la copia del formulario
+          updatedForm[currentStep] = [
+            ...updatedForm[currentStep].slice(0, currentQuestionIndex),
+            updatedQuestion,
+            ...updatedForm[currentStep].slice(currentQuestionIndex + 1),
+          ];
+        }
         return updatedForm;
       });
     }
   };
+
   const handleRadioChange = (id, value) => {
     setRadioValues((prevValues) => ({
       ...prevValues,
@@ -94,9 +106,16 @@ export const FormularioComplete = () => {
       // Otherwise, proceed to the next step
       setCurrentStep((prevStep) => prevStep + 1);
     }
-    if (currentStep === MAX_STEP) {
+    if (currentStep === MAX_STEP && serviceId !== null) {
+      console.log(serviceId);
       dispatch(
-        responseQuestionForm({ telekinesis, form_id, data: currentForm[0] }),
+        responseQuestionForm({
+          telekinesis,
+          form_id,
+          data: currentForm[0],
+          service_id: serviceId,
+          tarea_id: idTask,
+        }),
       );
       dispatch(
         updateTask({
@@ -113,7 +132,56 @@ export const FormularioComplete = () => {
     setCurrentForm(formIndividual);
   };
   const handleInputChange = (id, value) => {
-    // Actualizar el estado response
+    // Verificar si el tipo de pregunta es checkbox
+    const isCheckbox = currentForm[currentStep].find(
+      (question) => question.id === id && question.tipo === 'checkbox',
+    );
+
+    if (isCheckbox) {
+      // Obtener el array de respuestas actual para esta pregunta
+      const currentResponse = response[id] || [];
+
+      // Verificar si el checkbox fue marcado o desmarcado
+      let updatedResponse;
+      if (value) {
+        // Si fue marcado, agregar la opción seleccionada al array de respuestas
+        updatedResponse = [...currentResponse, value];
+      } else {
+        // Si fue desmarcado, filtrar la opción deseleccionada del array de respuestas
+        updatedResponse = currentResponse.filter((option) => option !== value);
+      }
+
+      // Actualizar el estado response
+      setResponse((prevResponse) => ({
+        ...prevResponse,
+        [id]: updatedResponse,
+      }));
+
+      // Actualizar currentForm con la respuesta del usuario
+      setCurrentForm((prevForm) => {
+        const updatedForm = [...prevForm];
+        const currentQuestion = updatedForm[currentStep].find(
+          (question) => question.id === id,
+        );
+
+        // Verificar si se encontró la pregunta actual
+        if (currentQuestion) {
+          // Construir un nuevo objeto de pregunta con la propiedad "response"
+          const updatedQuestion = {
+            ...currentQuestion,
+            response: updatedResponse, // Usar el array de respuestas actualizado
+          };
+          // Reemplazar la pregunta original con la actualizada en el formulario
+          updatedForm[currentStep] = updatedForm[currentStep].map((question) =>
+            question.id === id ? updatedQuestion : question,
+          );
+        }
+
+        console.log(updatedForm);
+        return updatedForm;
+      });
+    }
+
     setResponse((prevResponse) => ({
       ...prevResponse,
       [id]: value,
@@ -126,7 +194,6 @@ export const FormularioComplete = () => {
         (question) => question.id === id,
       );
 
-      console.log('currentQuestion:', currentQuestion);
       // Verificar si se encontró la pregunta actual
       if (currentQuestion) {
         // Construir un nuevo objeto de pregunta con la propiedad "response"
@@ -146,7 +213,7 @@ export const FormularioComplete = () => {
   useEffect(() => {
     setIsLoading(true);
     dispatch(getFormFromId({ telekinesis, form_id }));
-  }, [form_id]);
+  }, [dispatch, form_id, telekinesis]);
 
   useEffect(() => {
     if (formIndividual) {
@@ -256,7 +323,7 @@ export const FormularioComplete = () => {
                                 control={<Checkbox />}
                                 label={opcion}
                                 onChange={(e) =>
-                                  handleInputChange(item.id, e.target.value)
+                                  handleInputChange(item.id, opcion)
                                 }
                               />
                             ))}

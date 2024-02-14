@@ -20,8 +20,6 @@ export const ServiciosExternal = () => {
   }, [dispatch, telekinesis]);
 
   const handleSubmit = (id) => {
-    console.log(id);
-
     dispatch(
       solicitarServicio({
         telekinesis,

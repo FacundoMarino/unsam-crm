@@ -12,6 +12,7 @@ import { TareasAdminLayout } from './layout/TareasAdminLayout';
 import { Legajo } from './admin/tareas/Legajo';
 import { ServiciosAdminLayout } from './layout/ServiciosAdminLayout';
 import { ServiciosExternal } from '../components/servicios/ServiciosExternal';
+import { Reportes } from './admin/reportes/Reportes';
 
 export const CrmPage = () => {
   const page = useSelector((state) => state.crm.page);
@@ -47,6 +48,8 @@ export const CrmPage = () => {
     contentComponent = <ServiciosAdminLayout />;
   } else if (page === 'servicios' && rol !== 'Admin') {
     contentComponent = <ServiciosExternal />;
+  } else if (page === 'reportes' && rol === 'Admin') {
+    contentComponent = <Reportes />;
   } else {
     contentComponent = <TurnosAdminLayout onVerDetalle={handleVerDetalle} />;
   }

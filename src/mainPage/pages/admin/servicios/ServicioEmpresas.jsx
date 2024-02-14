@@ -40,7 +40,7 @@ export const ServicioEmpresas = () => {
     dispatch(setCrmPage('bandejadesolicitudes'));
   };
 
-  const columns = ['Servicio', 'Empresas', 'Contacto', 'Acciones'];
+  const columns = ['Empresa', 'Descipción', 'Domicilio', 'Acciones'];
 
   return (
     <>
@@ -50,7 +50,7 @@ export const ServicioEmpresas = () => {
           <TableHead>
             <TableRow>
               {columns.map((column, index) => (
-                <TableCell textAlign="center" gr key={index}>
+                <TableCell textAlign="center" key={index}>
                   {column}
                 </TableCell>
               ))}
@@ -59,9 +59,9 @@ export const ServicioEmpresas = () => {
           <TableBody>
             {enterprises?.map((row) => (
               <TableRow key={row.id}>
-                <TableCell>{row?.description}</TableCell>
                 <TableCell>{row?.razon_social}</TableCell>
-                <TableCell>{row?.email}</TableCell>
+                <TableCell>{row?.description}</TableCell>
+                <TableCell>{row?.address}</TableCell>
 
                 <TableCell>
                   <Tooltip title="Ver Servicio Solicitado" arrow>

@@ -54,17 +54,17 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
   }, [dispatch, iconTitle, telekinesis]);
 
   useEffect(() => {
-    if (iconTitle === 'Enviar Tarea') {
+    if (iconTitle === 'Subir Documentación') {
       setTaskType(2);
     }
   }, [iconTitle]);
 
   useEffect(() => {
-    if (iconTitle === 'Ver Servicios') {
+    if (iconTitle === 'Editar Estado') {
       dispatch(getEnterprises({ telekinesis }));
       setEstados([
-        { value: '1', label: 'Pendiente' },
-        { value: '2', label: 'Completa' },
+        { value: '1', label: 'En Proceso' },
+        { value: '2', label: 'Implementada' },
         { value: '3', label: 'Cancelada' },
       ]);
     }
@@ -187,7 +187,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
             </>
           )}
 
-          {iconTitle === 'Enviar Tarea' && (
+          {iconTitle === 'Subir Documentación' && (
             <>
               <FormControl fullWidth margin="normal">
                 <TextField
@@ -280,7 +280,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
             </>
           )}
 
-          {iconTitle === 'Ver Servicios' && (
+          {iconTitle === 'Editar Estado' && (
             <>
               <FormControl fullWidth margin="normal">
                 <InputLabel id="estado-select-label">Estado</InputLabel>

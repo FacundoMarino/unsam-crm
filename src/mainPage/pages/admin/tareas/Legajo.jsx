@@ -6,6 +6,10 @@ import {
   Divider,
   Grid,
   Button,
+  TextField,
+  Container,
+  Dialog,
+  DialogContent,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectRole, setEnterpriseId } from '../../../../store/auth/authSlider';
@@ -15,6 +19,8 @@ import { setCrmPage } from '../../../../store/crm/crmSlider';
 import { setFormId } from '../../../../store/forms/formSlider';
 import { setTaskId } from '../../../../store/tasks/taskSlider';
 import { getTasks } from '../../../../store/tasks/thunks';
+import { newNote, solicitarNotas } from '../../../../store/notes/thunks';
+import { setIdService } from '../../../../store/servicios/servicesSlider';
 
 export const Legajo = () => {
   const rol = useSelector(selectRole);
@@ -22,8 +28,14 @@ export const Legajo = () => {
   const dispatch = useDispatch();
   const tasksRedux = useSelector((state) => state.tasks.tasks);
   const enterpriseExternal = useSelector((state) => state.auth.enterprise);
+  const notesRedux = useSelector((state) => state.notes.notes);
 
   const [cards, setCards] = useState([]);
+  const [notes, setNotes] = useState([]);
+  const [newNoteContent, setNewNoteContent] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [note, setNote] = useState([]);
+
   const enterpriseId = useSelector((state) => state.services.idEnterprise);
 
   useEffect(() => {
@@ -35,7 +47,23 @@ export const Legajo = () => {
         }),
       );
     }
-  }, [dispatch, telekinesis]);
+
+    if (rol === 'Admin' && tasksRedux.length > 0) {
+      dispatch(
+        solicitarNotas({
+          telekinesis,
+          enterprise_id: enterpriseId.enterprise_id,
+          service_id: tasksRedux[0].service_id,
+        }),
+      );
+    }
+  }, [dispatch, rol, telekinesis]);
+
+  useEffect(() => {
+    if (notes) {
+      setNotes(notes);
+    }
+  }, [notes]);
 
   useEffect(() => {
     const mappedCards = tasksRedux.map((task) => {
@@ -48,12 +76,14 @@ export const Legajo = () => {
       let id = '';
       let enterprise_id = '';
       let form_id = '';
+      let service_id = '';
 
       const fecha = task.created_at;
 
       switch (task.tipo_tarea) {
         case 2:
           enterprise_id = task.enterprise_id;
+          service_id = task.service_id;
           id = task.id;
           tipoTarea = 'documentacion';
           cardTitle = 'Tarea Documentación';
@@ -68,6 +98,7 @@ export const Legajo = () => {
           break;
         case 1:
           enterprise_id = task.enterprise_id;
+          service_id = task.service_id;
           id = task.id;
           tipoTarea = 'turnos';
           cardTitle = 'Turnos Admisión';
@@ -80,6 +111,7 @@ export const Legajo = () => {
           break;
         case 3:
           enterprise_id = task.enterprise_id;
+          service_id = task.service_id;
           id = task.id;
           form_id = task.form_id;
           tipoTarea = 'formularios';
@@ -104,6 +136,7 @@ export const Legajo = () => {
         color: cardColor,
         icon: icon,
         form_id: form_id,
+        service_id: service_id,
       };
     });
 
@@ -126,12 +159,29 @@ export const Legajo = () => {
     setCards(mappedCards);
   }, [tasksRedux]);
 
+  useEffect(() => {
+    if (note.length > 0 && rol === 'Admin' && tasksRedux.length > 0) {
+      dispatch(
+        newNote({
+          telekinesis,
+          enterprise_id: enterpriseId.enterprise_id,
+          service_id: tasksRedux[0].service_id,
+          note,
+        }),
+      );
+      setNote([]);
+    }
+  }, [note, dispatch]);
+
   const handleAddCard = () => {
-    const newCard = { title: 'Nota', content: 'Contenido de la Nota' };
-    setCards((prevCards) => [...prevCards, newCard]);
+    const newCard = { title: 'Nota', content: newNoteContent };
+    setNote([newCard]);
+
+    setNewNoteContent('');
+    setIsModalOpen(false);
   };
 
-  const handleCardClick = (id, page, enterprise_id, form_id) => {
+  const handleCardClick = (id, page, enterprise_id, form_id, service_id) => {
     if (page === 'formularios') {
       dispatch(setCrmPage(page));
       dispatch(setEnterpriseId(enterprise_id));
@@ -139,8 +189,11 @@ export const Legajo = () => {
     }
     dispatch(setCrmPage(page));
     dispatch(setTaskId(id));
+
+    dispatch(setIdService(service_id));
   };
 
+  console.log(note);
   return (
     <div>
       <Grid container spacing={2}>
@@ -152,13 +205,14 @@ export const Legajo = () => {
                 cursor: rol !== 'Admin' ? 'pointer' : 'default',
               }}
               onClick={
-                rol !== 'Admin'
+                rol !== 'Admin' && card.color !== 'green'
                   ? () =>
                       handleCardClick(
                         card.id,
                         card.type,
                         card.enterprise_id,
                         card.form_id,
+                        card.service_id,
                       )
                   : null
               }
@@ -181,13 +235,62 @@ export const Legajo = () => {
       </Grid>
 
       {rol === 'Admin' && (
-        <Button
-          style={{ marginTop: '20px' }}
-          variant="outlined"
-          onClick={handleAddCard}
-        >
-          Agregar Nota
-        </Button>
+        <div>
+          <Button
+            style={{ marginTop: '20px' }}
+            variant="outlined"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Agregar Nota
+          </Button>
+          <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <Container
+              component="main"
+              maxWidth="xs"
+              style={{ width: '500px' }}
+            >
+              <DialogContent>
+                {rol === 'Admin' && tasksRedux.length > 0 ? (
+                  <>
+                    <Typography
+                      id="modal-title"
+                      variant="h6"
+                      component="h2"
+                      gutterBottom
+                    >
+                      Agregar Nota
+                    </Typography>
+                    <TextField
+                      id="note-content"
+                      label="Contenido de la nota"
+                      margin="normal"
+                      multiline
+                      rows={4}
+                      variant="outlined"
+                      fullWidth
+                      value={newNoteContent}
+                      onChange={(e) => setNewNoteContent(e.target.value)}
+                    />
+                  </>
+                ) : null}
+
+                <Grid container spacing={2} justifyContent={'flex-end'}>
+                  <Grid item xs={12} sm={6}>
+                    <Button
+                      style={{ marginTop: '20px' }}
+                      variant="contained"
+                      color="primary"
+                      onClick={handleAddCard}
+                      fullWidth
+                    >
+                      Agregar
+                    </Button>
+                  </Grid>
+                </Grid>
+              </DialogContent>
+            </Container>
+          </Dialog>
+        </div>
       )}
     </div>
   );

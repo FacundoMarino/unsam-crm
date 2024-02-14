@@ -28,6 +28,7 @@ export const SideBarItem = ({ title = '', icon }) => {
     'Turnos',
     'Formularios',
     'Bandeja de Solicitudes',
+    'Reportes',
   ];
 
   useEffect(() => {
