@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Button,
   Container,
   IconButton,
   List,
@@ -17,7 +16,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { deleteFormId, getAllForms } from '../../../../store/forms/thunks';
 import {
   setForm,
@@ -25,7 +24,12 @@ import {
   setStatusForm,
 } from '../../../../store/forms/formSlider';
 
-export const FormularioGestion = ({ handleNewFormClick }) => {
+export const FormularioGestion = ({
+  handleNewFormClick,
+  setDisplayEditForm,
+  setStepEditForm,
+  setDisplayViewForm,
+}) => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const formsStore = useSelector((state) => state.forms.form);
   const formStatus = useSelector((state) => state.forms.status);
@@ -34,6 +38,9 @@ export const FormularioGestion = ({ handleNewFormClick }) => {
   useEffect(() => {
     dispatch(getAllForms({ telekinesis }));
     setForm(formsStore);
+    setDisplayEditForm('none');
+    setDisplayViewForm('none');
+    setStepEditForm('none');
   }, []);
 
   useEffect(() => {
@@ -44,6 +51,7 @@ export const FormularioGestion = ({ handleNewFormClick }) => {
   }, [formStatus]);
 
   const handleEditar = (id) => {
+    setDisplayEditForm('');
     dispatch(setFormId(id));
     handleNewFormClick(1);
   };
@@ -51,11 +59,13 @@ export const FormularioGestion = ({ handleNewFormClick }) => {
   const handleAgregarStep = (id) => {
     dispatch(setFormId(id));
     handleNewFormClick(4);
+    setStepEditForm('');
   };
 
   const handlePreView = (id) => {
     dispatch(setFormId(id));
     handleNewFormClick(3);
+    setDisplayViewForm('');
   };
   const handleEliminar = (id) => {
     Swal.fire({

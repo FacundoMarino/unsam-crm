@@ -1,6 +1,7 @@
 import {
   AppBar,
   Button,
+  Container,
   Grid,
   IconButton,
   List,
@@ -68,7 +69,7 @@ export const ServicioGestion = () => {
 
   return (
     <>
-      <Grid container>
+      <Container>
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -83,36 +84,36 @@ export const ServicioGestion = () => {
             </Button>
           </Toolbar>
         </AppBar>
-      </Grid>
-      <List>
-        {servicios?.map((servicio) => (
-          <ListItem key={servicio.id}>
-            <ListItemText primary={servicio.service} />
-            <ListItemSecondaryAction>
-              <IconButton
-                edge="end"
-                aria-label="edit"
-                onClick={() => handleEditar(servicio.id)}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={() => handleEliminar(servicio.id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-      </List>
+        <List>
+          {servicios?.map((servicio) => (
+            <ListItem key={servicio.id}>
+              <ListItemText primary={servicio.service} />
+              <ListItemSecondaryAction>
+                <IconButton
+                  edge="end"
+                  aria-label="edit"
+                  onClick={() => handleEditar(servicio.id)}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => handleEliminar(servicio.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
 
-      <ServicioCreateModal
-        open={isModalOpen}
-        handleClose={handleClose}
-        id={id}
-      />
+        <ServicioCreateModal
+          open={isModalOpen}
+          handleClose={handleClose}
+          id={id}
+        />
+      </Container>
     </>
   );
 };

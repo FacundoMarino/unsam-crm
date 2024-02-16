@@ -9,6 +9,9 @@ import { FormularioAddStep } from '../admin/formulario/FormularioAddStep';
 
 export const FormulariosAdminLayout = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [displayEditForm, setDisplayEditForm] = useState('none');
+  const [displayStepForm, setStepEditForm] = useState('none');
+  const [displayViewForm, setDisplayViewForm] = useState('none');
 
   const handleNewFormClick = (num) => {
     setSelectedIndex(num);
@@ -23,20 +26,31 @@ export const FormulariosAdminLayout = () => {
       >
         <TabList>
           <Tab>Administración de Formularios</Tab>
-          <Tab>Edición de Formulario</Tab>
+          <Tab style={{ display: displayEditForm }}>Edición de Formulario</Tab>
           <Tab>Crear Tipo Formulario</Tab>
-          <Tab>Pre Visualización Formulario</Tab>
-          <Tab>Agregar Step</Tab>
+          <Tab style={{ display: displayViewForm }}>
+            Pre Visualización Formulario
+          </Tab>
+          <Tab style={{ display: displayStepForm }}>Agregar Step</Tab>
         </TabList>
 
         <TabPanel>
-          <FormularioGestion handleNewFormClick={handleNewFormClick} />
+          <FormularioGestion
+            setDisplayEditForm={setDisplayEditForm}
+            handleNewFormClick={handleNewFormClick}
+            setDisplayViewForm={setDisplayViewForm}
+            setStepEditForm={setStepEditForm}
+          />
         </TabPanel>
         <TabPanel>
           <FormularioEditor />
         </TabPanel>
         <TabPanel>
-          <FormularioCreate />
+          <FormularioCreate
+            setDisplayEditForm={setDisplayEditForm}
+            setDisplayViewForm={setDisplayViewForm}
+            setStepEditForm={setStepEditForm}
+          />
         </TabPanel>
         <TabPanel>
           <FormularioComplete />

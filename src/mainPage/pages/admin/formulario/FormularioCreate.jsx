@@ -25,7 +25,11 @@ import { addQuestionForm, postNewForm } from '../../../../store/forms/thunks';
 import { setFormId } from '../../../../store/forms/formSlider';
 import Swal from 'sweetalert2';
 
-export const FormularioCreate = () => {
+export const FormularioCreate = ({
+  setDisplayEditForm,
+  setStepEditForm,
+  setDisplayViewForm,
+}) => {
   const dispatch = useDispatch();
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const form_id = useSelector((state) => state.forms.formIdCreate);
@@ -109,10 +113,13 @@ export const FormularioCreate = () => {
 
   useEffect(() => {
     dispatch(setFormId(''));
+    setDisplayEditForm('none');
+    setDisplayViewForm('none');
+    setStepEditForm('none');
   }, []);
 
   return (
-    <Container component="main" maxWidth="md" style={{ marginTop: '20px' }}>
+    <Container>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
