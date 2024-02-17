@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/es';
@@ -31,7 +31,7 @@ const customMessages = {
   next: 'Siguiente',
   showMore: (total) => `+${total} más`,
 };
-export const TurnosAdminPage = ({ onVerDetalle }) => {
+export const TurnosAdminPage = ({ onVerDetalle, setDisplayCreateShift }) => {
   const data = [
     {
       id: 1,
@@ -139,6 +139,10 @@ export const TurnosAdminPage = ({ onVerDetalle }) => {
   const turnosParaFecha = data.filter((turno) =>
     moment(turno.start).isSame(selectedDate, 'day'),
   );
+
+  useEffect(() => {
+    setDisplayCreateShift('none');
+  }, []);
 
   return (
     <div>

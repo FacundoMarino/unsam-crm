@@ -23,7 +23,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TurnosModalEdit } from '../../components/turnos/TurnosModalEdit';
 import { setAdminStatus } from '../../../store/shift/shiftSlider';
 
-export const TurnosGestion = ({ handleNuevoTurnoClick }) => {
+export const TurnosGestion = ({
+  handleNuevoTurnoClick,
+  setDisplayCreateShift,
+}) => {
   const dispatch = useDispatch();
   const shifts = useSelector((state) => state.shift.shiftType);
   const adminStatus = useSelector((state) => state.shift.adminStatus);
@@ -33,6 +36,7 @@ export const TurnosGestion = ({ handleNuevoTurnoClick }) => {
 
   useEffect(() => {
     dispatch(getShiftsTypes({ telekinesis }));
+    setDisplayCreateShift('none');
   }, [dispatch]);
 
   useEffect(() => {
@@ -58,6 +62,7 @@ export const TurnosGestion = ({ handleNuevoTurnoClick }) => {
 
   const handleNuevoTurno = () => {
     handleNuevoTurnoClick();
+    setDisplayCreateShift('');
   };
 
   return (

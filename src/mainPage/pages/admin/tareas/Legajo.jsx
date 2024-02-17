@@ -22,7 +22,7 @@ import { getTasks } from '../../../../store/tasks/thunks';
 import { newNote, solicitarNotas } from '../../../../store/notes/thunks';
 import { setIdService } from '../../../../store/servicios/servicesSlider';
 
-export const Legajo = () => {
+export const Legajo = ({ setDisplayView }) => {
   const rol = useSelector(selectRole);
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const dispatch = useDispatch();

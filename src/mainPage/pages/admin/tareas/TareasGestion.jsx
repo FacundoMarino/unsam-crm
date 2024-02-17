@@ -21,13 +21,13 @@ import { TareasModal } from '../../../components/tareas/TareasModal';
 import { format } from 'date-fns';
 import { setStatusTask, setTasks } from '../../../../store/tasks/taskSlider';
 import { getServiciosByEnterprise } from '../../../../store/servicios/thunks';
-export const TareasGestion = ({ handleNewFormClick }) => {
+export const TareasGestion = ({ handleNewFormClick, setDisplayView }) => {
   const dispatch = useDispatch();
   const columns = [
     'Servicio',
-    'Empresas',
+    'Empresa',
     'Contacto',
-    'Fecha/Hora',
+    'Fecha',
     'Estado',
     'Acciones',
   ];
@@ -67,6 +67,7 @@ export const TareasGestion = ({ handleNewFormClick }) => {
         dispatch(setStatusTask('')),
       );
     }
+    setDisplayView('none');
   }, [dispatch, status, telekinesis]);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -84,6 +85,7 @@ export const TareasGestion = ({ handleNewFormClick }) => {
 
   const handleClick = (task) => {
     dispatch(setTasks(task));
+    setDisplayView('');
     handleNewFormClick(1);
   };
   const filteredRows = (status) => {

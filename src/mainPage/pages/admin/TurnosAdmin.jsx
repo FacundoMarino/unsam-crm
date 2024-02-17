@@ -1,6 +1,6 @@
 // TurnosDisponibles.js
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   TableBody,
@@ -20,7 +20,7 @@ const StyledTableCell = styled(TableCell)({
 const StyledButton = styled(Button)({
   fontSize: '12px',
 });
-export const TurnosDisponibles = () => {
+export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
   const [orden, setOrden] = useState('asc');
   const [campoOrden, setCampoOrden] = useState('fecha');
 
@@ -88,6 +88,10 @@ export const TurnosDisponibles = () => {
     const comparador = orden === 'asc' ? 1 : -1;
     return a[campoOrden].localeCompare(b[campoOrden]) * comparador;
   });
+
+  useEffect(() => {
+    setDisplayCreateShift('none');
+  }, []);
 
   return (
     <TableContainer>

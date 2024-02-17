@@ -6,6 +6,7 @@ import { Legajo } from '../admin/tareas/Legajo';
 
 export const TareasAdminLayout = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [displayView, setDisplayView] = useState('none');
 
   const handleNewFormClick = (num) => {
     setSelectedIndex(num);
@@ -21,14 +22,17 @@ export const TareasAdminLayout = () => {
         <TabList>
           <Tab>Administración de Tareas</Tab>
 
-          <Tab>Legajo</Tab>
+          <Tab style={{ display: displayView }}>Legajo</Tab>
         </TabList>
 
         <TabPanel>
-          <TareasGestion handleNewFormClick={handleNewFormClick} />
+          <TareasGestion
+            setDisplayView={setDisplayView}
+            handleNewFormClick={handleNewFormClick}
+          />
         </TabPanel>
         <TabPanel>
-          <Legajo />
+          <Legajo setDisplayView={setDisplayView} />
         </TabPanel>
       </Tabs>
     </>

@@ -29,7 +29,7 @@ const startData = {
   inbox: [],
 };
 
-export const TurnosForm = () => {
+export const TurnosForm = ({ setDisplayCreateShift }) => {
   const dispatch = useDispatch();
   const { telekinesis, user_id } = useSelector((state) => state.auth);
   const adminStatus = useSelector((state) => state.shift.adminStatus);
@@ -119,6 +119,8 @@ export const TurnosForm = () => {
         ...resultInbox,
       }),
     );
+
+    setDisplayCreateShift('none');
   };
 
   useEffect(() => {
