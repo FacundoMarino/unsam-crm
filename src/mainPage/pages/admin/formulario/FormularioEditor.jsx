@@ -59,8 +59,7 @@ export const FormularioEditor = () => {
           return {
             ...field,
             [property]: value,
-            // Aquí se actualiza la opción del campo radio con el valor y el paso seleccionado
-            opciones: value.map((opt) => ({
+            opciones: value?.map((opt) => ({
               value: opt.value,
               step_redirect: opt.step_redirect || '',
             })),
@@ -299,12 +298,19 @@ export const FormularioEditor = () => {
                 {field.tipo === 'checkbox' && (
                   <div style={{ marginTop: '10px' }}>
                     {field.opciones.map((opcion, index) => (
-                      <div key={index} style={{ marginBottom: '10px' }}>
+                      <div
+                        key={index}
+                        style={{
+                          marginBottom: '10px',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
                         <TextField
                           variant="outlined"
                           margin="normal"
-                          fullWidth
                           label={`Opción ${index + 1}`}
+                          style={{ width: '90%' }}
                           value={opcion}
                           onChange={(e) =>
                             handleFieldChange(
