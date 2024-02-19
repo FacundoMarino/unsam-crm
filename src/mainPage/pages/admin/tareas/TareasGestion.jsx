@@ -187,7 +187,8 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayView }) => {
   );
 
   const data = React.useMemo(() => {
-    return services.map((service) => ({
+    if (!services) return [];
+    return services?.map((service) => ({
       ...service,
       razonSocial: razonSocial,
     }));
