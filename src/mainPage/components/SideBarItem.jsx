@@ -29,6 +29,7 @@ export const SideBarItem = ({ title = '', icon }) => {
     'Formularios',
     'Bandeja de Solicitudes',
     'Reportes',
+    'FAQ',
   ];
 
   useEffect(() => {

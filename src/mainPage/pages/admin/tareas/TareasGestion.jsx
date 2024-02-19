@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTable, useGlobalFilter, usePagination } from 'react-table';
 import {
   Table,
   TableBody,
@@ -9,6 +10,7 @@ import {
   Paper,
   IconButton,
   Tooltip,
+  Grid,
 } from '@mui/material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import ChecklistIcon from '@mui/icons-material/Checklist';
@@ -21,41 +23,24 @@ import { TareasModal } from '../../../components/tareas/TareasModal';
 import { format } from 'date-fns';
 import { setStatusTask, setTasks } from '../../../../store/tasks/taskSlider';
 import { getServiciosByEnterprise } from '../../../../store/servicios/thunks';
+
 export const TareasGestion = ({ handleNewFormClick, setDisplayView }) => {
   const dispatch = useDispatch();
-  const columns = [
-    'Servicio',
-    'Empresa',
-    'Contacto',
-    'Fecha',
-    'Estado',
-    'Acciones',
-  ];
-
   const services = useSelector((state) => state.services.servicesByEnterprises);
   const status = useSelector((state) => state.tasks.status);
   const telekinesis = useSelector((state) => state.auth.telekinesis);
+  const enterpriseId = useSelector((state) => state.services.idEnterprise);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
-  const [rows, setRows] = useState([]);
   const [props, setProps] = useState([]);
   const [razonSocial, setRazonSocial] = useState('');
-
-  const enterprises = useSelector(
-    (state) => state.services.servicesByEnterprises,
-  );
-
-  const enterpriseId = useSelector((state) => state.services.idEnterprise);
 
   useEffect(() => {
     if (enterpriseId) {
       setRazonSocial(enterpriseId?.razon_social || '');
     }
-    if (enterpriseId) {
-      setRows(services);
-    }
-  }, [services, enterpriseId, enterprises]);
+  }, [enterpriseId]);
 
   useEffect(() => {
     if (status === 'ok') {
@@ -68,11 +53,13 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayView }) => {
       );
     }
     setDisplayView('none');
-  }, [dispatch, status, telekinesis]);
+  }, [dispatch, status, telekinesis, enterpriseId, setDisplayView]);
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return format(date, 'dd/MM/yyyy');
   };
+
   const handleModalOpen = (title, id, status, enterprise_id) => {
     setModalTitle(title);
     setModalOpen(true);
@@ -88,119 +75,231 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayView }) => {
     setDisplayView('');
     handleNewFormClick(1);
   };
-  const filteredRows = (status) => {
-    if (status === 1) {
-      return 'Pendiente';
-    } else if (status === 2) {
-      return 'Completado';
-    } else {
-      return 'Cancelada';
-    }
-  };
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Servicio',
+        accessor: 'service',
+      },
+      {
+        Header: 'Empresa',
+        accessor: 'razonSocial',
+      },
+      {
+        Header: 'Contacto',
+        accessor: 'email',
+      },
+      {
+        Header: 'Fecha',
+        accessor: 'created_at',
+        Cell: ({ value }) => formatDate(value),
+      },
+      {
+        Header: 'Estado',
+        accessor: 'status_service',
+        Cell: ({ value }) =>
+          value === 1 ? 'Pendiente' : value === 2 ? 'Completado' : 'Cancelada',
+      },
+      {
+        Header: 'Acciones',
+        Cell: ({ row }) => (
+          <>
+            <Tooltip title="Ver Servicio Solicitado" arrow>
+              <IconButton
+                edge="end"
+                aria-label="view"
+                onClick={() => handleClick(row.original.task)}
+              >
+                <RemoveRedEyeIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Solicitar Turno" arrow>
+              <IconButton
+                edge="end"
+                aria-label="solicitar-turno"
+                hovered="Solicitar Turno"
+                onClick={() =>
+                  handleModalOpen(
+                    'Solicitar Turno',
+                    row.original.id,
+                    row.original.status,
+                    row.original.enterprise_id,
+                  )
+                }
+              >
+                <CalendarMonthIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Subir Documentación" arrow>
+              <IconButton
+                edge="end"
+                aria-label="Subir Documentación"
+                onClick={() =>
+                  handleModalOpen(
+                    'Subir Documentación',
+                    row.original.id,
+                    row.original.status,
+                    row.original.enterprise_id,
+                  )
+                }
+              >
+                <FaRegFolderOpen />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Enviar Formulario" arrow>
+              <IconButton
+                edge="end"
+                aria-label="edit"
+                onClick={() =>
+                  handleModalOpen(
+                    'Enviar Formulario',
+                    row.original.id,
+                    row.original.status,
+                    row.original.enterprise_id,
+                  )
+                }
+              >
+                <ChecklistIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Editar Estado" arrow>
+              <IconButton
+                edge="end"
+                aria-label="edit"
+                onClick={() =>
+                  handleModalOpen(
+                    'Editar Estado',
+                    row.original.id,
+                    row.original.status,
+                    row.original.enterprise_id,
+                  )
+                }
+              >
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+          </>
+        ),
+      },
+    ],
+    [],
+  );
+
+  const data = React.useMemo(() => {
+    return services.map((service) => ({
+      ...service,
+      razonSocial: razonSocial,
+    }));
+  }, [services, razonSocial]);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    nextPage,
+    gotoPage,
+    previousPage,
+    setPageSize,
+    setGlobalFilter,
+    state,
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 0 },
+    },
+    useGlobalFilter,
+    usePagination,
+  );
+
+  const { globalFilter, pageIndex, pageSize } = state;
+
   return (
     <>
+      <Grid container justifyContent={'flex-end'}>
+        <div>
+          <input
+            value={globalFilter || ''}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            placeholder="Buscar..."
+          />
+        </div>
+      </Grid>
       <TableContainer component={Paper}>
-        <Table>
+        <Table {...getTableProps()}>
           <TableHead>
-            <TableRow>
-              {columns.map((column, index) => (
-                <TableCell textAlign="center" key={index}>
-                  {column}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows?.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>{row.service}</TableCell>
-                <TableCell>{razonSocial}</TableCell>
-                <TableCell>{enterprises?.email}</TableCell>
-                <TableCell>{formatDate(row.created_at)}</TableCell>
-                <TableCell>{filteredRows(row.status_service)}</TableCell>
-                <TableCell>
-                  <Tooltip title="Ver Servicio Solicitado" arrow>
-                    <IconButton
-                      edge="end"
-                      aria-label="view"
-                      onClick={() => handleClick(row.task)}
-                    >
-                      <RemoveRedEyeIcon />
-                    </IconButton>
-                  </Tooltip>
-
-                  <Tooltip title="Solicitar Turno" arrow>
-                    <IconButton
-                      edge="end"
-                      aria-label="solicitar-turno"
-                      hovered="Solicitar Turno"
-                      onClick={() =>
-                        handleModalOpen(
-                          'Solicitar Turno',
-                          row.id,
-                          row.status,
-                          row.enterprise_id,
-                        )
-                      }
-                    >
-                      <CalendarMonthIcon />
-                    </IconButton>
-                  </Tooltip>
-
-                  <Tooltip title="Subir Documentación" arrow>
-                    <IconButton
-                      edge="end"
-                      aria-label="Subir Documentación"
-                      onClick={() =>
-                        handleModalOpen(
-                          'Subir Documentación',
-                          row.id,
-                          row.status,
-                          row.enterprise_id,
-                        )
-                      }
-                    >
-                      <FaRegFolderOpen />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Enviar Formulario" arrow>
-                    <IconButton
-                      edge="end"
-                      aria-label="edit"
-                      onClick={() =>
-                        handleModalOpen(
-                          'Enviar Formulario',
-                          row.id,
-                          row.status,
-                          row.enterprise_id,
-                        )
-                      }
-                    >
-                      <ChecklistIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Editar Estado" arrow>
-                    <IconButton
-                      edge="end"
-                      aria-label="edit"
-                      onClick={() =>
-                        handleModalOpen(
-                          'Editar Estado',
-                          row.id,
-                          row.status,
-                          row.enterprise_id,
-                        )
-                      }
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
+            {headerGroups.map((headerGroup) => (
+              <TableRow {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <TableCell {...column.getHeaderProps()}>
+                    {column.render('Header')}
+                  </TableCell>
+                ))}
               </TableRow>
             ))}
+          </TableHead>
+          <TableBody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <TableRow {...row.getRowProps()} key={row.id}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <TableCell {...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
+      <Grid container mt={2} justifyContent={'flex-end'}>
+        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+          Anterior
+        </button>
+        <span>
+          Página
+          <strong>
+            {pageIndex + 1} de {pageOptions.length}
+          </strong>{' '}
+        </span>
+        <button onClick={() => nextPage()} disabled={!canNextPage}>
+          Siguiente
+        </button>
+        <span>
+          | Ir a la página
+          <input
+            type="number"
+            defaultValue={pageIndex + 1}
+            onChange={(e) => {
+              const pageNumber = e.target.value
+                ? Number(e.target.value) - 1
+                : 0;
+              gotoPage(pageNumber);
+            }}
+            style={{ width: '100px' }}
+          />
+        </span>
+        <select
+          value={pageSize}
+          onChange={(e) => setPageSize(Number(e.target.value))}
+        >
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+      </Grid>
       <TareasModal
         open={modalOpen}
         handleClose={handleModalClose}
