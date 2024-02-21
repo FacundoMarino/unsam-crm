@@ -16,14 +16,21 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEnterprises } from '../../../../store/tasks/thunks';
 import { getServiciosByEnterprise } from '../../../../store/servicios/thunks';
-import { setCrmPage } from '../../../../store/crm/crmSlider';
 import { setIdEnterprise } from '../../../../store/servicios/servicesSlider';
 
-export const ServicioEmpresas = () => {
+export const ServicioEmpresas = ({
+  handleNewFormClick,
+  setDisplayView,
+  setDisplayViewLegajo,
+}) => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const dispatch = useDispatch();
   const enterprises = useSelector((state) => state.tasks.enterprises);
 
+  useEffect(() => {
+    setDisplayViewLegajo('none');
+    setDisplayView('none');
+  }, []);
   useEffect(() => {
     dispatch(getEnterprises({ telekinesis }));
   }, [dispatch, telekinesis]);
@@ -38,7 +45,8 @@ export const ServicioEmpresas = () => {
       setIdEnterprise({ enterprise_id, razon_social, address, description }),
     );
     dispatch(getServiciosByEnterprise({ telekinesis, enterprise_id }));
-    dispatch(setCrmPage('bandejadesolicitudes'));
+    handleNewFormClick(2);
+    setDisplayView('');
   };
 
   const data = React.useMemo(() => enterprises || [], [enterprises]);

@@ -113,3 +113,23 @@ export const updateTaskProvider = async ({
     console.error('Error:', error);
   }
 };
+
+export const getAllServices = async ({ token, telekinesis }) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      browser_token: token,
+      telekinesis,
+    }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/file/services-all`,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};

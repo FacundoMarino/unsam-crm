@@ -21,20 +21,35 @@ import { FaRegFolderOpen } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { TareasModal } from '../../../components/tareas/TareasModal';
 import { format } from 'date-fns';
-import { setStatusTask, setTasks } from '../../../../store/tasks/taskSlider';
+import {
+  setEntepriseId,
+  setStatusTask,
+  setTasks,
+} from '../../../../store/tasks/taskSlider';
 import { getServiciosByEnterprise } from '../../../../store/servicios/thunks';
+import { getAllService } from '../../../../store/tasks/thunks';
+import { setServicesByEnterprises } from '../../../../store/servicios/servicesSlider';
 
-export const TareasGestion = ({ handleNewFormClick, setDisplayView }) => {
+export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
   const dispatch = useDispatch();
   const services = useSelector((state) => state.services.servicesByEnterprises);
   const status = useSelector((state) => state.tasks.status);
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const enterpriseId = useSelector((state) => state.services.idEnterprise);
+  const allServices = useSelector((state) => state.services.allServices);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [props, setProps] = useState([]);
   const [razonSocial, setRazonSocial] = useState('');
+
+  useEffect(() => {
+    setDisplayViewLegajo('none');
+
+    return () => {
+      dispatch(setServicesByEnterprises([]));
+    };
+  }, []);
 
   useEffect(() => {
     if (enterpriseId) {
@@ -43,7 +58,11 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayView }) => {
   }, [enterpriseId]);
 
   useEffect(() => {
-    if (status === 'ok') {
+    if (!enterpriseId) {
+      dispatch(getAllService({ telekinesis }));
+    }
+
+    if (status === 'ok' && enterpriseId) {
       dispatch(
         getServiciosByEnterprise({
           telekinesis,
@@ -52,8 +71,7 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayView }) => {
         dispatch(setStatusTask('')),
       );
     }
-    setDisplayView('none');
-  }, [dispatch, status, telekinesis, enterpriseId, setDisplayView]);
+  }, [dispatch, status, telekinesis, enterpriseId]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -61,6 +79,8 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayView }) => {
   };
 
   const handleModalOpen = (title, id, status, enterprise_id) => {
+    dispatch(setEntepriseId(enterprise_id));
+
     setModalTitle(title);
     setModalOpen(true);
     setProps([{ id, status, enterprise_id }]);
@@ -70,10 +90,11 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayView }) => {
     setModalOpen(false);
   };
 
-  const handleClick = (task) => {
+  const handleClick = (task, enterprise_id) => {
+    dispatch(setEntepriseId(enterprise_id));
     dispatch(setTasks(task));
-    setDisplayView('');
-    handleNewFormClick(1);
+    setDisplayViewLegajo('');
+    handleNewFormClick(3);
   };
 
   const columns = React.useMemo(
@@ -109,7 +130,9 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayView }) => {
               <IconButton
                 edge="end"
                 aria-label="view"
-                onClick={() => handleClick(row.original.task)}
+                onClick={() =>
+                  handleClick(row.original.task, row.original.enterprise_id)
+                }
               >
                 <RemoveRedEyeIcon />
               </IconButton>
@@ -187,13 +210,22 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayView }) => {
   );
 
   const data = React.useMemo(() => {
-    if (!services) return [];
-    return services?.map((service) => ({
+    if (!services || services.length === 0) {
+      return allServices
+        ? allServices.flatMap((service) =>
+            service.services.map((innerService) => ({
+              ...innerService,
+              razonSocial: service.razon_social,
+              email: service.contact,
+            })),
+          )
+        : [];
+    }
+    return services.map((service) => ({
       ...service,
       razonSocial: razonSocial,
     }));
-  }, [services, razonSocial]);
-
+  }, [services, allServices, razonSocial]);
   const {
     getTableProps,
     getTableBodyProps,

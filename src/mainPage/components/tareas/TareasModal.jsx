@@ -35,7 +35,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
   const shifts = useSelector((state) => state.shift.shiftType);
   const enterprises = useSelector((state) => state.tasks.enterprises);
   const forms = useSelector((state) => state.forms.form.forms);
-  const enterpriseId = useSelector((state) => state.services.idEnterprise);
+  const enterpriseId = useSelector((state) => state.tasks.entepriseId);
 
   useEffect(() => {
     if (iconTitle === 'Solicitar Turno') {
@@ -72,7 +72,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
 
   useEffect(() => {
     if (enterpriseId) {
-      setSelectedEmpresa(enterpriseId.enterprise_id);
+      setSelectedEmpresa(enterpriseId);
     }
   }, [enterpriseId]);
 

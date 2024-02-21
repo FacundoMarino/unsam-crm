@@ -41,8 +41,6 @@ export const CrmPage = () => {
     contentComponent = <TurnosAdminLayout onVerDetalle={handleVerDetalle} />;
   } else if (page === 'formularios' && rol === 'Admin') {
     contentComponent = <FormulariosAdminLayout />;
-  } else if (page === 'bandejadesolicitudes' && rol === 'Admin') {
-    contentComponent = <TareasAdminLayout />;
   } else if (page === 'bandejadesolicitudes' && rol !== 'Admin') {
     contentComponent = <Legajo />;
   } else if (page === 'servicios' && rol === 'Admin') {

@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2';
 import {
+  getAllServices,
   getEnterprisesProvider,
   getTaskProvider,
   postTask,
@@ -12,6 +13,7 @@ import {
   setTasks,
   setTasksEnterprises,
 } from './taskSlider';
+import { setAllServices } from '../servicios/servicesSlider';
 
 export const getEnterprises = ({ telekinesis }) => {
   const token = localStorage.getItem('browser_token');
@@ -133,5 +135,15 @@ export const updateTask = ({ telekinesis, enterprise_id, status, id }) => {
         text: 'Hubo un error al realizar la solicitud.',
       });
     }
+  };
+};
+
+export const getAllService = ({ telekinesis }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    const data = await getAllServices({ token, telekinesis });
+    data.error
+      ? errorApi(data.error)
+      : dispatch(setAllServices(data.enterprises));
   };
 };

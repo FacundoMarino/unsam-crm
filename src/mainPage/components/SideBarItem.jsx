@@ -23,11 +23,10 @@ export const SideBarItem = ({ title = '', icon }) => {
     'Formularios',
     'Bandeja de Solicitudes',
   ];
-  const subItemsExternal = [
+  const subItemsInternal = [
     'Servicios',
     'Turnos',
     'Formularios',
-    'Bandeja de Solicitudes',
     'Reportes',
     'FAQ',
   ];
@@ -36,7 +35,7 @@ export const SideBarItem = ({ title = '', icon }) => {
     if (rol !== 'Admin') {
       setItems(subItems);
     } else {
-      setItems(subItemsExternal);
+      setItems(subItemsInternal);
     }
   }, [rol]);
 

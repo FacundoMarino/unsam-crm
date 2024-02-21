@@ -17,10 +17,14 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import { setCrmPage } from '../../../../store/crm/crmSlider';
 import { setFormId } from '../../../../store/forms/formSlider';
-import { setTaskId } from '../../../../store/tasks/taskSlider';
+import { setTaskId, setTasks } from '../../../../store/tasks/taskSlider';
 import { getTasks } from '../../../../store/tasks/thunks';
 import { newNote, solicitarNotas } from '../../../../store/notes/thunks';
-import { setIdService } from '../../../../store/servicios/servicesSlider';
+import {
+  setIdEnterprise,
+  setIdService,
+  setServicesByEnterprises,
+} from '../../../../store/servicios/servicesSlider';
 
 export const Legajo = ({ setDisplayView }) => {
   const rol = useSelector(selectRole);
@@ -29,14 +33,17 @@ export const Legajo = ({ setDisplayView }) => {
   const tasksRedux = useSelector((state) => state.tasks.tasks);
   const enterpriseExternal = useSelector((state) => state.auth.enterprise);
   const notesRedux = useSelector((state) => state.notes.notes);
+  const enterprises = useSelector((state) => state.tasks.enterprises);
 
   const [cards, setCards] = useState([]);
   const [notes, setNotes] = useState([]);
   const [newNoteContent, setNewNoteContent] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [note, setNote] = useState([]);
+  const [enterprise, setEnterprise] = useState([]);
 
   const enterpriseId = useSelector((state) => state.services.idEnterprise);
+  const taskEnterpriseId = useSelector((state) => state.tasks.entepriseId);
 
   useEffect(() => {
     if (rol !== 'Admin') {
@@ -48,22 +55,46 @@ export const Legajo = ({ setDisplayView }) => {
       );
     }
 
-    if (rol === 'Admin' && tasksRedux.length > 0) {
+    // if (rol === 'Admin' && tasksRedux.length > 0) {
+    //   dispatch(
+    //     solicitarNotas({
+    //       telekinesis,
+    //       enterprise_id: enterpriseId.enterprise_id,
+    //       service_id: tasksRedux[0].service_id,
+    //     }),
+    //   );
+    // }
+  }, [dispatch, rol, telekinesis]);
+
+  useEffect(() => {
+    if (rol === 'Admin') {
       dispatch(
-        solicitarNotas({
+        getTasks({
           telekinesis,
-          enterprise_id: enterpriseId.enterprise_id,
-          service_id: tasksRedux[0].service_id,
+          enterprise_id: taskEnterpriseId,
         }),
       );
     }
-  }, [dispatch, rol, telekinesis]);
+  }, []);
 
   useEffect(() => {
     if (notes) {
       setNotes(notes);
     }
   }, [notes]);
+
+  useEffect(() => {
+    setEnterprise(
+      enterprises.find((enterprise) => enterprise.id === taskEnterpriseId),
+    );
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      dispatch(setServicesByEnterprises([]));
+      dispatch(setIdEnterprise(''));
+    };
+  }, []);
 
   useEffect(() => {
     const mappedCards = tasksRedux.map((task) => {
@@ -142,8 +173,12 @@ export const Legajo = ({ setDisplayView }) => {
 
     if (rol === 'Admin') {
       const empresasCard = {
-        title: enterpriseId?.razon_social,
-        content: `Nombre: ${enterpriseId?.razon_social}\n Descripción: ${enterpriseId?.description}\n Dirección: ${enterpriseId?.address} `,
+        title: enterpriseId?.razon_social || enterprise.razon_social,
+        content: `Nombre: ${
+          enterpriseId?.razon_social || enterprise.razon_social
+        }\n Descripción: ${
+          enterpriseId?.description || enterprise.description
+        }\n Dirección: ${enterpriseId?.address || enterprise.address} `,
         color: 'black',
       };
       mappedCards.unshift(empresasCard);
@@ -193,7 +228,6 @@ export const Legajo = ({ setDisplayView }) => {
     dispatch(setIdService(service_id));
   };
 
-  console.log(note);
   return (
     <div>
       <Grid container spacing={2}>
