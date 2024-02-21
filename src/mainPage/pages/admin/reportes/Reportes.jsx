@@ -6,6 +6,7 @@ import {
   FormControl,
   InputLabel,
   Select,
+  Divider,
   MenuItem,
 } from '@mui/material';
 import DatePicker from 'react-datepicker';
@@ -24,6 +25,10 @@ export const Reportes = () => {
 
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedDateEnd, setSelectedDateTwo] = useState('');
+  const [selectedDateForm, setSelectedDateForm] = useState('');
+  const [selectedDateEndForm, setSelectedDateEndForm] = useState('');
+  const [selectedDateUser, setSelectedDateUser] = useState('');
+  const [selectedDateEndUser, setSelectedDateTwoUser] = useState('');
   const [selectedForm, setSelectedForm] = useState('');
   const forms = useSelector((state) => state.forms.form.forms);
 
@@ -41,8 +46,8 @@ export const Reportes = () => {
     dispatch(
       getFormReport({
         telekinesis,
-        fecha_desde: selectedDate,
-        fecha_hasta: selectedDateEnd,
+        fecha_desde: selectedDateForm,
+        fecha_hasta: selectedDateEndForm,
         form_id: selectedForm,
       }),
     );
@@ -52,16 +57,20 @@ export const Reportes = () => {
     dispatch(
       getUserReport({
         telekinesis,
-        fecha_desde: selectedDate,
-        fecha_hasta: selectedDateEnd,
+        fecha_desde: selectedDateUser,
+        fecha_hasta: selectedDateEndUser,
       }),
     );
   };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} justifyContent="center" alignItems="center">
       <Grid item xs={12} md={6}>
         <Paper elevation={3} style={{ padding: '36px' }}>
+          <div>
+            <h2>Reporte de Servicios</h2>
+          </div>
+          <Divider />
           <h2>Selecciona la fecha Inicial</h2>
           <DatePicker
             selected={selectedDate}
@@ -99,18 +108,22 @@ export const Reportes = () => {
 
       <Grid item xs={12} md={6}>
         <Paper elevation={3} style={{ padding: '36px' }}>
+          <div>
+            <h2>Reporte de Usuarios</h2>
+          </div>
+          <Divider />
           <h2>Selecciona la fecha Inicial</h2>
           <DatePicker
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
+            selected={selectedDateUser}
+            onChange={(date) => setSelectedDateUser(date)}
             locale={es}
             dateFormat="dd/MM/yyyy"
             showPopperArrow={false}
           />
           <h2>Selecciona la fecha Final</h2>
           <DatePicker
-            selected={selectedDateEnd}
-            onChange={(date) => setSelectedDateTwo(date)}
+            selected={selectedDateEndUser}
+            onChange={(date) => setSelectedDateTwoUser(date)}
             locale={es}
             dateFormat="dd/MM/yyyy"
             fullWidth
@@ -138,6 +151,7 @@ export const Reportes = () => {
       <Grid item xs={12} md={6}>
         <Paper elevation={3} style={{ padding: '36px' }}>
           <h2>Selecciona el Formulario</h2>
+          <Divider />
           <FormControl fullWidth margin="normal">
             <InputLabel id="turno-select-label">Formulario</InputLabel>
             <Select
@@ -155,20 +169,20 @@ export const Reportes = () => {
           </FormControl>
           <h2>Selecciona la fecha Inicial</h2>
           <DatePicker
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
+            selected={selectedDateForm}
+            onChange={(date) => setSelectedDateForm(date)}
             locale={es}
             dateFormat="dd/MM/yyyy"
             showPopperArrow={false}
           />
           <h2>Selecciona la fecha Final</h2>
           <DatePicker
-            selected={selectedDateEnd}
-            onChange={(date) => setSelectedDateTwo(date)}
+            selected={selectedDateEndForm}
+            onChange={(date) => setSelectedDateEndForm(date)}
             locale={es}
             dateFormat="dd/MM/yyyy"
             showPopperArrow={false}
-          />{' '}
+          />
           <Grid
             item
             xs={12}
