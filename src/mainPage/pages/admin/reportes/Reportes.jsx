@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Paper,
   Button,
@@ -18,6 +18,7 @@ import {
   getServiceReport,
   getUserReport,
 } from '../../../../store/report/thunks';
+import { getAllForms } from '../../../../store/forms/thunks';
 
 export const Reportes = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,8 @@ export const Reportes = () => {
         fecha_hasta: selectedDateEnd,
       }),
     );
+    setSelectedDate('');
+    setSelectedDateTwo('');
   };
 
   const saveFormData = () => {
@@ -51,6 +54,8 @@ export const Reportes = () => {
         form_id: selectedForm,
       }),
     );
+    setSelectedDateForm('');
+    setSelectedDateEndForm('');
   };
 
   const saveUserData = () => {
@@ -61,7 +66,13 @@ export const Reportes = () => {
         fecha_hasta: selectedDateEndUser,
       }),
     );
+    setSelectedDateUser('');
+    setSelectedDateTwoUser('');
   };
+
+  useEffect(() => {
+    dispatch(getAllForms({ telekinesis }));
+  }, []);
 
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center">
