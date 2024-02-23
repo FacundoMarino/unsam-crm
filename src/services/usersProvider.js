@@ -3,27 +3,39 @@ const headers = new Headers({
   'Content-Type': 'application/json',
 });
 
-export const getNotes = async ({
-  token,
+export const createUser = async ({
   telekinesis,
-  enterprise_id,
-  service_id,
-  data,
+  token,
+  name,
+  apellido,
+  telephone,
+  link_meet,
+  type_user,
+  rol,
+  sub_rol,
+  email,
+  password,
 }) => {
   const requestOptions = {
     method: 'POST',
     headers: headers,
     body: JSON.stringify({
-      browser_token: token,
       telekinesis,
-      enterprise_id,
-      service_id,
-      data,
+      browser_token: token,
+      name,
+      apellido,
+      telephone,
+      link_meet,
+      type_user,
+      rol,
+      sub_rol,
+      email,
+      password,
     }),
   };
   try {
     const response = await fetch(
-      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/notes`,
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/users/resource/store`,
       requestOptions,
     ).then((response) => response.json());
     return response;
@@ -32,29 +44,19 @@ export const getNotes = async ({
   }
 };
 
-export const postNotes = async ({
-  token,
-  telekinesis,
-  enterprise_id,
-  service_id,
-  user_id,
-  note,
-}) => {
+export const viewUser = async ({ telekinesis, token, id }) => {
   const requestOptions = {
     method: 'POST',
     headers: headers,
     body: JSON.stringify({
-      browser_token: token,
       telekinesis,
-      enterprise_id,
-      service_id,
-      user_id,
-      note,
+      browser_token: token,
+      id,
     }),
   };
   try {
     const response = await fetch(
-      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/notes/store`,
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/users/resource/get/${id}`,
       requestOptions,
     ).then((response) => response.json());
     return response;

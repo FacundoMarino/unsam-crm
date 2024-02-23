@@ -91,6 +91,7 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
   };
 
   const handleClick = (task, enterprise_id) => {
+    console.log(task);
     dispatch(setEntepriseId(enterprise_id));
     dispatch(setTasks(task));
     setDisplayViewLegajo('');
@@ -120,7 +121,11 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
         Header: 'Estado',
         accessor: 'status_service',
         Cell: ({ value }) =>
-          value === 1 ? 'Pendiente' : value === 2 ? 'Completado' : 'Cancelada',
+          value === 1
+            ? 'En proceso'
+            : value === 2
+              ? 'Implementada'
+              : 'Cancelada',
       },
       {
         Header: 'Acciones',

@@ -24,11 +24,12 @@ export const SideBarItem = ({ title = '', icon }) => {
     'Bandeja de Solicitudes',
   ];
   const subItemsInternal = [
+    //'Usuarios',
     'Servicios',
     'Turnos',
     'Formularios',
     'Reportes',
-    'FAQ',
+    //'FAQ',
   ];
 
   useEffect(() => {

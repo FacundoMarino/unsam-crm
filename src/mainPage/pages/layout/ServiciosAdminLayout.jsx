@@ -23,14 +23,17 @@ export const ServiciosAdminLayout = () => {
         onSelect={(index) => setSelectedIndex(index)}
       >
         <TabList>
-          <Tab>Administración de Servicios</Tab>
+          <Tab>Bandeja de Servicios</Tab>
           <Tab>Empresas</Tab>
-          <Tab>Administración de Tareas</Tab>
+          <Tab>Administración de Servicios</Tab>
           <Tab style={{ display: displayViewLegajo }}>Legajo</Tab>
         </TabList>
 
         <TabPanel>
-          <ServicioGestion />
+          <TareasGestion
+            setDisplayViewLegajo={setDisplayViewLegajo}
+            handleNewFormClick={handleNewFormClick}
+          />
         </TabPanel>
         <TabPanel>
           <ServicioEmpresas
@@ -40,10 +43,7 @@ export const ServiciosAdminLayout = () => {
           />
         </TabPanel>
         <TabPanel>
-          <TareasGestion
-            setDisplayViewLegajo={setDisplayViewLegajo}
-            handleNewFormClick={handleNewFormClick}
-          />
+          <ServicioGestion />
         </TabPanel>
         <TabPanel>
           <Legajo setDisplayViewLegajo={setDisplayViewLegajo} />

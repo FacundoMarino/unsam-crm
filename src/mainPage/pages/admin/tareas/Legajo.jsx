@@ -12,7 +12,11 @@ import {
   DialogContent,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectRole, setEnterpriseId } from '../../../../store/auth/authSlider';
+import {
+  selectRole,
+  selectUserId,
+  setEnterpriseId,
+} from '../../../../store/auth/authSlider';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import { setCrmPage } from '../../../../store/crm/crmSlider';
@@ -25,12 +29,14 @@ import {
   setIdService,
   setServicesByEnterprises,
 } from '../../../../store/servicios/servicesSlider';
+import { DocumentacionModal } from './DocumentacionModal';
 
 export const Legajo = ({ setDisplayView }) => {
   const rol = useSelector(selectRole);
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const dispatch = useDispatch();
   const tasksRedux = useSelector((state) => state.tasks.tasks);
+  const userId = useSelector(selectUserId);
   const enterpriseExternal = useSelector((state) => state.auth.enterprise);
   const notesRedux = useSelector((state) => state.notes.notes);
   const enterprises = useSelector((state) => state.tasks.enterprises);
@@ -41,41 +47,23 @@ export const Legajo = ({ setDisplayView }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [note, setNote] = useState([]);
   const [enterprise, setEnterprise] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [props, setProps] = useState([]);
 
   const enterpriseId = useSelector((state) => state.services.idEnterprise);
   const taskEnterpriseId = useSelector((state) => state.tasks.entepriseId);
 
   useEffect(() => {
-    if (rol !== 'Admin') {
+    if (rol === 'Admin' && tasksRedux.length > 0) {
       dispatch(
-        getTasks({
-          telekinesis,
-          enterprise_id: enterpriseExternal.enterprise_id,
-        }),
-      );
-    }
-
-    // if (rol === 'Admin' && tasksRedux.length > 0) {
-    //   dispatch(
-    //     solicitarNotas({
-    //       telekinesis,
-    //       enterprise_id: enterpriseId.enterprise_id,
-    //       service_id: tasksRedux[0].service_id,
-    //     }),
-    //   );
-    // }
-  }, [dispatch, rol, telekinesis]);
-
-  useEffect(() => {
-    if (rol === 'Admin') {
-      dispatch(
-        getTasks({
+        solicitarNotas({
           telekinesis,
           enterprise_id: taskEnterpriseId,
+          service_id: tasksRedux[0].service_id,
         }),
       );
     }
-  }, []);
+  }, [dispatch, rol, telekinesis]);
 
   useEffect(() => {
     if (notes) {
@@ -89,6 +77,7 @@ export const Legajo = ({ setDisplayView }) => {
     );
   }, []);
 
+  console.log(notesRedux);
   useEffect(() => {
     return () => {
       dispatch(setServicesByEnterprises([]));
@@ -171,26 +160,6 @@ export const Legajo = ({ setDisplayView }) => {
       };
     });
 
-    if (rol === 'Admin') {
-      const empresasCard = {
-        title: enterpriseId?.razon_social || enterprise.razon_social,
-        content: `Nombre: ${
-          enterpriseId?.razon_social || enterprise.razon_social
-        }\n Descripción: ${
-          enterpriseId?.description || enterprise.description
-        }\n Dirección: ${enterpriseId?.address || enterprise.address} `,
-        color: 'black',
-      };
-      mappedCards.unshift(empresasCard);
-    } else {
-      const empresaCard = {
-        title: enterpriseExternal.enterprise_razon_social,
-        content: `Nombre: ${enterpriseExternal.enterprise_razon_social}\n Descripción: ${enterpriseExternal.enterprise_description}\n Dirección: ${enterpriseExternal.enterprise_address} `,
-        color: 'black',
-      };
-      mappedCards.unshift(empresaCard);
-    }
-
     setCards(mappedCards);
   }, [tasksRedux]);
 
@@ -199,8 +168,9 @@ export const Legajo = ({ setDisplayView }) => {
       dispatch(
         newNote({
           telekinesis,
-          enterprise_id: enterpriseId.enterprise_id,
+          enterprise_id: taskEnterpriseId,
           service_id: tasksRedux[0].service_id,
+          user_id: userId,
           note,
         }),
       );
@@ -222,21 +192,43 @@ export const Legajo = ({ setDisplayView }) => {
       dispatch(setEnterpriseId(enterprise_id));
       dispatch(setFormId(form_id));
     }
-    dispatch(setCrmPage(page));
-    dispatch(setTaskId(id));
+    if (page === 'documentacion') {
+      setProps([{ id, enterprise_id, service_id }]);
+      handleModalOpen();
+    } else {
+      dispatch(setCrmPage(page));
+      dispatch(setTaskId(id));
 
-    dispatch(setIdService(service_id));
+      dispatch(setIdService(service_id));
+    }
   };
+
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+
+  // Filtrar las tarjetas por tipo de tarea
+  const documentacionCards = cards.filter(
+    (card) => card.type === 'documentacion',
+  );
+  const formulariosCards = cards.filter((card) => card.type === 'formularios');
+  const turnosCards = cards.filter((card) => card.type === 'turnos');
 
   return (
     <div>
       <Grid container spacing={2}>
-        {cards.map((card, index) => (
-          <Grid key={index} item xs={12} sm={6} md={4}>
+        {/* Columna de Documentación */}
+        <Grid item xs={12} sm={6} md={4} mb={2}>
+          {documentacionCards.map((card, index) => (
             <Card
+              key={index}
               style={{
                 color: card.color,
                 cursor: rol !== 'Admin' ? 'pointer' : 'default',
+                marginBottom: '20px',
               }}
               onClick={
                 rol !== 'Admin' && card.color !== 'green'
@@ -264,10 +256,102 @@ export const Legajo = ({ setDisplayView }) => {
                 {card.icon && <div>{card.icon}</div>}
               </CardContent>
             </Card>
+          ))}
+        </Grid>
+        {/* Columna de Formularios */}
+        <Grid item xs={12} sm={6} md={4} mb={2}>
+          {formulariosCards.map((card, index) => (
+            <Card
+              key={index}
+              style={{
+                color: card.color,
+                cursor: rol !== 'Admin' ? 'pointer' : 'default',
+                marginBottom: '20px',
+              }}
+              onClick={
+                rol !== 'Admin' && card.color !== 'green'
+                  ? () =>
+                      handleCardClick(
+                        card.id,
+                        card.type,
+                        card.enterprise_id,
+                        card.form_id,
+                        card.service_id,
+                      )
+                  : null
+              }
+            >
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  {card.title}
+                </Typography>
+                <Divider />
+                <Typography component="div" mt={2}>
+                  {card.content.split('\n').map((line, lineIndex) => (
+                    <div key={lineIndex}>{line}</div>
+                  ))}
+                </Typography>
+                {card.icon && <div>{card.icon}</div>}
+              </CardContent>
+            </Card>
+          ))}
+        </Grid>
+        {/* Columna de Turnos */}
+        <Grid item xs={12} sm={6} md={4}>
+          {turnosCards.map((card, index) => (
+            <Card
+              key={index}
+              style={{
+                color: card.color,
+                cursor: rol !== 'Admin' ? 'pointer' : 'default',
+                marginBottom: '20px',
+              }}
+              onClick={
+                rol !== 'Admin' && card.color !== 'green'
+                  ? () =>
+                      handleCardClick(
+                        card.id,
+                        card.type,
+                        card.enterprise_id,
+                        card.form_id,
+                        card.service_id,
+                      )
+                  : null
+              }
+            >
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  {card.title}
+                </Typography>
+                <Divider />
+                <Typography component="div" mt={2}>
+                  {card.content.split('\n').map((line, lineIndex) => (
+                    <div key={lineIndex}>{line}</div>
+                  ))}
+                </Typography>
+                {card.icon && <div>{card.icon}</div>}
+              </CardContent>
+            </Card>
+          ))}
+        </Grid>
+      </Grid>
+      <Grid container spacing={2}>
+        {notesRedux?.map((noteR, index) => (
+          <Grid item xs={12} sm={6} md={4} mb={2}>
+            <Card ket={index}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  {noteR.title}
+                </Typography>
+                <Divider />
+                <Typography component="div" mt={2}>
+                  {noteR.content}
+                </Typography>
+              </CardContent>
+            </Card>
           </Grid>
         ))}
       </Grid>
-
       {rol === 'Admin' && (
         <div>
           <Button
@@ -308,24 +392,27 @@ export const Legajo = ({ setDisplayView }) => {
                   </>
                 ) : null}
 
-                <Grid container spacing={2} justifyContent={'flex-end'}>
-                  <Grid item xs={12} sm={6}>
-                    <Button
-                      style={{ marginTop: '20px' }}
-                      variant="contained"
-                      color="primary"
-                      onClick={handleAddCard}
-                      fullWidth
-                    >
-                      Agregar
-                    </Button>
-                  </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Button
+                    style={{ marginTop: '20px' }}
+                    variant="contained"
+                    color="primary"
+                    onClick={handleAddCard}
+                    fullWidth
+                  >
+                    Agregar
+                  </Button>
                 </Grid>
               </DialogContent>
             </Container>
           </Dialog>
         </div>
       )}
+      <DocumentacionModal
+        open={modalOpen}
+        handleClose={handleModalClose}
+        props={props}
+      />
     </div>
   );
 };

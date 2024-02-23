@@ -3,6 +3,10 @@ const headers = new Headers({
   'Content-Type': 'application/json',
 });
 
+const headersFile = new Headers({
+  Authorization: `Bearer ${process.env.REACT_APP_HEADER_TOKEN}`,
+});
+
 export const getEnterprisesProvider = async ({ token, telekinesis }) => {
   const requestOptions = {
     method: 'POST',
@@ -126,6 +130,38 @@ export const getAllServices = async ({ token, telekinesis }) => {
   try {
     const response = await fetch(
       `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/file/services-all`,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const submitDocumentation = async ({
+  token,
+  telekinesis,
+  file,
+  tarea_id,
+  service_id,
+  enterprise_id,
+}) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headersFile, // Asegúrate de definir correctamente tus encabezados aquí
+    body: JSON.stringify({
+      browser_token: token,
+      telekinesis,
+      file,
+      tarea_id,
+      service_id,
+      enterprise_id,
+    }),
+  };
+
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/task/upload-file`,
       requestOptions,
     ).then((response) => response.json());
     return response;

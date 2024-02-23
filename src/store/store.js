@@ -6,6 +6,7 @@ import { formSlice } from './forms/formSlider';
 import { taskSlice } from './tasks/taskSlider';
 import { servicesSlice } from './servicios/servicesSlider';
 import { noteSlice } from './notes/noteSlider';
+import { usersSlice } from './users/usersSlider';
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     tasks: taskSlice.reducer,
     services: servicesSlice.reducer,
     notes: noteSlice.reducer,
+    users: usersSlice.reducer,
   },
 });

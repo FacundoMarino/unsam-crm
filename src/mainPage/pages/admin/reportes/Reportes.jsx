@@ -161,7 +161,7 @@ export const Reportes = () => {
 
       <Grid item xs={12} md={6}>
         <Paper elevation={3} style={{ padding: '36px' }}>
-          <h2>Selecciona el Formulario</h2>
+          <h2>Reporte de Formularios</h2>
           <Divider />
           <FormControl fullWidth margin="normal">
             <InputLabel id="turno-select-label">Formulario</InputLabel>
