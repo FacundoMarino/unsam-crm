@@ -21,15 +21,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import { UsuarioModal } from './UsuarioModal';
 import { verUsuario } from '../../../../store/users/thunks';
+import {
+  setIndividualUser,
+  setUsers,
+} from '../../../../store/users/usersSlider';
 export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
-  //const users = useSelector((state) => state.users.users);
+  const user = useSelector((state) => state.users.individualUser);
   const dispatch = useDispatch();
 
   const users = [
     {
       name: 'Pepito Perez',
-      id: 1,
+      id: 3,
     },
   ];
 
@@ -42,6 +46,7 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
 
   const handleClose = () => {
     setModalOpen(false);
+    dispatch(setIndividualUser([]));
   };
   const handlerNuevoServicio = () => {
     handleModalOpen();
@@ -52,7 +57,8 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
   };
 
   const handleEditar = (id) => {
-    setId(id);
+    dispatch(verUsuario({ telekinesis, id }));
+
     handleModalOpen();
   };
 
@@ -111,7 +117,11 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
           ))}
         </List>
 
-        <UsuarioModal open={isModalOpen} handleClose={handleClose} />
+        <UsuarioModal
+          open={isModalOpen}
+          handleClose={handleClose}
+          user={user}
+        />
       </Container>
     </>
   );

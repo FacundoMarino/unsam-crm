@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import { UsuariosGestion } from '../admin/usuarios/UsuariosGestion';
+import { UsuarioDetail } from '../admin/usuarios/UsuarioDetail';
 
 export const UsuariosAdminLayout = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -29,7 +30,9 @@ export const UsuariosAdminLayout = () => {
             handleNewFormClick={handleNewFormClick}
           />
         </TabPanel>
-        <TabPanel></TabPanel>
+        <TabPanel>
+          <UsuarioDetail />
+        </TabPanel>
       </Tabs>
     </>
   );

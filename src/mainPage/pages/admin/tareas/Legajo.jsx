@@ -12,6 +12,7 @@ import {
   DialogContent,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { format } from 'date-fns';
 import {
   selectRole,
   selectUserId,
@@ -63,6 +64,9 @@ export const Legajo = ({ setDisplayView }) => {
         }),
       );
     }
+    if (rol !== 'Admin') {
+      dispatch(getTasks({ telekinesis, enterpriseId }));
+    }
   }, [dispatch, rol, telekinesis]);
 
   useEffect(() => {
@@ -77,7 +81,6 @@ export const Legajo = ({ setDisplayView }) => {
     );
   }, []);
 
-  console.log(notesRedux);
   useEffect(() => {
     return () => {
       dispatch(setServicesByEnterprises([]));
@@ -210,6 +213,10 @@ export const Legajo = ({ setDisplayView }) => {
     setModalOpen(false);
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'dd/MM/yyyy');
+  };
   // Filtrar las tarjetas por tipo de tarea
   const documentacionCards = cards.filter(
     (card) => card.type === 'documentacion',
@@ -337,7 +344,7 @@ export const Legajo = ({ setDisplayView }) => {
       </Grid>
       <Grid container spacing={2}>
         {notesRedux?.map((noteR, index) => (
-          <Grid item xs={12} sm={6} md={4} mb={2}>
+          <Grid item xs={12} sm={6} md={4} mb={2} key={index}>
             <Card ket={index}>
               <CardContent>
                 <Typography variant="h6" gutterBottom>
@@ -347,6 +354,23 @@ export const Legajo = ({ setDisplayView }) => {
                 <Typography component="div" mt={2}>
                   {noteR.content}
                 </Typography>
+                <Grid
+                  item
+                  xs={12}
+                  key={index}
+                  mt={6}
+                  display={'flex'}
+                  justifyContent={'flex-end'}
+                >
+                  <Typography
+                    variant="span"
+                    gutterBottom
+                    fullWidth
+                    style={{ fontSize: '12px' }}
+                  >
+                    {formatDate(noteR.created_at)}
+                  </Typography>
+                </Grid>
               </CardContent>
             </Card>
           </Grid>

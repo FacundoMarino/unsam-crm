@@ -11,22 +11,29 @@ import {
 import { useForm } from '../../../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { crearUsuario } from '../../../../store/users/thunks';
+import { useEffect, useState } from 'react';
 
-const startData = {
-  link_meet: '',
-  email: '',
-  password: '',
-  name: '',
-  apellido: '',
-  telephone: '',
-  type_user: '',
-  rol: '',
-  sub_rol: '',
-};
-export const UsuarioModal = ({ open, handleClose }) => {
+export const UsuarioModal = ({ open, handleClose, user }) => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const dispatch = useDispatch();
 
+  const [formData, setFormData] = useState({
+    link_meet: '',
+    email: '',
+    password: '',
+    name: '',
+    apellido: '',
+    telephone: '',
+    type_user: '',
+    rol: '',
+    sub_rol: '',
+  });
+
+  useEffect(() => {
+    if (user) {
+      setFormData(user);
+    }
+  }, [user]);
   const {
     link_meet,
     email,
@@ -39,7 +46,7 @@ export const UsuarioModal = ({ open, handleClose }) => {
     sub_rol,
     inputHandler,
     formState,
-  } = useForm(startData);
+  } = useForm(formData);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -47,6 +54,7 @@ export const UsuarioModal = ({ open, handleClose }) => {
     handleClose();
   };
 
+  console.log(formData);
   return (
     <Dialog open={open} onClose={handleClose}>
       <Container component="main" maxWidth="xs" style={{ width: '500px' }}>
@@ -60,7 +68,7 @@ export const UsuarioModal = ({ open, handleClose }) => {
               <Grid container>
                 <Grid item xs={12}>
                   <TextField
-                    label="Nombre"
+                    label={name ? '' : 'Nombre'}
                     multiline
                     value={name}
                     placeholder="Nombre"
@@ -72,11 +80,12 @@ export const UsuarioModal = ({ open, handleClose }) => {
 
                 <Grid item xs={12} sx={{ mt: 3 }}>
                   <TextField
-                    label="Apellido"
+                    id="outlined-basic"
+                    label={apellido ? '' : 'Apellido'}
                     multiline
                     value={apellido}
                     name="apellido"
-                    placeholder="Apellido"
+                    placeholder={apellido ? '' : 'Apellido'}
                     onChange={inputHandler}
                     fullWidth
                   />
@@ -84,9 +93,9 @@ export const UsuarioModal = ({ open, handleClose }) => {
 
                 <Grid item xs={12} sx={{ mt: 3 }}>
                   <TextField
-                    label="Telefono"
+                    label={telephone ? '' : 'Telefono'}
                     type="telefono"
-                    placeohlder="Telefono"
+                    placeohlder={telephone ? '' : 'Telefono'}
                     fullWidth
                     name="telephone"
                     value={telephone}
@@ -96,8 +105,8 @@ export const UsuarioModal = ({ open, handleClose }) => {
 
                 <Grid item xs={12} sx={{ mt: 3 }}>
                   <TextField
-                    label="Link Meet"
-                    placeohlder="Link de meet"
+                    label={link_meet ? '' : 'Link de meet'}
+                    placeohlder={link_meet ? '' : 'Link de meet'}
                     fullWidth
                     name="link_meet"
                     value={link_meet}
@@ -107,8 +116,8 @@ export const UsuarioModal = ({ open, handleClose }) => {
 
                 <Grid item xs={12} sx={{ mt: 3 }}>
                   <TextField
-                    label="Tipo de Usuario"
-                    placeohlder="Tipo de Usuario"
+                    label={type_user ? '' : 'Tipo de Usuario'}
+                    placeohlder={type_user ? '' : 'Tipo de Usuario'}
                     fullWidth
                     name="type_user"
                     value={type_user}
@@ -118,8 +127,8 @@ export const UsuarioModal = ({ open, handleClose }) => {
 
                 <Grid item xs={12} sx={{ mt: 3 }}>
                   <TextField
-                    label="Rol de Usuario"
-                    placeohlder="Rol de Usuario"
+                    label={rol ? '' : 'Rol de Usuario'}
+                    placeohlder={rol ? '' : 'Rol de Usuario'}
                     fullWidth
                     name="rol"
                     value={rol}
@@ -129,8 +138,8 @@ export const UsuarioModal = ({ open, handleClose }) => {
 
                 <Grid item xs={12} sx={{ mt: 3 }}>
                   <TextField
-                    label="Sub Rol de Usuario"
-                    placeohlder="Sub Rol de Usuario"
+                    label={sub_rol ? '' : 'Sub Rol de Usuario'}
+                    placeohlder={sub_rol ? '' : 'Sub Rol de Usuario'}
                     fullWidth
                     name="sub_rol"
                     value={sub_rol}
@@ -140,9 +149,9 @@ export const UsuarioModal = ({ open, handleClose }) => {
 
                 <Grid item xs={12} sx={{ mt: 3 }}>
                   <TextField
-                    label="Correo"
+                    label={email ? '' : 'Email'}
                     type="email"
-                    placeholder="correo@google.com.ar"
+                    placeholder={email ? '' : 'Email'}
                     fullWidth
                     name="email"
                     value={email}
@@ -152,9 +161,9 @@ export const UsuarioModal = ({ open, handleClose }) => {
 
                 <Grid item xs={12} sx={{ mt: 3 }}>
                   <TextField
-                    label="Contraseña"
+                    label={password ? '' : 'Contraseña'}
                     type="password"
-                    placeholder="Contraseña"
+                    placeholder={password ? '' : 'Contraseña'}
                     fullWidth
                     name="password"
                     value={password}

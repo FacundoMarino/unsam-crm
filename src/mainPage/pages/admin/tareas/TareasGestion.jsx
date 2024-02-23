@@ -91,7 +91,6 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
   };
 
   const handleClick = (task, enterprise_id) => {
-    console.log(task);
     dispatch(setEntepriseId(enterprise_id));
     dispatch(setTasks(task));
     setDisplayViewLegajo('');

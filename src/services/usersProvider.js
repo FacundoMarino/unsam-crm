@@ -64,3 +64,67 @@ export const viewUser = async ({ telekinesis, token, id }) => {
     console.error('Error:', error);
   }
 };
+
+export const updateUser = async ({
+  telekinesis,
+  token,
+  name,
+  apellido,
+  telephone,
+  link_meet,
+  type_user,
+  rol,
+  sub_rol,
+  email,
+  password,
+  id,
+}) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      telekinesis,
+      browser_token: token,
+      name,
+      apellido,
+      telephone,
+      link_meet,
+      type_user,
+      rol,
+      sub_rol,
+      email,
+      password,
+    }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/users/resource/update/${id}
+      `,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const deleteUser = async ({ telekinesis, token, id }) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      telekinesis,
+      browser_token: token,
+      id,
+    }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/users/resource/delete/${id}`,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};

@@ -24,7 +24,7 @@ export const SideBarItem = ({ title = '', icon }) => {
     'Bandeja de Solicitudes',
   ];
   const subItemsInternal = [
-    //'Usuarios',
+    'Usuarios',
     'Servicios',
     'Turnos',
     'Formularios',
