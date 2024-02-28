@@ -28,7 +28,10 @@ import {
 } from '../../../../store/tasks/taskSlider';
 import { getServiciosByEnterprise } from '../../../../store/servicios/thunks';
 import { getAllService } from '../../../../store/tasks/thunks';
-import { setServicesByEnterprises } from '../../../../store/servicios/servicesSlider';
+import {
+  setServicesByEnterprises,
+  setStatus,
+} from '../../../../store/servicios/servicesSlider';
 
 export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
   const dispatch = useDispatch();
@@ -37,6 +40,7 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const enterpriseId = useSelector((state) => state.services.idEnterprise);
   const allServices = useSelector((state) => state.services.allServices);
+  const statusServices = useSelector((state) => state.services.status);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
@@ -58,10 +62,13 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
   }, [enterpriseId]);
 
   useEffect(() => {
-    if (!enterpriseId) {
+    if (!enterpriseId && statusServices === 'ok') {
       dispatch(getAllService({ telekinesis }));
+      dispatch(setStatus(''));
     }
+  }, [statusServices]);
 
+  useEffect(() => {
     if (status === 'ok' && enterpriseId) {
       dispatch(
         getServiciosByEnterprise({

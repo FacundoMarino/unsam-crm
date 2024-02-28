@@ -53,6 +53,9 @@ export const Legajo = ({ setDisplayView }) => {
 
   const enterpriseId = useSelector((state) => state.services.idEnterprise);
   const taskEnterpriseId = useSelector((state) => state.tasks.entepriseId);
+  const enterpriseTaskExternal = useSelector(
+    (state) => state.auth.enterprise.enterprise_id,
+  );
 
   useEffect(() => {
     if (rol === 'Admin' && tasksRedux.length > 0) {
@@ -65,7 +68,9 @@ export const Legajo = ({ setDisplayView }) => {
       );
     }
     if (rol !== 'Admin') {
-      dispatch(getTasks({ telekinesis, enterpriseId }));
+      dispatch(
+        getTasks({ telekinesis, enterprise_id: enterpriseTaskExternal }),
+      );
     }
   }, [dispatch, rol, telekinesis]);
 

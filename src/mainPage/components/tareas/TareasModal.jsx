@@ -20,6 +20,7 @@ import {
   updateTask,
 } from '../../../store/tasks/thunks';
 import { getAllForms } from '../../../store/forms/thunks';
+import { cambiarEstadoServicio } from '../../../store/servicios/thunks';
 
 export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
   const [selectedTurno, setSelectedTurno] = useState();
@@ -102,7 +103,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
       );
     } else {
       dispatch(
-        storeTasks({
+        cambiarEstadoServicio({
           telekinesis,
           tipo_tarea: taskType,
           comment: textareaValue,
@@ -118,7 +119,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
 
   const handleSearchTasks = () => {
     dispatch(
-      updateTask({
+      cambiarEstadoServicio({
         telekinesis,
         enterprise_id: selectedEmpresa,
         status: selectedEstado,

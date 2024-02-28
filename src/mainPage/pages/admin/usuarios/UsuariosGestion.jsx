@@ -20,22 +20,24 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import { UsuarioModal } from './UsuarioModal';
-import { verUsuario } from '../../../../store/users/thunks';
+import { verUsuario, verUsuarios } from '../../../../store/users/thunks';
 import {
   setIndividualUser,
+  setStatusUser,
   setUsers,
 } from '../../../../store/users/usersSlider';
+import { setStatus } from '../../../../store/servicios/servicesSlider';
 export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const user = useSelector((state) => state.users.individualUser);
+
+  const users = useSelector((state) => state.users.users);
   const dispatch = useDispatch();
 
-  const users = [
-    {
-      name: 'Pepito Perez',
-      id: 3,
-    },
-  ];
+  useEffect(() => {
+    dispatch(verUsuarios({ telekinesis }));
+    dispatch(setStatusUser(''));
+  }, []);
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [id, setId] = useState('');

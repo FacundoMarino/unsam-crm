@@ -128,3 +128,23 @@ export const deleteUser = async ({ telekinesis, token, id }) => {
     console.error('Error:', error);
   }
 };
+
+export const getUsers = async ({ telekinesis, token }) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      telekinesis,
+      browser_token: token,
+    }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/users/resource`,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};

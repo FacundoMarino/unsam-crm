@@ -8,6 +8,7 @@ import {
   postServices,
   takeService,
   updateService,
+  updateServiceStatus,
 } from '../../services/serviciosProvider';
 import {
   setIndividualService,
@@ -240,6 +241,43 @@ export const getServiciosByEnterprise = ({ telekinesis, enterprise_id }) => {
         errorApi(data.error);
       } else {
         dispatch(setServicesByEnterprises(data.services));
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al realizar la solicitud.',
+      });
+    }
+  };
+};
+
+export const cambiarEstadoServicio = ({ telekinesis, status, id }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    try {
+      const data = await updateServiceStatus({
+        telekinesis,
+        token,
+        status,
+        id,
+      });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al procesar la solicitud.',
+        });
+        errorApi(data.error);
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'El estado se actualizó correctamente.',
+        });
+        dispatch(setServicesByEnterprises(data.services));
+        dispatch(setStatus('ok'));
       }
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);

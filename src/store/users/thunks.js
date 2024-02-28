@@ -1,9 +1,10 @@
 import Swal from 'sweetalert2';
 import { errorApi } from '../auth/authSlider';
-import { setIndividualUser, setUsers } from './usersSlider';
+import { setIndividualUser, setStatusUser, setUsers } from './usersSlider';
 import {
   createUser,
   deleteUser,
+  getUsers,
   updateUser,
   viewUser,
 } from '../../services/usersProvider';
@@ -80,6 +81,7 @@ export const verUsuario = ({ telekinesis, id }) => {
         dispatch(errorApi(data.error));
       } else {
         dispatch(setIndividualUser(data.user));
+        dispatch(setStatusUser('ok'));
       }
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
@@ -170,6 +172,37 @@ export const eliminarUsuario = ({ telekinesis, id }) => {
           title: 'Éxito',
           text: 'El usuario se eliminó correctamente.',
         });
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al realizar la solicitud.',
+      });
+    }
+  };
+};
+
+export const verUsuarios = ({ telekinesis, id }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    try {
+      const data = await getUsers({
+        telekinesis,
+        token,
+        id,
+      });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al procesar la solicitud.',
+        });
+        dispatch(errorApi(data.error));
+      } else {
+        dispatch(setStatusUser('ok'));
+        dispatch(setUsers(data.users));
       }
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);

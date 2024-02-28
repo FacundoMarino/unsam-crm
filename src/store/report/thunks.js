@@ -69,7 +69,7 @@ export const getUserReport = ({ telekinesis, fecha_desde, fecha_hasta }) => {
   const token = localStorage.getItem('browser_token');
   return async (dispatch) => {
     try {
-      const data = await getServicesReport({
+      const data = await getUsersReport({
         telekinesis,
         token,
         fecha_desde,

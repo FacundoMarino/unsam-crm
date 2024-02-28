@@ -36,15 +36,11 @@ export const ServicioGestion = () => {
   const [id, setId] = useState('');
 
   useEffect(() => {
-    dispatch(getServicios({ telekinesis }));
-  }, [dispatch, telekinesis]);
-
-  useEffect(() => {
-    if (status) {
+    if (status === 'ok') {
       dispatch(getServicios({ telekinesis }));
       dispatch(setStatus(''));
     }
-  }, [dispatch, status, telekinesis]);
+  }, [status]);
   const handleModalOpen = () => {
     setModalOpen(true);
   };

@@ -186,3 +186,32 @@ export const getServiceByEnterprise = async ({
     console.error('Error:', error);
   }
 };
+
+export const updateServiceStatus = async ({
+  token,
+  telekinesis,
+  status,
+  id,
+}) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      browser_token: token,
+      telekinesis,
+      status,
+      id,
+    }),
+  };
+
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/service/update-status/${id}`,
+      requestOptions,
+    ).then((response) => response.json());
+
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};

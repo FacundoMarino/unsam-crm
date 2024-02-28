@@ -54,7 +54,6 @@ export const UsuarioModal = ({ open, handleClose, user }) => {
     handleClose();
   };
 
-  console.log(formData);
   return (
     <Dialog open={open} onClose={handleClose}>
       <Container component="main" maxWidth="xs" style={{ width: '500px' }}>
