@@ -45,7 +45,7 @@ export const ServicioEmpresas = ({
       setIdEnterprise({ enterprise_id, razon_social, address, description }),
     );
     dispatch(getServiciosByEnterprise({ telekinesis, enterprise_id }));
-    handleNewFormClick(3);
+    handleNewFormClick(0);
     setDisplayView('');
   };
 

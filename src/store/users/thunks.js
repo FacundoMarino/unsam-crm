@@ -50,7 +50,7 @@ export const crearUsuario = ({
           title: 'Éxito',
           text: 'El usuario se creó correctamente.',
         });
-        dispatch(setUsers(data));
+        dispatch(setUsers(data.users));
       }
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
@@ -172,6 +172,7 @@ export const eliminarUsuario = ({ telekinesis, id }) => {
           title: 'Éxito',
           text: 'El usuario se eliminó correctamente.',
         });
+        dispatch(setUsers(data.users));
       }
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);

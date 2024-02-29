@@ -172,7 +172,7 @@ export const UsuarioDetail = () => {
               </Grid>
               <Grid item>
                 <Typography variant="h6" gutterBottom>
-                  {userIndividual.rol || '-'}
+                  {userIndividual.rol === 1 ? 'Admin' : 'Externo'}
                 </Typography>
               </Grid>
             </Grid>

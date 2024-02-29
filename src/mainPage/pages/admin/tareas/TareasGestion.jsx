@@ -69,6 +69,13 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
   }, [statusServices]);
 
   useEffect(() => {
+    if (!enterpriseId) {
+      dispatch(getAllService({ telekinesis }));
+      dispatch(setStatus(''));
+    }
+  }, []);
+
+  useEffect(() => {
     if (status === 'ok' && enterpriseId) {
       dispatch(
         getServiciosByEnterprise({

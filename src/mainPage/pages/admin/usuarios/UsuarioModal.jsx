@@ -6,6 +6,9 @@ import {
   DialogTitle,
   FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
 } from '@mui/material';
 import { useForm } from '../../../../hooks/useForm';
@@ -34,6 +37,7 @@ export const UsuarioModal = ({ open, handleClose, user }) => {
       setFormData(user);
     }
   }, [user]);
+
   const {
     link_meet,
     email,
@@ -114,25 +118,43 @@ export const UsuarioModal = ({ open, handleClose, user }) => {
                 </Grid>
 
                 <Grid item xs={12} sx={{ mt: 3 }}>
-                  <TextField
-                    label={type_user ? '' : 'Tipo de Usuario'}
-                    placeohlder={type_user ? '' : 'Tipo de Usuario'}
-                    fullWidth
-                    name="type_user"
-                    value={type_user}
-                    onChange={inputHandler}
-                  />
+                  <FormControl fullWidth>
+                    <InputLabel id="rol">
+                      {rol ? '' : 'Rol de Usuario'}
+                    </InputLabel>
+
+                    <Select
+                      labelId="rol"
+                      fullWidth
+                      name="rol"
+                      value={rol || ''}
+                      onChange={inputHandler}
+                    >
+                      <MenuItem value={1}>Admin</MenuItem>
+                      <MenuItem value={2}>Admisión</MenuItem>
+                      <MenuItem value={3}>Consultor</MenuItem>
+                      <MenuItem value={4}>Externo</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
 
                 <Grid item xs={12} sx={{ mt: 3 }}>
-                  <TextField
-                    label={rol ? '' : 'Rol de Usuario'}
-                    placeohlder={rol ? '' : 'Rol de Usuario'}
-                    fullWidth
-                    name="rol"
-                    value={rol}
-                    onChange={inputHandler}
-                  />
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      {type_user ? '' : 'Tipo de Usuario'}
+                    </InputLabel>
+
+                    <Select
+                      labelId="demo-simple-select-label"
+                      fullWidth
+                      name="type_user"
+                      value={type_user || ''}
+                      onChange={inputHandler}
+                    >
+                      <MenuItem value={1}>Interno</MenuItem>
+                      <MenuItem value={2}>Externo</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
 
                 <Grid item xs={12} sx={{ mt: 3 }}>

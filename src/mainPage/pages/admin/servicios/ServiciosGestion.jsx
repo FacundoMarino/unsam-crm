@@ -41,6 +41,11 @@ export const ServicioGestion = () => {
       dispatch(setStatus(''));
     }
   }, [status]);
+
+  useEffect(() => {
+    dispatch(getServicios({ telekinesis }));
+    dispatch(setStatus(''));
+  }, []);
   const handleModalOpen = () => {
     setModalOpen(true);
   };

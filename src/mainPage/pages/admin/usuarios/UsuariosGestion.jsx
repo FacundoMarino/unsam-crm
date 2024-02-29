@@ -20,7 +20,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import { UsuarioModal } from './UsuarioModal';
-import { verUsuario, verUsuarios } from '../../../../store/users/thunks';
+import {
+  eliminarUsuario,
+  verUsuario,
+  verUsuarios,
+} from '../../../../store/users/thunks';
 import {
   setIndividualUser,
   setStatusUser,
@@ -31,6 +35,8 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const user = useSelector((state) => state.users.individualUser);
 
+  const status = useSelector((state) => state.users.status);
+
   const users = useSelector((state) => state.users.users);
   const dispatch = useDispatch();
 
@@ -38,6 +44,13 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
     dispatch(verUsuarios({ telekinesis }));
     dispatch(setStatusUser(''));
   }, []);
+
+  // useEffect(() => {
+  //   if (status === 'ok') {
+  //     dispatch(verUsuarios({ telekinesis }));
+  //     dispatch(setStatusUser(''));
+  //   }
+  // }, [status]);
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [id, setId] = useState('');
@@ -55,7 +68,8 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
   };
 
   const handleEliminar = (id) => {
-    dispatch(eliminarServicio({ telekinesis, id }));
+    dispatch(eliminarUsuario({ telekinesis, id }));
+    dispatch(setStatusUser('ok'));
   };
 
   const handleEditar = (id) => {

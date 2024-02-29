@@ -54,7 +54,7 @@ export const Legajo = ({ setDisplayView }) => {
   const enterpriseId = useSelector((state) => state.services.idEnterprise);
   const taskEnterpriseId = useSelector((state) => state.tasks.entepriseId);
   const enterpriseTaskExternal = useSelector(
-    (state) => state.auth.enterprise.enterprise_id,
+    (state) => state.auth.enterprise?.enterprise_id,
   );
 
   useEffect(() => {
