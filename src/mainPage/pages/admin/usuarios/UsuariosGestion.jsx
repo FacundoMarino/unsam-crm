@@ -45,13 +45,6 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
     dispatch(setStatusUser(''));
   }, []);
 
-  // useEffect(() => {
-  //   if (status === 'ok') {
-  //     dispatch(verUsuarios({ telekinesis }));
-  //     dispatch(setStatusUser(''));
-  //   }
-  // }, [status]);
-
   const [isModalOpen, setModalOpen] = useState(false);
   const [id, setId] = useState('');
 

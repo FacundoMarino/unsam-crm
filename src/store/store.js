@@ -7,6 +7,7 @@ import { taskSlice } from './tasks/taskSlider';
 import { servicesSlice } from './servicios/servicesSlider';
 import { noteSlice } from './notes/noteSlider';
 import { usersSlice } from './users/usersSlider';
+import { faqSlice } from './faq/faqSlider';
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +19,6 @@ export const store = configureStore({
     services: servicesSlice.reducer,
     notes: noteSlice.reducer,
     users: usersSlice.reducer,
+    faq: faqSlice.reducer,
   },
 });
