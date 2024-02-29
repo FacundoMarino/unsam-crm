@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { eliminarServicio } from '../../../../store/servicios/thunks';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -46,7 +45,7 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
   }, []);
 
   const [isModalOpen, setModalOpen] = useState(false);
-  const [id, setId] = useState('');
+  const [edit, setEdit] = useState(false);
 
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -67,7 +66,7 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
 
   const handleEditar = (id) => {
     dispatch(verUsuario({ telekinesis, id }));
-
+    setEdit(true);
     handleModalOpen();
   };
 
@@ -127,6 +126,7 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
         </List>
 
         <UsuarioModal
+          edit={edit}
           open={isModalOpen}
           handleClose={handleClose}
           user={user}

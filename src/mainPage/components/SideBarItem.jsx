@@ -29,7 +29,7 @@ export const SideBarItem = ({ title = '', icon }) => {
     'Turnos',
     'Formularios',
     'Reportes',
-    //'FAQ',
+    'FAQ',
   ];
 
   useEffect(() => {

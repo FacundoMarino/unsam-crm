@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useForm } from '../../../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { crearUsuario } from '../../../../store/users/thunks';
+import { crearUsuario, editarUsuario } from '../../../../store/users/thunks';
 import { useEffect, useState } from 'react';
 
 export const UsuarioModal = ({ open, handleClose, user }) => {
@@ -53,9 +53,15 @@ export const UsuarioModal = ({ open, handleClose, user }) => {
   } = useForm(formData);
 
   const submitHandler = (event) => {
-    event.preventDefault();
-    dispatch(crearUsuario({ telekinesis, ...formState }));
-    handleClose();
+    if (user) {
+      event.preventDefault();
+      dispatch(editarUsuario({ telekinesis, ...formState }));
+      handleClose();
+    } else {
+      event.preventDefault();
+      dispatch(crearUsuario({ telekinesis, ...formState }));
+      handleClose();
+    }
   };
 
   return (
@@ -199,7 +205,7 @@ export const UsuarioModal = ({ open, handleClose, user }) => {
                     fullWidth
                     color="primary"
                   >
-                    Crear Usuario
+                    {user ? 'Editar Usuario' : 'Crear Usuario'}
                   </Button>
                 </Grid>
               </Grid>

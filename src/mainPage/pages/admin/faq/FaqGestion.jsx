@@ -1,38 +1,37 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Sortable from 'sortablejs';
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+} from '@mui/material';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { verTodasPreguntas } from '../../../../store/faq/thunks';
 
 export const FaqGestion = () => {
-  const [items, setItems] = useState([
-    'Elemento 1',
-    'Elemento 2',
-    'Elemento 3',
-    'Elemento 4',
-  ]);
-  const listRef = useRef(null);
+  const telekinesis = useSelector((state) => state.auth.telekinesis);
+  const faqs = useSelector((state) => state.faq.faqs);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const sortableList = Sortable.create(listRef.current, {
-      animation: 150,
-      onEnd: (event) => {
-        const newItems = [...items];
-        const [movedItem] = newItems.splice(event.oldIndex, 1);
-        newItems.splice(event.newIndex, 0, movedItem);
-        setItems(newItems);
-      },
-    });
-
-    return () => {
-      sortableList.destroy();
-    };
-  }, [items]);
-
-  console.log(items);
+    dispatch(verTodasPreguntas({ telekinesis }));
+  }, [dispatch, telekinesis]);
 
   return (
-    <ul ref={listRef}>
-      {items.map((item, index) => (
-        <li key={index}>{item}</li>
+    <div>
+      {faqs.map((faq, index) => (
+        <Accordion key={index}>
+          <AccordionSummary
+            aria-controls={`panel-content-${index}`}
+            id={`panel-header-${index}`}
+          >
+            <Typography>{faq.question}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>{faq.response}</Typography>
+          </AccordionDetails>
+        </Accordion>
       ))}
-    </ul>
+    </div>
   );
 };

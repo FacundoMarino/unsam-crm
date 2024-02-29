@@ -100,3 +100,23 @@ export const deleteQuestion = async ({ telekinesis, token, id }) => {
     console.error('Error:', error);
   }
 };
+
+export const viewAllQuestion = async ({ telekinesis, token }) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      telekinesis,
+      browser_token: token,
+    }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/question-response/resource`,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};

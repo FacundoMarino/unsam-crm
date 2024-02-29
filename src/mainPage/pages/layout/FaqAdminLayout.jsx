@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { FaqGestion } from '../admin/faq/FaqGestion';
+import { FaqCreate } from '../admin/faq/FaqCreate';
 
 export const FaqAdminLayout = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -20,10 +21,14 @@ export const FaqAdminLayout = () => {
       >
         <TabList>
           <Tab>Administración de FAQ</Tab>
-
-          <Tab style={{ display: displayView }}>FAQ</Tab>
+          <Tab>FAQ</Tab>
         </TabList>
-        <FaqGestion />
+        <TabPanel>
+          <FaqCreate />
+        </TabPanel>
+        <TabPanel>
+          <FaqGestion />
+        </TabPanel>
       </Tabs>
     </>
   );

@@ -137,7 +137,7 @@ export const editarUsuario = ({
           title: 'Éxito',
           text: 'El usuario se actualizó correctamente.',
         });
-        dispatch(setUsers(data));
+        dispatch(setUsers(data.users));
       }
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
