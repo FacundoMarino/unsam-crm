@@ -7,6 +7,7 @@ import {
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { verTodasPreguntas } from '../../../../store/faq/thunks';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export const FaqGestion = () => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
@@ -24,11 +25,14 @@ export const FaqGestion = () => {
           <AccordionSummary
             aria-controls={`panel-content-${index}`}
             id={`panel-header-${index}`}
+            expandIcon={<ExpandMoreIcon />}
           >
-            <Typography>{faq.question}</Typography>
+            <Typography style={{ fontWeight: 'bold' }}>
+              {faq.question}
+            </Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{faq.response}</Typography>
+          <AccordionDetails style={{ backgroundColor: '#f6f6f6' }}>
+            <Typography variant="span">{faq.response}</Typography>
           </AccordionDetails>
         </Accordion>
       ))}
