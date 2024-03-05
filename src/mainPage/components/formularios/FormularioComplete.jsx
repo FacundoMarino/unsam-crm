@@ -89,6 +89,30 @@ export const FormularioComplete = () => {
     }));
     if (value) {
       setSelectedRadioStep(value - 1);
+      setResponse((prevResponse) => ({
+        ...prevResponse,
+        [id]: value, // Actualizar el estado de respuesta con el valor seleccionado
+      }));
+      setCurrentForm((prevForm) => {
+        const updatedForm = [...prevForm];
+        const currentQuestion = updatedForm[currentStep].find(
+          (question) => question.id === id,
+        );
+
+        // Verificar si se encontró la pregunta actual
+        if (currentQuestion) {
+          // Construir un nuevo objeto de pregunta con la propiedad "response"
+          const updatedQuestion = {
+            ...currentQuestion,
+            response: value,
+          };
+          // Reemplazar la pregunta original con la actualizada en el formulario
+          updatedForm[currentStep] = updatedForm[currentStep].map((question) =>
+            question.id === id ? updatedQuestion : question,
+          );
+        }
+        return updatedForm;
+      });
     } else {
       setSelectedRadioStep(null);
     }
@@ -102,17 +126,22 @@ export const FormularioComplete = () => {
     if (selectedRadioStep) {
       // If there's a selectedRadioStep, navigate to that step
       setCurrentStep(selectedRadioStep);
+      setSelectedRadioStep(null);
     } else {
       // Otherwise, proceed to the next step
       setCurrentStep((prevStep) => prevStep + 1);
+      console.log(currentStep, MAX_STEP);
     }
     if (currentStep === MAX_STEP && serviceId !== null) {
-      console.log(serviceId);
+      console.log(currentStep, MAX_STEP);
+
+      const data = [].concat(...currentForm);
+      const dataResponse = data.filter((e) => e.response);
       dispatch(
         responseQuestionForm({
           telekinesis,
           form_id,
-          data: currentForm[0],
+          data: dataResponse,
           service_id: serviceId,
           tarea_id: idTask,
         }),
@@ -177,7 +206,6 @@ export const FormularioComplete = () => {
           );
         }
 
-        console.log(updatedForm);
         return updatedForm;
       });
     }

@@ -47,7 +47,6 @@ export const UsuarioModal = ({ open, handleClose, user }) => {
     apellido,
     telephone,
     rol,
-    sub_rol,
     inputHandler,
     formState,
   } = useForm(formData);
@@ -139,39 +138,8 @@ export const UsuarioModal = ({ open, handleClose, user }) => {
                       <MenuItem value={1}>Admin</MenuItem>
                       <MenuItem value={2}>Admisión</MenuItem>
                       <MenuItem value={3}>Consultor</MenuItem>
-                      <MenuItem value={4}>Externo</MenuItem>
                     </Select>
                   </FormControl>
-                </Grid>
-
-                <Grid item xs={12} sx={{ mt: 3 }}>
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">
-                      {type_user ? '' : 'Tipo de Usuario'}
-                    </InputLabel>
-
-                    <Select
-                      labelId="demo-simple-select-label"
-                      fullWidth
-                      name="type_user"
-                      value={type_user || ''}
-                      onChange={inputHandler}
-                    >
-                      <MenuItem value={1}>Interno</MenuItem>
-                      <MenuItem value={2}>Externo</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-
-                <Grid item xs={12} sx={{ mt: 3 }}>
-                  <TextField
-                    label={sub_rol ? '' : 'Sub Rol de Usuario'}
-                    placeohlder={sub_rol ? '' : 'Sub Rol de Usuario'}
-                    fullWidth
-                    name="sub_rol"
-                    value={sub_rol}
-                    onChange={inputHandler}
-                  />
                 </Grid>
 
                 <Grid item xs={12} sx={{ mt: 3 }}>
