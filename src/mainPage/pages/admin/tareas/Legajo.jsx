@@ -22,7 +22,11 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import { setCrmPage } from '../../../../store/crm/crmSlider';
 import { setFormId } from '../../../../store/forms/formSlider';
-import { setTaskId, setTasks } from '../../../../store/tasks/taskSlider';
+import {
+  setFile,
+  setTaskId,
+  setTasks,
+} from '../../../../store/tasks/taskSlider';
 import { getTasks } from '../../../../store/tasks/thunks';
 import { newNote, solicitarNotas } from '../../../../store/notes/thunks';
 import {
@@ -31,6 +35,8 @@ import {
   setServicesByEnterprises,
 } from '../../../../store/servicios/servicesSlider';
 import { DocumentacionModal } from './DocumentacionModal';
+import { saveAs } from 'file-saver';
+import { FaDownload } from 'react-icons/fa';
 
 export const Legajo = ({ setDisplayView }) => {
   const rol = useSelector(selectRole);
@@ -38,9 +44,9 @@ export const Legajo = ({ setDisplayView }) => {
   const dispatch = useDispatch();
   const tasksRedux = useSelector((state) => state.tasks.tasks);
   const userId = useSelector(selectUserId);
-  const enterpriseExternal = useSelector((state) => state.auth.enterprise);
   const notesRedux = useSelector((state) => state.notes.notes);
   const enterprises = useSelector((state) => state.tasks.enterprises);
+  const file = useSelector((state) => state.tasks.file);
 
   const [cards, setCards] = useState([]);
   const [notes, setNotes] = useState([]);
@@ -85,6 +91,28 @@ export const Legajo = ({ setDisplayView }) => {
       enterprises.find((enterprise) => enterprise.id === taskEnterpriseId),
     );
   }, []);
+
+  useEffect(() => {
+    console.log(file);
+    if (file) {
+      console.log('algo');
+      descargarArchivoBase64(file);
+    }
+  }, [file]);
+
+  const descargarArchivoBase64 = (base64String) => {
+    const byteCharacters = atob(base64String);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/pdf' });
+
+    saveAs(blob, 'archivo.pdf');
+
+    setFile('');
+  };
 
   useEffect(() => {
     return () => {
@@ -194,14 +222,27 @@ export const Legajo = ({ setDisplayView }) => {
     setIsModalOpen(false);
   };
 
-  const handleCardClick = (id, page, enterprise_id, form_id, service_id) => {
+  const handleCardClick = (
+    id,
+    page,
+    enterprise_id,
+    form_id,
+    service_id,
+    color,
+  ) => {
     if (page === 'formularios') {
       dispatch(setCrmPage(page));
       dispatch(setEnterpriseId(enterprise_id));
       dispatch(setFormId(form_id));
     }
+
+    if (page === 'documentacion' && rol === 'Admin') {
+      setProps([{ id, enterprise_id, service_id, color }]);
+      handleModalOpen();
+    }
+
     if (page === 'documentacion') {
-      setProps([{ id, enterprise_id, service_id }]);
+      setProps([{ id, enterprise_id, service_id, color }]);
       handleModalOpen();
     } else {
       dispatch(setCrmPage(page));
@@ -251,14 +292,26 @@ export const Legajo = ({ setDisplayView }) => {
                         card.enterprise_id,
                         card.form_id,
                         card.service_id,
+                        card.color,
                       )
-                  : null
+                  : () =>
+                      handleCardClick(
+                        card.id,
+                        card.type,
+                        card.enterprise_id,
+                        card.form_id,
+                        card.service_id,
+                        card.color,
+                      )
               }
             >
               <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  {card.title}
-                </Typography>
+                <Grid container alignItems="center">
+                  <Typography variant="h6" gutterBottom>
+                    {card.title}
+                  </Typography>
+                  <FaDownload />
+                </Grid>
                 <Divider />
                 <Typography component="div" mt={2}>
                   {card.content.split('\n').map((line, lineIndex) => (
@@ -297,6 +350,7 @@ export const Legajo = ({ setDisplayView }) => {
                 <Typography variant="h6" gutterBottom>
                   {card.title}
                 </Typography>
+
                 <Divider />
                 <Typography component="div" mt={2}>
                   {card.content.split('\n').map((line, lineIndex) => (

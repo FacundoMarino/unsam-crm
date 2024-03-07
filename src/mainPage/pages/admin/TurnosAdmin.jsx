@@ -11,69 +11,80 @@ import {
   Grid,
 } from '@mui/material';
 import { styled } from '@mui/system';
-import { useSelect } from '@mui/base';
+import {
+  asignarTurno,
+  cancelarTurno,
+  desasignarTurno,
+  finalizarTurno,
+  verTodosLosTurnosTomados,
+} from '../../../store/shift/thunks';
+import { useDispatch, useSelector } from 'react-redux';
 
 const StyledTableCell = styled(TableCell)({
   padding: '10px',
   fontSize: '12px',
+  margin: '5px',
 });
 
 const StyledButton = styled(Button)({
   fontSize: '12px',
 });
 
-const turnosDisponibles = [
-  {
-    id: 1,
-    nombre: 'Juan Perez',
-    modalidad: 'Presencial',
-    tipo: 'Consulta',
-    fecha: '2022-01-01',
-    dia: 'Lunes',
-    horaInicio: '10:00',
-    horaFinal: '11:00',
-    estado: 'Sin Asignar',
-    servicio: '-',
-  },
-  {
-    id: 2,
-    nombre: 'Jose Gonzalez',
-    modalidad: 'Presencial',
-    tipo: 'Admisión',
-    fecha: '2021-01-02',
-    dia: 'Martes',
-    horaInicio: '10:00',
-    horaFinal: '11:00',
-    estado: 'Asignado',
-    servicio: '-',
-  },
-  {
-    id: 3,
-    nombre: 'Roberto Rojas',
-    modalidad: 'Virtual',
-    tipo: 'Asistencia',
-    fecha: '2023-12-21',
-    dia: 'Miércoles',
-    horaInicio: '08:00',
-    horaFinal: '08:30',
-    estado: 'Sin Asignar',
-    servicio: '-',
-  },
-];
 export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
+  const turnosDisponibles = useSelector((state) => state.shift.shiftsTakes);
+  const dispatch = useDispatch();
+  const telekinesis = useSelector((state) => state.auth.telekinesis);
+  useEffect(() => {
+    dispatch(verTodosLosTurnosTomados({ telekinesis }));
+  }, []);
   useEffect(() => {
     setDisplayCreateShift('none');
   }, []);
+
+  const handleTakeTurn = (id) => {
+    dispatch(asignarTurno({ telekinesis, id }));
+  };
+
+  const handleCancelTurn = (id) => {
+    dispatch(cancelarTurno({ telekinesis, id }));
+  };
+
+  const handleUnassignTurn = (id) => {
+    dispatch(desasignarTurno({ telekinesis, id }));
+  };
+
+  const handleEndTurn = (id) => {
+    dispatch(finalizarTurno({ telekinesis, id }));
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case 1:
+        return 'Solicitado';
+      case 2:
+        return 'Tomado';
+      case 3:
+        return 'Cancelado';
+      case 4:
+        return 'Finalizado';
+      default:
+        return '';
+    }
+  };
 
   const columns = React.useMemo(
     () => [
       {
         Header: 'Nombre',
-        accessor: 'nombre',
+        accessor: `user_name`,
+      },
+      {
+        Header: 'Apellido',
+        accessor: `user_last_name`,
       },
       {
         Header: 'Tipo de Turno',
-        accessor: 'tipo',
+        accessor: 'shift_type',
       },
       {
         Header: 'Servicio',
@@ -85,38 +96,67 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
       },
       {
         Header: 'Fecha',
-        accessor: 'fecha',
+        accessor: 'day',
       },
       {
         Header: 'Hora',
-        accessor: (row) => `${row.horaInicio} - ${row.horaFinal}`,
+        accessor: 'hour',
       },
       {
         Header: 'Estado',
-        accessor: 'estado',
+        accessor: 'shift_status',
+        Cell: ({ value }) => getStatusText(value),
       },
       {
         Header: 'Acciones',
         Cell: ({ row }) => (
           <>
-            {row.original.estado !== 'Asignado' && (
-              <>
+            {row.original.shift_status === 1 && (
+              <Grid>
                 <StyledButton
                   variant="contained"
                   color="primary"
                   style={{ margin: '5px' }}
+                  onClick={() => handleTakeTurn(row.original.turno_id)}
                 >
                   Tomar Turno
                 </StyledButton>
-                <StyledButton variant="contained" color="secondary">
+                <StyledButton
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleCancelTurn(row.original.turno_id)}
+                >
                   Cancelar Turno
+                </StyledButton>
+              </Grid>
+            )}
+            {row.original.shift_status === 2 && (
+              <>
+                <StyledButton
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleEndTurn(row.original.turno_id)}
+                  style={{ backgroundColor: 'green', margin: '5px' }}
+                >
+                  Finalizar Turno
+                </StyledButton>
+                <StyledButton
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleUnassignTurn(row.original.turno_id)}
+                >
+                  Desasignar Turno
                 </StyledButton>
               </>
             )}
-            {row.original.estado === 'Asignado' && (
+
+            {row.original.shift_status === 3 && (
               <>
-                <StyledButton variant="contained" color="secondary">
-                  Desasignar Turno
+                <StyledButton
+                  variant="contained"
+                  style={{ backgroundColor: 'red', margin: '5px' }}
+                >
+                  Turno Cancelado
                 </StyledButton>
               </>
             )}

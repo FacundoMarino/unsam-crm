@@ -13,6 +13,8 @@ import {
   Card,
   CardContent,
 } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { verTodosLosTurnosTomados } from '../../../store/shift/thunks';
 moment.locale('es');
 
 const localizer = momentLocalizer(moment);
@@ -32,89 +34,15 @@ const customMessages = {
   showMore: (total) => `+${total} más`,
 };
 export const TurnosAdminPage = ({ onVerDetalle, setDisplayCreateShift }) => {
-  const data = [
-    {
-      id: 1,
-      nombre: 'Juan',
-      start: new Date('2023-12-01T10:00:00'),
-      end: new Date('2023-12-01T11:00:00'),
-      tipoCita: 'Presencial',
-      opcion: 'Opcion 1',
-      direccion: 'Calle 5',
-    },
-    {
-      id: 2,
-      nombre: 'Pedro',
-      start: new Date('2023-12-01T10:00:00'),
-      end: new Date('2023-12-01T11:00:00'),
-      tipoCita: 'Virtual',
-      opcion: 'Opcion 1',
-      link: 'https://www.google.com',
-    },
-    {
-      id: 3,
-      nombre: 'Pedro',
-      start: new Date('2023-12-01T10:00:00'),
-      end: new Date('2023-12-01T11:00:00'),
-      tipoCita: 'Virtual',
-      opcion: 'Opcion 1',
-      link: 'https://www.google.com',
-    },
-    {
-      id: 4,
-      nombre: 'Pedro',
-      start: new Date('2023-12-01T10:00:00'),
-      end: new Date('2023-12-01T11:00:00'),
-      tipoCita: 'Virtual',
-      opcion: 'Opcion 1',
-      link: 'https://www.google.com',
-    },
-    {
-      id: 5,
-      nombre: 'Pedro',
-      start: new Date('2023-12-01T10:00:00'),
-      end: new Date('2023-12-01T11:00:00'),
-      tipoCita: 'Virtual',
-      opcion: 'Opcion 1',
-      link: 'https://www.google.com',
-    },
-    {
-      id: 6,
-      nombre: 'Pedro',
-      start: new Date('2023-12-01T10:00:00'),
-      end: new Date('2023-12-01T11:00:00'),
-      tipoCita: 'Virtual',
-      opcion: 'Opcion 1',
-      link: 'https://www.google.com',
-    },
-    {
-      id: 7,
-      nombre: 'Marcelo',
-      start: new Date('2023-12-02T10:00:00'),
-      end: new Date('2023-12-02T11:00:00'),
-      tipoCita: 'Presencial',
-      opcion: 'Opcion 1',
-      direccion: 'Calle 2',
-    },
-    {
-      id: 8,
-      nombre: 'Carlos',
-      start: new Date('2023-12-04T15:00:00'),
-      end: new Date('2023-12-04T16:00:00'),
-      tipoCita: 'Presencial',
-      opcion: 'Opcion 1',
-      direccion: 'Calle 3',
-    },
-    {
-      id: 9,
-      nombre: 'Luis',
-      start: new Date('2023-12-12T10:00:00'),
-      end: new Date('2023-12-12T11:00:00'),
-      tipoCita: 'Presencial',
-      opcion: 'Opcion 1',
-      direccion: 'Calle 1',
-    },
-  ];
+  const dispatch = useDispatch();
+  const telekinesis = useSelector((state) => state.auth.telekinesis);
+  const turnosDisponibles = useSelector((state) => state.shift.shiftsTakes);
+
+  useEffect(() => {
+    dispatch(verTodosLosTurnosTomados({ telekinesis }));
+  }, []);
+
+  console.log(turnosDisponibles);
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTurno, setSelectedTurno] = useState(null);
@@ -136,19 +64,26 @@ export const TurnosAdminPage = ({ onVerDetalle, setDisplayCreateShift }) => {
     setOpenModal(false); // Cerrar el modal si es necesario
   };
 
-  const turnosParaFecha = data.filter((turno) =>
-    moment(turno.start).isSame(selectedDate, 'day'),
+  const turnosParaFecha = turnosDisponibles.filter((turno) =>
+    moment(turno.day).isSame(selectedDate, 'day'),
   );
 
   useEffect(() => {
     setDisplayCreateShift('none');
   }, []);
 
+  const events = turnosDisponibles.map((turno) => ({
+    start: new Date(turno.day + 'T' + turno.hour),
+    end: new Date(turno.day + 'T' + turno.hour),
+    title: `${turno.user_name} ${turno.user_last_name}`,
+    turnoInfo: turno, // Guarda toda la información del turno para acceder a ella más tarde si es necesario
+  }));
+
   return (
     <div>
       <Calendar
         localizer={localizer}
-        events={data}
+        events={events}
         startAccessor="start"
         endAccessor="end"
         selectable

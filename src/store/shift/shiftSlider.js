@@ -43,6 +43,9 @@ export const shiftSlice = createSlice({
     setAdminStatus: (state, { payload }) => {
       state.adminStatus = payload;
     },
+    setShiftsTakes: (state, { payload }) => {
+      state.shiftsTakes = payload;
+    },
   },
 });
 
@@ -53,4 +56,5 @@ export const {
   setDayIsNotAvailable,
   setCurrentShift,
   setAdminStatus,
+  setShiftsTakes,
 } = shiftSlice.actions;

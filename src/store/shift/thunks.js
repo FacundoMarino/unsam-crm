@@ -1,5 +1,9 @@
 import {
+  assignShift,
+  cancelShift,
   deleteShiftProvider,
+  endShift,
+  getAllShiftsTakes,
   getShiftEdit,
   postShiftStepTWo,
   postShiftUpdate,
@@ -7,6 +11,7 @@ import {
   postShiftsTypesOne,
   postShiftsTypesServices,
   postStore,
+  unassignShift,
 } from '../../services/shiftProvider';
 import { errorApi } from '../auth/authSlider';
 import {
@@ -16,6 +21,7 @@ import {
   setDayIsNotAvailable,
   setShift,
   setShiftType,
+  setShiftsTakes,
 } from './shiftSlider';
 
 import Swal from 'sweetalert2';
@@ -290,6 +296,136 @@ export const deleteShift = ({ telekinesis, id }) => {
           text: 'El turno se eliminó correctamente.',
         });
         dispatch(setAdminStatus('ok'));
+      }
+    } catch (error) {
+      console.error('Error al eliminar el turno:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al eliminar el turno.',
+      });
+    }
+  };
+};
+
+export const verTodosLosTurnosTomados = ({ telekinesis, id }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    try {
+      const data = await getAllShiftsTakes({ token, telekinesis, id });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al eliminar el turno.',
+        });
+        errorApi(data.error);
+      } else {
+        dispatch(setShiftsTakes(data.shift_in_box));
+      }
+    } catch (error) {
+      console.error('Error al eliminar el turno:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al eliminar el turno.',
+      });
+    }
+  };
+};
+
+export const asignarTurno = ({ telekinesis, id }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    try {
+      const data = await assignShift({ token, telekinesis, id });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al eliminar el turno.',
+        });
+        errorApi(data.error);
+      } else {
+        dispatch(setShiftsTakes(data.shift_in_box));
+      }
+    } catch (error) {
+      console.error('Error al eliminar el turno:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al eliminar el turno.',
+      });
+    }
+  };
+};
+
+export const cancelarTurno = ({ telekinesis, id }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    try {
+      const data = await cancelShift({ token, telekinesis, id });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al eliminar el turno.',
+        });
+        errorApi(data.error);
+      } else {
+        dispatch(setShiftsTakes(data.shift_in_box));
+      }
+    } catch (error) {
+      console.error('Error al eliminar el turno:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al eliminar el turno.',
+      });
+    }
+  };
+};
+
+export const desasignarTurno = ({ telekinesis, id }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    try {
+      const data = await unassignShift({ token, telekinesis, id });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al eliminar el turno.',
+        });
+        errorApi(data.error);
+      } else {
+        dispatch(setShiftsTakes(data.shift_in_box));
+      }
+    } catch (error) {
+      console.error('Error al eliminar el turno:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al eliminar el turno.',
+      });
+    }
+  };
+};
+
+export const finalizarTurno = ({ telekinesis, id }) => {
+  const token = localStorage.getItem('browser_token');
+  return async (dispatch) => {
+    try {
+      const data = await endShift({ token, telekinesis, id });
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al eliminar el turno.',
+        });
+        errorApi(data.error);
+      } else {
+        dispatch(setShiftsTakes(data.shift_in_box));
       }
     } catch (error) {
       console.error('Error al eliminar el turno:', error);

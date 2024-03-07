@@ -8,7 +8,11 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { subirDocumentacion } from '../../../../store/tasks/thunks';
+import {
+  descargarrDocumentacion,
+  subirDocumentacion,
+  updateTask,
+} from '../../../../store/tasks/thunks';
 
 export const DocumentacionModal = ({ open, handleClose, props }) => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
@@ -27,8 +31,6 @@ export const DocumentacionModal = ({ open, handleClose, props }) => {
 
   const handleFileUpload = () => {
     if (updateProps && selectedFile) {
-      console.log(selectedFile);
-
       dispatch(
         subirDocumentacion({
           telekinesis,
@@ -38,7 +40,29 @@ export const DocumentacionModal = ({ open, handleClose, props }) => {
           tarea_id: updateProps[0].id,
         }),
       );
+
+      dispatch(
+        updateTask({
+          telekinesis,
+          enterprise_id: updateProps[0].enterprise_id,
+          status: 2,
+          id: updateProps[0].id,
+        }),
+      );
+
+      handleClose();
     }
+  };
+
+  const handleDownloadFile = () => {
+    dispatch(
+      descargarrDocumentacion({
+        telekinesis,
+        service_id: updateProps[0].service_id,
+        enterprise_id: updateProps[0].enterprise_id,
+        tarea_id: updateProps[0].id,
+      }),
+    );
   };
 
   return (
@@ -48,19 +72,27 @@ export const DocumentacionModal = ({ open, handleClose, props }) => {
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <input
-                accept="image/*, application/pdf"
-                id="contained-button-file"
-                type="file"
-                fullWidth
-                onChange={handleFileChange}
-              />
-              <label htmlFor="contained-button-file"></label>
-            </Grid>
-            <Grid item xs={12}>
-              {selectedFile && (
-                <Button variant="contained" onClick={handleFileUpload}>
-                  Enviar Archivo
+              {props.color === 'green' ? (
+                selectedFile && (
+                  <>
+                    <Grid item xs={12}>
+                      <input
+                        accept="image/*, application/pdf"
+                        id="contained-button-file"
+                        type="file"
+                        fullWidth
+                        onChange={handleFileChange}
+                      />
+                      <label htmlFor="contained-button-file"></label>
+                    </Grid>
+                    <Button variant="contained" onClick={handleFileUpload}>
+                      Enviar Archivo
+                    </Button>
+                  </>
+                )
+              ) : (
+                <Button variant="contained" onClick={handleDownloadFile}>
+                  Descargar Archivo
                 </Button>
               )}
             </Grid>

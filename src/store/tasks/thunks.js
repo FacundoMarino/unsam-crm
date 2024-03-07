@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2';
 import {
+  downloadDocumentation,
   getAllServices,
   getEnterprisesProvider,
   getTaskProvider,
@@ -10,6 +11,7 @@ import {
 import { errorApi } from '../auth/authSlider';
 import {
   setEnterprises,
+  setFile,
   setStatusTask,
   setTasks,
   setTasksEnterprises,
@@ -176,7 +178,49 @@ export const subirDocumentacion = ({
         });
         errorApi(data.error);
       } else {
-        dispatch(setStatusTask('ok'));
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'La solicitud se procesó correctamente.',
+        });
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al realizar la solicitud.',
+      });
+    }
+  };
+};
+
+export const descargarrDocumentacion = ({
+  telekinesis,
+  tarea_id,
+  service_id,
+  enterprise_id,
+}) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem('browser_token');
+      const data = await downloadDocumentation({
+        token,
+        telekinesis,
+        tarea_id,
+        service_id,
+        enterprise_id,
+      });
+
+      if (data.error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un error al procesar la solicitud.',
+        });
+        errorApi(data.error);
+      } else {
+        dispatch(setFile(data.file));
       }
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);

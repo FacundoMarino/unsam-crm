@@ -287,3 +287,111 @@ export const deleteShiftProvider = async ({ token, telekinesis, id }) => {
     console.error('Error:', error);
   }
 };
+
+export const getAllShiftsTakes = async ({ token, telekinesis }) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      browser_token: token,
+      telekinesis,
+    }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/inbox`,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const assignShift = async ({ token, telekinesis, id }) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      browser_token: token,
+      telekinesis,
+      id,
+    }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/inbox/assign-shift/${id}
+      `,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const cancelShift = async ({ token, telekinesis, id }) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      browser_token: token,
+      telekinesis,
+      id,
+    }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/inbox/cancel-shift/${id}
+      `,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const unassignShift = async ({ token, telekinesis, id }) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      browser_token: token,
+      telekinesis,
+      id,
+    }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/inbox/unassign-shift/${id}
+      `,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+export const endShift = async ({ token, telekinesis, id }) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      browser_token: token,
+      telekinesis,
+      id,
+    }),
+  };
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_URL_API}/api/crmunsam/auth/inbox/end-shift/${id}
+      `,
+      requestOptions,
+    ).then((response) => response.json());
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
