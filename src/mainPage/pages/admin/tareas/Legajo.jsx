@@ -93,9 +93,7 @@ export const Legajo = ({ setDisplayView }) => {
   }, []);
 
   useEffect(() => {
-    console.log(file);
     if (file) {
-      console.log('algo');
       descargarArchivoBase64(file);
     }
   }, [file]);

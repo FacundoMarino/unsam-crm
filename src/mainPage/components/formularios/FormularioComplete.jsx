@@ -130,11 +130,8 @@ export const FormularioComplete = () => {
     } else {
       // Otherwise, proceed to the next step
       setCurrentStep((prevStep) => prevStep + 1);
-      console.log(currentStep, MAX_STEP);
     }
     if (currentStep === MAX_STEP && serviceId !== null) {
-      console.log(currentStep, MAX_STEP);
-
       const data = [].concat(...currentForm);
       const dataResponse = data.filter((e) => e.response);
       dispatch(

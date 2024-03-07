@@ -42,8 +42,6 @@ export const TurnosAdminPage = ({ onVerDetalle, setDisplayCreateShift }) => {
     dispatch(verTodosLosTurnosTomados({ telekinesis }));
   }, []);
 
-  console.log(turnosDisponibles);
-
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTurno, setSelectedTurno] = useState(null);
   const [openModal, setOpenModal] = useState(false);

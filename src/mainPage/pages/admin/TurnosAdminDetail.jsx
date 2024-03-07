@@ -11,13 +11,11 @@ import {
 export const TurnosAdminDetail = ({ turno, open, onClose }) => {
   const onMarcarFinalizado = (turnoId) => {
     // Lógica para marcar el turno como finalizado
-    console.log(`Marcar como finalizado: ${turnoId}`);
     onClose();
   };
 
   const onMarcarAusente = (turnoId) => {
     // Lógica para marcar el turno como ausente
-    console.log(`Marcar como ausente: ${turnoId}`);
     onClose();
   };
 
