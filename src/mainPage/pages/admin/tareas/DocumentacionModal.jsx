@@ -5,6 +5,7 @@ import {
   DialogTitle,
   Button,
   Grid,
+  Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +18,7 @@ import {
 export const DocumentacionModal = ({ open, handleClose, props }) => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const dispatch = useDispatch();
+  const rol = useSelector((state) => state.auth.rol);
   const [selectedFile, setSelectedFile] = useState({});
   const [updateProps, setUpdateProps] = useState({});
 
@@ -24,6 +26,7 @@ export const DocumentacionModal = ({ open, handleClose, props }) => {
     setUpdateProps(props);
   }, [props]);
 
+  console.log(props);
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
@@ -72,26 +75,33 @@ export const DocumentacionModal = ({ open, handleClose, props }) => {
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              {props.color === 'green' ? (
-                selectedFile && (
-                  <>
-                    <Grid item xs={12}>
-                      <input
-                        accept="image/*, application/pdf"
-                        id="contained-button-file"
-                        type="file"
-                        fullWidth
-                        onChange={handleFileChange}
-                      />
-                      <label htmlFor="contained-button-file"></label>
-                    </Grid>
-                    <Button variant="contained" onClick={handleFileUpload}>
-                      Enviar Archivo
-                    </Button>
-                  </>
-                )
+              {updateProps[0]?.color === 'red' && rol !== 'Admin'
+                ? selectedFile && (
+                    <>
+                      <Grid item xs={12} mb={2}>
+                        <input
+                          accept="image/*, application/pdf"
+                          id="contained-button-file"
+                          type="file"
+                          fullWidth
+                          onChange={handleFileChange}
+                        />
+                        <label htmlFor="contained-button-file"></label>
+                      </Grid>
+                      <Button variant="contained" onClick={handleFileUpload}>
+                        Enviar Archivo
+                      </Button>
+                    </>
+                  )
+                : null}
+              {updateProps[0]?.color === 'green' && rol !== 'Admin' ? (
+                <Typography>La documentación ya se encuentra subida</Typography>
               ) : (
-                <Button variant="contained" onClick={handleDownloadFile}>
+                <Button
+                  variant="contained"
+                  style={{ display: rol === 'Admin' ? '' : 'none' }}
+                  onClick={handleDownloadFile}
+                >
                   Descargar Archivo
                 </Button>
               )}

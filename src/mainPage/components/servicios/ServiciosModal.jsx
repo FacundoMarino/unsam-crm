@@ -63,6 +63,7 @@ export const ServiciosModal = ({ open, handleClose, selectedCompany }) => {
         }),
       );
     } else {
+      console.log(taskType);
       dispatch(
         storeTasks({
           telekinesis,

@@ -13,6 +13,11 @@ import { setCrmPage } from '../../store/crm/crmSlider';
 import { FaRegHandshake } from 'react-icons/fa6';
 import { FaRegFolderOpen } from 'react-icons/fa';
 import { FaQuestionCircle } from 'react-icons/fa';
+import { FaRegUser } from 'react-icons/fa';
+import { FaCalendarAlt } from 'react-icons/fa';
+import { IoNewspaperOutline } from 'react-icons/io5';
+import { IoMdAnalytics } from 'react-icons/io';
+
 export const SideBarItem = ({ title = '', icon }) => {
   const rol = useSelector((state) => state.auth.rol);
   const dispatch = useDispatch();
@@ -26,12 +31,12 @@ export const SideBarItem = ({ title = '', icon }) => {
     { name: 'FAQ', icon: <FaQuestionCircle /> },
   ];
   const subItemsInternal = [
-    { name: 'Usuarios' },
-    { name: 'Servicios' },
-    { name: 'Turnos' },
-    { name: 'Formularios' },
-    { name: 'Reportes' },
-    { name: 'FAQ' },
+    { name: 'Usuarios', icon: <FaRegUser /> },
+    { name: 'Servicios', icon: <FaRegHandshake /> },
+    { name: 'Turnos', icon: <FaCalendarAlt /> },
+    { name: 'Formularios', icon: <IoNewspaperOutline /> },
+    { name: 'Reportes', icon: <IoMdAnalytics /> },
+    { name: 'FAQ', icon: <FaQuestionCircle /> },
   ];
 
   useEffect(() => {

@@ -131,6 +131,8 @@ export const Legajo = ({ setDisplayView }) => {
       let enterprise_id = '';
       let form_id = '';
       let service_id = '';
+      let hourShift = '';
+      let dayShift = '';
 
       const fecha = task.created_at;
 
@@ -151,6 +153,8 @@ export const Legajo = ({ setDisplayView }) => {
           icon = task.status === 1 ? <ErrorIcon /> : <CheckCircleIcon />;
           break;
         case 1:
+          console.log(task.turno[0]);
+
           enterprise_id = task.enterprise_id;
           service_id = task.service_id;
           id = task.id;
@@ -162,6 +166,8 @@ export const Legajo = ({ setDisplayView }) => {
           }\nFecha: ${new Date(fecha).toLocaleDateString()}`;
           cardColor = task.status === 1 ? 'red' : 'green';
           icon = task.status === 1 ? <ErrorIcon /> : <CheckCircleIcon />;
+          hourShift = task.turno[0]?.hour;
+          dayShift = task.turno[0]?.day;
           break;
         case 3:
           enterprise_id = task.enterprise_id;
@@ -191,6 +197,8 @@ export const Legajo = ({ setDisplayView }) => {
         icon: icon,
         form_id: form_id,
         service_id: service_id,
+        hourShift: hourShift,
+        dayShift: dayShift,
       };
     });
 
@@ -316,6 +324,7 @@ export const Legajo = ({ setDisplayView }) => {
                     <div key={lineIndex}>{line}</div>
                   ))}
                 </Typography>
+
                 {card.icon && <div>{card.icon}</div>}
               </CardContent>
             </Card>
@@ -392,6 +401,13 @@ export const Legajo = ({ setDisplayView }) => {
                   {card.content.split('\n').map((line, lineIndex) => (
                     <div key={lineIndex}>{line}</div>
                   ))}
+                </Typography>
+                <Typography>
+                  {card.hourShift && `Hora del Turno: ${card.hourShift}`}
+                </Typography>
+                <Typography>
+                  {card.dayShift &&
+                    `Fecha del Turno: ${formatDate(card.dayShift)}`}
                 </Typography>
                 {card.icon && <div>{card.icon}</div>}
               </CardContent>

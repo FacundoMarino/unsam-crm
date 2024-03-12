@@ -80,6 +80,7 @@ export const postStoreShift = ({
   hour,
   shift_type_id,
   service_id,
+  tarea_id,
 }) => {
   const token = localStorage.getItem('browser_token');
   return async (dispatch) => {
@@ -93,6 +94,7 @@ export const postStoreShift = ({
         hour,
         shift_type_id,
         service_id,
+        tarea_id,
       });
       if (data.error) {
         Swal.fire({

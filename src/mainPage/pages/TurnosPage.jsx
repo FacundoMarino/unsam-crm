@@ -10,6 +10,7 @@ import {
   postStoreShift,
 } from '../../store/shift/thunks';
 import { resetShift } from '../../store/shift/shiftSlider';
+import { updateTask } from '../../store/tasks/thunks';
 
 export const TurnosPage = () => {
   const [selectedOption, setSelectedOption] = useState('');
@@ -28,6 +29,9 @@ export const TurnosPage = () => {
   const shiftType = useSelector((state) => state.shift.shiftType);
   const optionsHoras = useSelector((state) => state.shift.hoursNotAvailable);
   const location = useSelector((state) => state.shift.location);
+  const taskId = useSelector((state) => state.tasks.taskId);
+  const enterprise_id = useSelector((state) => state.auth.enterprise_id);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -193,6 +197,16 @@ export const TurnosPage = () => {
           telekinesis: user.telekinesis,
           hour: selectedTime,
           shift_type_id: shify_id,
+          tarea_id: taskId,
+        }),
+      );
+
+      dispatch(
+        updateTask({
+          telekinesis: user.telekinesis,
+          enterprise_id,
+          status: 2,
+          id: taskId,
         }),
       );
 

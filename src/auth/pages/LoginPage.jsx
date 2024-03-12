@@ -116,7 +116,8 @@ export const LoginPage = () => {
                   type="submit"
                   variant="contained"
                   fullWidth
-                  style={{ backgroundColor: 'green', color: 'white' }}
+                  color="secondary"
+                  style={{ color: 'white' }}
                 >
                   Ingresar
                 </Button>

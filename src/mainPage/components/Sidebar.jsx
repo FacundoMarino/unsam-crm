@@ -1,6 +1,6 @@
 import { Box, Drawer, List, Toolbar } from '@mui/material';
 import { SideBarItem } from './SideBarItem';
-import logo from '../../public/logo-auth.jpg';
+import logo from '../../public/logo-blue.png';
 import { FaBars } from 'react-icons/fa';
 
 export const Sidebar = ({ draweWidth }) => {
@@ -30,14 +30,9 @@ export const Sidebar = ({ draweWidth }) => {
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <img src={logo} alt="logo" style={{ width: '75%' }} />
+            <img src={logo} alt="logo" style={{ width: '100%' }} />
           </div>
         </Toolbar>
-        <Toolbar
-          sx={{
-            backgroundColor: '#6A51e1',
-          }}
-        ></Toolbar>
 
         <List
           sx={{

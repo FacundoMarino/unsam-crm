@@ -101,6 +101,16 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
           service_id: props[0].id,
         }),
       );
+    } else if (iconTitle === 'Subir Documentación') {
+      dispatch(
+        storeTasks({
+          telekinesis,
+          tipo_tarea: taskType,
+          enterprise_id: selectedEmpresa,
+          comment: textareaValue,
+          service_id: props[0].id,
+        }),
+      );
     } else {
       dispatch(
         cambiarEstadoServicio({

@@ -15,6 +15,9 @@ import { FaRegFolderOpen } from 'react-icons/fa';
 import { FaQuestionCircle } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { setCrmPage } from '../../store/crm/crmSlider';
+import { FaCalendarAlt } from 'react-icons/fa';
+import { IoNewspaperOutline } from 'react-icons/io5';
+import { IoMdAnalytics } from 'react-icons/io';
 
 export const Navbar = ({ draweWidth }) => {
   const dispatch = useDispatch();
@@ -39,6 +42,14 @@ export const Navbar = ({ draweWidth }) => {
       setNameBar({ name: 'Legajo', icon: <FaRegFolderOpen /> });
     } else if (page === 'faq') {
       setNameBar({ name: 'FAQ', icon: <FaQuestionCircle /> });
+    } else if (page === 'turnos') {
+      setNameBar({ name: 'Turnos', icon: <FaCalendarAlt /> });
+    } else if (page === 'formularios') {
+      setNameBar({ name: 'Formularios', icon: <IoNewspaperOutline /> });
+    } else if (page === 'reportes') {
+      setNameBar({ name: 'Reportes', icon: <IoMdAnalytics /> });
+    } else if (page === 'usuarios') {
+      setNameBar({ name: 'Usuarios', icon: <FaRegUser /> });
     }
   };
 

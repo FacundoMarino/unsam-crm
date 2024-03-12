@@ -2,7 +2,6 @@ import {
   AppBar,
   Button,
   Container,
-  Grid,
   IconButton,
   List,
   ListItem,
@@ -27,14 +26,10 @@ import {
 import {
   setIndividualUser,
   setStatusUser,
-  setUsers,
 } from '../../../../store/users/usersSlider';
-import { setStatus } from '../../../../store/servicios/servicesSlider';
 export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const user = useSelector((state) => state.users.individualUser);
-
-  const status = useSelector((state) => state.users.status);
 
   const users = useSelector((state) => state.users.users);
   const dispatch = useDispatch();
@@ -70,6 +65,17 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
     handleModalOpen();
   };
 
+  const handleRole = (rol) => {
+    if (rol === 1) {
+      return 'Administrador';
+    } else if (rol === 2) {
+      return 'Interno';
+    } else if (rol === 4) {
+      return 'Externo';
+    } else if (rol === 3) {
+      return 'Consultor';
+    }
+  };
   const handleVer = (id) => {
     handleNewFormClick(1);
     setDisplayView('');
@@ -95,8 +101,18 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
         </AppBar>
         <List>
           {users?.map((servicio) => (
-            <ListItem key={servicio.id}>
-              <ListItemText primary={servicio.name} />
+            <ListItem key={servicio.id} style={{ width: '94%' }}>
+              <ListItemText primary={servicio.name} style={{ width: '1%' }} />
+              <ListItemText
+                primary={servicio.apellido}
+                style={{ width: '1%' }}
+              />
+              <ListItemText
+                primary={handleRole(servicio.rol)}
+                style={{ width: '1%' }}
+              />
+              <ListItemText primary={servicio.email} style={{ width: '1%' }} />
+
               <ListItemSecondaryAction>
                 <IconButton
                   edge="end"
