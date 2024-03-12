@@ -75,7 +75,7 @@ export const ServiciosExternal = () => {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => handleSubmit(consultaGeneralId.id)}
+          onClick={() => handleSubmit(consultaGeneralId[0].id)}
         >
           Solicitar turno Consulta General
         </Button>

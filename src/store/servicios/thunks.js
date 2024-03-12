@@ -202,7 +202,7 @@ export const solicitarServicio = ({
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Hubo un error al procesar la solicitud.',
+          text: `${data.error}`,
         });
         errorApi(data.error);
       } else {
