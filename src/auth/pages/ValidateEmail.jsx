@@ -30,9 +30,9 @@ export const ValidateEmail = () => {
 
   useEffect(() => {
     if (isAuthenticating !== 'validateOk') {
-      dispatch(reciveEmailCode(token, telekinesis));
+      dispatch(reciveEmailCode(telekinesis));
     }
-  }, []);
+  }, [dispatch, isAuthenticating, telekinesis, token]);
 
   if (isAuthenticating === 'validateOk') {
     setTimeout(() => {

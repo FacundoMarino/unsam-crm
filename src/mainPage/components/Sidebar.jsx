@@ -1,14 +1,14 @@
-import { Box, Divider, Drawer, List, Toolbar } from '@mui/material';
+import { Box, Drawer, List, Toolbar } from '@mui/material';
 import { SideBarItem } from './SideBarItem';
-import logo from '../../public/logo-auth-crm.png';
-import { MdOutlineHomeRepairService } from 'react-icons/md';
+import logo from '../../public/logo-auth.jpg';
+import { FaBars } from 'react-icons/fa';
 
 export const Sidebar = ({ draweWidth }) => {
   const notes = [
     {
       id: 1,
-      title: 'Services',
-      icon: <MdOutlineHomeRepairService />,
+      title: 'Menú Principal',
+      icon: <FaBars />,
     },
   ];
   return (
@@ -26,18 +26,22 @@ export const Sidebar = ({ draweWidth }) => {
       >
         <Toolbar
           sx={{
-            backgroundColor: '#343840',
+            backgroundColor: '#ffffff',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <img src={logo} alt="logo" style={{ width: '75%' }} />
           </div>
         </Toolbar>
-        <Divider />
+        <Toolbar
+          sx={{
+            backgroundColor: '#6A51e1',
+          }}
+        ></Toolbar>
 
         <List
           sx={{
-            backgroundColor: '#343840',
+            backgroundColor: '#6A51e1',
             height: '100vh',
           }}
         >

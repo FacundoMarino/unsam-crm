@@ -13,7 +13,7 @@ export const CrmLayout = ({ children }) => {
 
       <Sidebar draweWidth={draweWidth} />
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 10 }}>
         <Toolbar />
 
         {children}

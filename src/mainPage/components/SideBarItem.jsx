@@ -6,10 +6,13 @@ import {
   ListItemIcon,
   ListItemText,
   Collapse,
+  Icon,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCrmPage } from '../../store/crm/crmSlider';
-
+import { FaRegHandshake } from 'react-icons/fa6';
+import { FaRegFolderOpen } from 'react-icons/fa';
+import { FaQuestionCircle } from 'react-icons/fa';
 export const SideBarItem = ({ title = '', icon }) => {
   const rol = useSelector((state) => state.auth.rol);
   const dispatch = useDispatch();
@@ -18,18 +21,17 @@ export const SideBarItem = ({ title = '', icon }) => {
   const [items, setItems] = useState([]);
 
   const subItems = [
-    'Servicios',
-    'Turnos',
-    'Formularios',
-    'Bandeja de Solicitudes',
+    { name: 'Servicios', icon: <FaRegHandshake /> },
+    { name: 'Mi Legajo', icon: <FaRegFolderOpen /> },
+    { name: 'FAQ', icon: <FaQuestionCircle /> },
   ];
   const subItemsInternal = [
-    'Usuarios',
-    'Servicios',
-    'Turnos',
-    'Formularios',
-    'Reportes',
-    'FAQ',
+    { name: 'Usuarios' },
+    { name: 'Servicios' },
+    { name: 'Turnos' },
+    { name: 'Formularios' },
+    { name: 'Reportes' },
+    { name: 'FAQ' },
   ];
 
   useEffect(() => {
@@ -49,20 +51,25 @@ export const SideBarItem = ({ title = '', icon }) => {
       <ListItem disablePadding>
         <ListItemButton onClick={handleItemClick}>
           <ListItemIcon style={{ minWidth: 'auto' }}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
+            <Icon
+              sx={{
                 color: 'white',
                 marginRight: '10px',
-                width: 'auto',
+                height: '45px',
+                marginTop: '15px',
               }}
             >
               {icon}
-            </div>
+            </Icon>
           </ListItemIcon>
           <Grid container>
-            <ListItemText sx={{ color: 'white' }} primary={title} />
+            <ListItemText
+              sx={{
+                color: 'white',
+                fontSize: '1.2rem',
+              }}
+              primary={title}
+            />
           </Grid>
         </ListItemButton>
       </ListItem>
@@ -71,14 +78,22 @@ export const SideBarItem = ({ title = '', icon }) => {
         {items.map((subItem, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton
+              alignItems="flex-start"
               onClick={() =>
-                dispatch(setCrmPage(subItem.toLowerCase().replace(/\s/g, '')))
+                dispatch(
+                  setCrmPage(subItem.name.toLowerCase().replace(/\s/g, '')),
+                )
               }
             >
+              <Icon
+                sx={{ color: 'white', marginRight: '10px', height: '45px' }}
+              >
+                {subItem.icon}
+              </Icon>
               <ListItemText
                 className="animate__animated animate__fadeIn animate__faster"
                 sx={{ color: 'white' }}
-                primary={subItem}
+                primary={subItem.name}
               />
             </ListItemButton>
           </ListItem>

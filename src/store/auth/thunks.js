@@ -118,7 +118,9 @@ export const sendEmailCode = ({ code }, token, telekinesis) => {
   };
 };
 
-export const reciveEmailCode = (token, telekinesis) => {
+export const reciveEmailCode = (telekinesis) => {
+  const token = localStorage.getItem('browser_token');
+
   return async (dispatch) => {
     const data = await getEmailCode({
       token,

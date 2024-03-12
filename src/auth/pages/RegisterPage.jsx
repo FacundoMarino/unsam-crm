@@ -62,7 +62,6 @@ export const RegisterPage = () => {
   const isAuthenticating = useSelector(selectAuthStatus);
   const user = useSelector((state) => state.auth);
   const [loginError, setLoginError] = useState('');
-  const [selectedRubro, setSelectedRubro] = useState('');
 
   useEffect(() => {
     if (errorMessage != null) {
@@ -152,19 +151,6 @@ export const RegisterPage = () => {
                   value={razon_social}
                   onChange={inputHandler}
                 />
-              </Grid>
-
-              <Grid item xs={12} sx={{ mt: 3 }}>
-                <Select
-                  label="Rubro"
-                  fullWidth
-                  name="rubro"
-                  value={selectedRubro}
-                  onChange={(e) => setSelectedRubro(e.target.value)}
-                >
-                  <MenuItem value="opcion1">Opción 1</MenuItem>
-                  <MenuItem value="opcion2">Opción 2</MenuItem>
-                </Select>
               </Grid>
 
               <Grid item xs={12} sx={{ mt: 3 }}>

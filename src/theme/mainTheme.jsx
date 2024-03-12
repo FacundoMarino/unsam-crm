@@ -7,7 +7,7 @@ export const mainTheme = createTheme({
       main: '#ffffff',
     },
     banckgroundCrm: {
-      main: '#343840',
+      main: '#6A51e1',
     },
     hover: {
       main: '#6A36D9',

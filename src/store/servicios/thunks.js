@@ -209,7 +209,7 @@ export const solicitarServicio = ({
         Swal.fire({
           icon: 'success',
           title: 'Éxito',
-          text: 'El servicios se solicitó correctamente.',
+          text: 'El servicio se solicitó correctamente.',
         });
       }
     } catch (error) {
