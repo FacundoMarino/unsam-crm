@@ -95,7 +95,7 @@ export const RegisterPage = () => {
   };
 
   return (
-    <AuthLayout title="Registro">
+    <AuthLayout>
       <form
         onSubmit={submitHandler}
         className="animate__animated animate__fadeIn animate__faster"
@@ -212,7 +212,7 @@ export const RegisterPage = () => {
                     type="submit"
                     variant="contained"
                     fullWidth
-                    style={{ backgroundColor: 'green', color: 'white' }}
+                    style={{ color: 'white', backgroundColor: '#6A51e1' }}
                   >
                     Guardar Datos
                   </Button>
@@ -325,7 +325,7 @@ export const RegisterPage = () => {
                     type="submit"
                     variant="contained"
                     fullWidth
-                    style={{ backgroundColor: 'green', color: 'white' }}
+                    style={{ color: 'white', backgroundColor: '#6A51e1' }}
                   >
                     Crear Cuenta
                   </Button>

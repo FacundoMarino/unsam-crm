@@ -120,20 +120,15 @@ export const FormularioCreate = ({
 
   return (
     <Container>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Formularios
-          </Typography>
-          <Button
-            color="inherit"
-            onClick={handleNuevoTurno}
-            startIcon={<AddIcon />}
-          >
-            Nuevo Formulario
-          </Button>
-        </Toolbar>
-      </AppBar>
+      <Grid container justifyContent={'flex-end'}>
+        <Button
+          style={{ backgroundColor: '#6A51e1', color: 'white', margin: 5 }}
+          onClick={handleNuevoTurno}
+          startIcon={<AddIcon />}
+        >
+          Nuevo Formulario
+        </Button>
+      </Grid>
 
       {form_id && (
         <Paper elevation={3} style={{ padding: '20px' }}>
@@ -310,7 +305,7 @@ export const FormularioCreate = ({
             onClick={handleSubmit}
             style={{ marginTop: '20px' }}
           >
-            Enviar Formulario
+            Crear Formulario
           </Button>
         </Paper>
       )}

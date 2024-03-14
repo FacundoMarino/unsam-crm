@@ -2,6 +2,7 @@ import {
   AppBar,
   Button,
   Container,
+  Grid,
   IconButton,
   List,
   ListItem,
@@ -85,20 +86,15 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
   return (
     <>
       <Container>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Usuarios
-            </Typography>
-            <Button
-              color="inherit"
-              onClick={handlerNuevoServicio}
-              startIcon={<AddIcon />}
-            >
-              Nuevo Usuario
-            </Button>
-          </Toolbar>
-        </AppBar>
+        <Grid container justifyContent={'flex-end'}>
+          <Button
+            style={{ backgroundColor: '#6A51e1', color: 'white', margin: 5 }}
+            onClick={handlerNuevoServicio}
+            startIcon={<AddIcon />}
+          >
+            Nuevo Usuario
+          </Button>
+        </Grid>
         <List>
           {users?.map((servicio) => (
             <ListItem key={servicio.id} style={{ width: '94%' }}>

@@ -26,7 +26,6 @@ export const DocumentacionModal = ({ open, handleClose, props }) => {
     setUpdateProps(props);
   }, [props]);
 
-  console.log(props);
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);

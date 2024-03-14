@@ -10,6 +10,8 @@ import {
   Container,
   Dialog,
   DialogContent,
+  AppBar,
+  Toolbar,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
@@ -22,11 +24,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import { setCrmPage } from '../../../../store/crm/crmSlider';
 import { setFormId } from '../../../../store/forms/formSlider';
-import {
-  setFile,
-  setTaskId,
-  setTasks,
-} from '../../../../store/tasks/taskSlider';
+import { setFile, setTaskId } from '../../../../store/tasks/taskSlider';
 import { getTasks } from '../../../../store/tasks/thunks';
 import { newNote, solicitarNotas } from '../../../../store/notes/thunks';
 import {
@@ -119,6 +117,7 @@ export const Legajo = ({ setDisplayView }) => {
     };
   }, []);
 
+  console.log(tasksRedux);
   useEffect(() => {
     const mappedCards = tasksRedux.map((task) => {
       let cardTitle = '';
@@ -153,8 +152,6 @@ export const Legajo = ({ setDisplayView }) => {
           icon = task.status === 1 ? <ErrorIcon /> : <CheckCircleIcon />;
           break;
         case 1:
-          console.log(task.turno[0]);
-
           enterprise_id = task.enterprise_id;
           service_id = task.service_id;
           id = task.id;
@@ -278,6 +275,26 @@ export const Legajo = ({ setDisplayView }) => {
 
   return (
     <div>
+      <AppBar
+        position="static"
+        style={{ marginBottom: '20px', backgroundColor: '#6A51e1' }}
+      >
+        <Toolbar>
+          <>
+            <Grid container>
+              <Typography variant="h6" c sx={{ flexGrow: 1 }}>
+                {enterprise.razon_social}
+              </Typography>
+              <Typography
+                variant="h6"
+                style={{ textAlign: 'end' }}
+                sx={{ flexGrow: 1 }}
+              ></Typography>
+            </Grid>
+          </>
+        </Toolbar>
+      </AppBar>
+
       <Grid container spacing={2}>
         {/* Columna de Documentación */}
         <Grid item xs={12} sm={6} md={4} mb={2}>

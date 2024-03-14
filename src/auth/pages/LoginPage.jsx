@@ -48,7 +48,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <AuthLayout title="Login">
+    <AuthLayout>
       <form
         onSubmit={submitHandler}
         className="animate__animated animate__fadeIn animate__faster"
@@ -116,8 +116,7 @@ export const LoginPage = () => {
                   type="submit"
                   variant="contained"
                   fullWidth
-                  color="secondary"
-                  style={{ color: 'white' }}
+                  style={{ color: 'white', backgroundColor: '#6A51e1' }}
                 >
                   Ingresar
                 </Button>

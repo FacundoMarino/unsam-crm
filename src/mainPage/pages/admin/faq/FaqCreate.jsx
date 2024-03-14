@@ -2,6 +2,7 @@ import {
   AppBar,
   Button,
   Container,
+  Grid,
   IconButton,
   List,
   ListItem,
@@ -69,20 +70,15 @@ export const FaqCreate = ({ setDisplayView, handleNewFormClick }) => {
   return (
     <>
       <Container>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Pregunta-Respuesta
-            </Typography>
-            <Button
-              color="inherit"
-              onClick={handlerNuevoServicio}
-              startIcon={<AddIcon />}
-            >
-              Nueva Pregunta
-            </Button>
-          </Toolbar>
-        </AppBar>
+        <Grid container justifyContent={'flex-end'}>
+          <Button
+            style={{ backgroundColor: '#6A51e1', color: 'white', margin: 5 }}
+            onClick={handlerNuevoServicio}
+            startIcon={<AddIcon />}
+          >
+            Nueva Pregunta
+          </Button>
+        </Grid>
         <List>
           {faqs?.map((faq) => (
             <ListItem key={faq.id}>

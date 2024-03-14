@@ -216,7 +216,13 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
             {headerGroups.map((headerGroup) => (
               <TableRow {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <StyledTableCell {...column.getHeaderProps()}>
+                  <StyledTableCell
+                    style={{
+                      borderBottom: '5px solid #6A51e1',
+                      fontWeight: 'bold',
+                    }}
+                    {...column.getHeaderProps()}
+                  >
                     <StyledButton>{column.render('Header')}</StyledButton>
                   </StyledTableCell>
                 ))}

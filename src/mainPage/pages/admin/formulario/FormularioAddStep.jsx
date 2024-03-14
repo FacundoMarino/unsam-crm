@@ -377,7 +377,7 @@ export const FormularioAddStep = () => {
             onClick={handleSubmit}
             style={{ marginTop: '20px' }}
           >
-            Enviar Formulario
+            Actualizar Formulario
           </Button>
         </Paper>
       )}

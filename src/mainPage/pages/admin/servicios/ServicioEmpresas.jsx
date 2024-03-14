@@ -135,7 +135,13 @@ export const ServicioEmpresas = ({
             {headerGroups.map((headerGroup) => (
               <TableRow {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <TableCell {...column.getHeaderProps()}>
+                  <TableCell
+                    style={{
+                      borderBottom: '5px solid #6A51e1',
+                      fontWeight: 'bold',
+                    }}
+                    {...column.getHeaderProps()}
+                  >
                     {column.render('Header')}
                   </TableCell>
                 ))}

@@ -71,20 +71,15 @@ export const ServicioGestion = () => {
   return (
     <>
       <Container>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Servicios
-            </Typography>
-            <Button
-              color="inherit"
-              onClick={handlerNuevoServicio}
-              startIcon={<AddIcon />}
-            >
-              Nuevo Servicio
-            </Button>
-          </Toolbar>
-        </AppBar>
+        <Grid container justifyContent={'flex-end'}>
+          <Button
+            style={{ backgroundColor: '#6A51e1', color: 'white', margin: 5 }}
+            onClick={handlerNuevoServicio}
+            startIcon={<AddIcon />}
+          >
+            Nuevo Servicio
+          </Button>
+        </Grid>
         <List>
           {servicios?.map((servicio) => (
             <ListItem key={servicio.id}>
