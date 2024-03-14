@@ -76,48 +76,47 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Nombre',
+        Header: 'NOMBRE',
         accessor: `user_name`,
       },
       {
-        Header: 'Apellido',
+        Header: 'APELLIDO',
         accessor: `user_last_name`,
       },
       {
-        Header: 'Tipo de Turno',
+        Header: 'TIPO DE TURNO',
         accessor: 'shift_type',
       },
       {
-        Header: 'Servicio',
+        Header: 'SERVICIO',
         accessor: 'servicio',
       },
       {
-        Header: 'Modalidad',
+        Header: 'MODALIDAD',
         accessor: 'modalidad',
       },
       {
-        Header: 'Fecha',
+        Header: 'FECHA',
         accessor: 'day',
       },
       {
-        Header: 'Hora',
+        Header: 'HORA',
         accessor: 'hour',
       },
       {
-        Header: 'Estado',
+        Header: 'ESTADO',
         accessor: 'shift_status',
         Cell: ({ value }) => getStatusText(value),
       },
       {
-        Header: 'Acciones',
+        Header: 'ACCIONES',
         Cell: ({ row }) => (
           <>
             {row.original.shift_status === 1 && (
               <Grid>
                 <StyledButton
                   variant="contained"
-                  color="primary"
-                  style={{ margin: '5px' }}
+                  style={{ margin: '5px', backgroundColor: '#05C7F2' }}
                   onClick={() => handleTakeTurn(row.original.turno_id)}
                 >
                   Tomar Turno
@@ -137,13 +136,13 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
                   variant="contained"
                   color="secondary"
                   onClick={() => handleEndTurn(row.original.turno_id)}
-                  style={{ backgroundColor: 'green', margin: '5px' }}
+                  style={{ margin: '5px', backgroundColor: '#36BF3F' }}
                 >
                   Finalizar Turno
                 </StyledButton>
                 <StyledButton
                   variant="contained"
-                  color="secondary"
+                  style={{ backgroundColor: '#5A7CBF' }}
                   onClick={() => handleUnassignTurn(row.original.turno_id)}
                 >
                   Desasignar Turno
@@ -155,7 +154,7 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
               <>
                 <StyledButton
                   variant="contained"
-                  style={{ backgroundColor: 'red', margin: '5px' }}
+                  style={{ backgroundColor: '#F25050', margin: '5px' }}
                 >
                   Turno Cancelado
                 </StyledButton>
@@ -219,6 +218,7 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
                 {headerGroup.headers.map((column) => (
                   <TableCell
                     style={{
+                      padding: '10px 10px 10px 10px',
                       borderBottom: '2.5px solid #6A51e1',
                       fontWeight: 'bold',
                     }}

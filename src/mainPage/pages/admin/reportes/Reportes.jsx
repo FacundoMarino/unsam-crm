@@ -76,91 +76,93 @@ export const Reportes = () => {
 
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center">
-      <Grid item xs={12} md={6}>
-        <Paper elevation={3} style={{ padding: '36px' }}>
-          <div>
-            <h2>Reporte de Servicios</h2>
-          </div>
-          <Divider />
-          <h2>Selecciona la fecha Inicial</h2>
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
-            locale={es}
-            dateFormat="dd/MM/yyyy"
-            showPopperArrow={false}
-          />
-          <h2>Selecciona la fecha Final</h2>
-          <DatePicker
-            selected={selectedDateEnd}
-            onChange={(date) => setSelectedDateTwo(date)}
-            locale={es}
-            dateFormat="dd/MM/yyyy"
-            showPopperArrow={false}
-          />{' '}
-          <Grid
-            item
-            xs={12}
-            container
-            justifyContent="flex-end"
-            style={{ marginTop: '10px' }}
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginLeft: '10px' }}
-              onClick={saveAndSendData}
+      <Grid item xs={12} md={4} style={{ height: '500px' }}>
+        <Paper elevation={3} style={{ padding: '36px', height: '100%' }}>
+          <Grid container style={{ gap: '15px' }}>
+            <div>
+              <h2>Reporte de Servicios</h2>
+            </div>
+            <Divider />
+            <h2>Selecciona la fecha Inicial</h2>
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              locale={es}
+              dateFormat="dd/MM/yyyy"
+              showPopperArrow={false}
+            />
+            <h2>Selecciona la fecha Final</h2>
+            <DatePicker
+              selected={selectedDateEnd}
+              onChange={(date) => setSelectedDateTwo(date)}
+              locale={es}
+              dateFormat="dd/MM/yyyy"
+              showPopperArrow={false}
+            />{' '}
+            <Grid
+              item
+              xs={12}
+              container
+              justifyContent="flex-end"
+              style={{ marginTop: '10px' }}
             >
-              Guardar y Enviar
-            </Button>
+              <Button
+                variant="contained"
+                style={{ marginLeft: '10px', backgroundColor: '#6A51e1' }}
+                onClick={saveAndSendData}
+              >
+                Exportar
+              </Button>
+            </Grid>
           </Grid>
         </Paper>
       </Grid>
 
-      <Grid item xs={12} md={6}>
-        <Paper elevation={3} style={{ padding: '36px' }}>
-          <div>
-            <h2>Reporte de Usuarios</h2>
-          </div>
-          <Divider />
-          <h2>Selecciona la fecha Inicial</h2>
-          <DatePicker
-            selected={selectedDateUser}
-            onChange={(date) => setSelectedDateUser(date)}
-            locale={es}
-            dateFormat="dd/MM/yyyy"
-            showPopperArrow={false}
-          />
-          <h2>Selecciona la fecha Final</h2>
-          <DatePicker
-            selected={selectedDateEndUser}
-            onChange={(date) => setSelectedDateTwoUser(date)}
-            locale={es}
-            dateFormat="dd/MM/yyyy"
-            fullWidth
-            showPopperArrow={false}
-          />
-          <Grid
-            item
-            xs={12}
-            container
-            justifyContent="flex-end"
-            style={{ marginTop: '10px' }}
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginLeft: '10px' }}
-              onClick={saveUserData}
+      <Grid item xs={12} md={4} style={{ height: '500px' }}>
+        <Paper elevation={3} style={{ padding: '36px', height: '100%' }}>
+          <Grid container style={{ gap: '15px' }}>
+            <div>
+              <h2>Reporte de Usuarios</h2>
+            </div>
+            <Divider />
+            <h2>Selecciona la fecha Inicial</h2>
+            <DatePicker
+              selected={selectedDateUser}
+              onChange={(date) => setSelectedDateUser(date)}
+              locale={es}
+              dateFormat="dd/MM/yyyy"
+              showPopperArrow={false}
+            />
+            <h2>Selecciona la fecha Final</h2>
+            <DatePicker
+              selected={selectedDateEndUser}
+              onChange={(date) => setSelectedDateTwoUser(date)}
+              locale={es}
+              dateFormat="dd/MM/yyyy"
+              fullWidth
+              showPopperArrow={false}
+            />
+            <Grid
+              item
+              xs={12}
+              container
+              justifyContent="flex-end"
+              style={{ marginTop: '10px' }}
             >
-              Guardar y Enviar
-            </Button>
+              <Button
+                variant="contained"
+                style={{ marginLeft: '10px', backgroundColor: '#6A51e1' }}
+                onClick={saveUserData}
+              >
+                Exportar
+              </Button>
+            </Grid>
           </Grid>
         </Paper>
       </Grid>
 
-      <Grid item xs={12} md={6}>
-        <Paper elevation={3} style={{ padding: '36px' }}>
+      <Grid item xs={12} md={4} style={{ height: '500px' }}>
+        <Paper elevation={3} style={{ padding: '36px', height: '100%' }}>
           <h2>Reporte de Formularios</h2>
           <Divider />
           <FormControl fullWidth margin="normal">
@@ -203,11 +205,10 @@ export const Reportes = () => {
           >
             <Button
               variant="contained"
-              color="primary"
-              style={{ marginLeft: '10px' }}
+              style={{ marginLeft: '10px', backgroundColor: '#6A51e1' }}
               onClick={saveFormData}
             >
-              Guardar y Enviar
+              Exportar
             </Button>
           </Grid>
         </Paper>

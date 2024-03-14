@@ -1,28 +1,35 @@
+import React, { useEffect, useState } from 'react';
 import {
-  AppBar,
   Container,
   IconButton,
+  Tooltip,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Toolbar,
-  Tooltip,
-  Typography,
+  Button,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from '@mui/material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { deleteFormId, getAllForms } from '../../../../store/forms/thunks';
+import Swal from 'sweetalert2';
+import { getAllForms, deleteFormId } from '../../../../store/forms/thunks';
 import {
   setForm,
   setFormId,
   setStatusForm,
 } from '../../../../store/forms/formSlider';
+import AddIcon from '@mui/icons-material/Add';
 
 export const FormularioGestion = ({
   handleNewFormClick,
@@ -47,8 +54,8 @@ export const FormularioGestion = ({
     if (formStatus === 'ok') {
       dispatch(getAllForms({ telekinesis }));
     }
-    setStatusForm('');
-  }, [formStatus]);
+    dispatch(setStatusForm(''));
+  }, [formStatus, dispatch, telekinesis]);
 
   const handleEditar = (id) => {
     setDisplayEditForm('');
@@ -67,6 +74,11 @@ export const FormularioGestion = ({
     handleNewFormClick(3);
     setDisplayViewForm('');
   };
+
+  const handleNuevoFormulario = () => {
+    handleNewFormClick(2);
+  };
+
   const handleEliminar = (id) => {
     Swal.fire({
       title: '¿Estás seguro?',
@@ -86,62 +98,92 @@ export const FormularioGestion = ({
 
   return (
     <Container>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Formularios
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <Grid container justifyContent={'flex-end'} alignItems={'center'}>
+        <Button
+          style={{ backgroundColor: '#6A51e1', color: 'white', margin: 5 }}
+          onClick={handleNuevoFormulario}
+          startIcon={<AddIcon />}
+        >
+          Nuevo Formulario
+        </Button>
+      </Grid>
 
-      <List>
-        {formsStore.forms?.map((form) => (
-          <ListItem key={form.id}>
-            <ListItemText primary={form.name} />
-            <ListItemSecondaryAction>
-              <Tooltip title="Editar" arrow>
-                <IconButton
-                  edge="end"
-                  aria-label="edit"
-                  onClick={() => handleEditar(form.id)}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell
+                style={{
+                  textAlign: 'center',
+                  borderBottom: '2.5px solid #6A51e1',
+                  fontWeight: 'bold',
+                  width: '50%',
+                }}
+              >
+                NOMBRE DEL FORMULARIO
+              </TableCell>
+              <TableCell
+                style={{
+                  textAlign: 'center',
+                  borderBottom: '2.5px solid #6A51e1',
+                  fontWeight: 'bold',
+                  width: '50%',
+                }}
+              >
+                ACCIONES
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {formsStore?.forms.map((form) => (
+              <TableRow key={form.id}>
+                <TableCell
+                  style={{
+                    textAlign: 'center',
+                  }}
                 >
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Agregar Step" arrow>
-                <IconButton
-                  edge="end"
-                  aria-label="add-step"
-                  hovered="Agregar step"
-                  onClick={() => handleAgregarStep(form.id)}
+                  {form.name}
+                </TableCell>
+                <TableCell
+                  style={{
+                    textAlign: 'center',
+                  }}
                 >
-                  <AddCircleOutlineIcon />
-                </IconButton>
-              </Tooltip>
-
-              <Tooltip title="Pre Visualización" arrow>
-                <IconButton
-                  edge="end"
-                  aria-label="view"
-                  onClick={() => handlePreView(form.id)}
-                >
-                  <RemoveRedEyeIcon />
-                </IconButton>
-              </Tooltip>
-
-              <Tooltip title="Borrar" arrow>
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => handleEliminar(form.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-      </List>
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    onClick={() => handleEditar(form.id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    edge="end"
+                    aria-label="add-step"
+                    hovered="Agregar step"
+                    onClick={() => handleAgregarStep(form.id)}
+                  >
+                    <AddCircleOutlineIcon />
+                  </IconButton>
+                  <IconButton
+                    edge="end"
+                    aria-label="view"
+                    onClick={() => handlePreView(form.id)}
+                  >
+                    <RemoveRedEyeIcon />
+                  </IconButton>
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => handleEliminar(form.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Container>
   );
 };

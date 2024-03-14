@@ -12,6 +12,7 @@ import {
   Tooltip,
   Grid,
   TextField,
+  Button,
 } from '@mui/material';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddIcon from '@mui/icons-material/Add';
@@ -89,24 +90,24 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Nombre',
+        Header: 'NOMBRE',
         accessor: 'name',
       },
       {
-        Header: 'Apellido',
+        Header: 'APELLIDO',
         accessor: 'apellido',
       },
       {
-        Header: 'Rol',
+        Header: 'ROL',
         accessor: 'rol',
         Cell: ({ value }) => handleRole(value),
       },
       {
-        Header: 'Email',
+        Header: 'EMAIL',
         accessor: 'email',
       },
       {
-        Header: 'Acciones',
+        Header: 'ACCIONES',
         Cell: ({ row }) => (
           <>
             <Tooltip title="Ver Usuario" arrow>
@@ -183,7 +184,15 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
 
   return (
     <>
-      <Grid container justifyContent={'flex-end'}>
+      <Grid container justifyContent={'flex-end'} alignItems={'center'}>
+        <Button
+          style={{ backgroundColor: '#6A51e1', color: 'white', margin: 5 }}
+          onClick={handlerNuevoServicio}
+          startIcon={<AddIcon />}
+        >
+          Nuevo Usuario
+        </Button>
+
         <div>
           <input
             value={globalFilter || ''}

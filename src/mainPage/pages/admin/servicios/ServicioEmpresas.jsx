@@ -54,19 +54,19 @@ export const ServicioEmpresas = ({
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Empresa',
+        Header: 'EMPRESA',
         accessor: 'razon_social',
       },
       {
-        Header: 'Descripción',
+        Header: 'DESCRIPCIÓN',
         accessor: 'description',
       },
       {
-        Header: 'Domicilio',
+        Header: 'DOMICILIO',
         accessor: 'address',
       },
       {
-        Header: 'Acciones',
+        Header: 'ACCIONES',
         Cell: ({ row }) => (
           <Tooltip title="Ver Servicio Solicitado" arrow>
             <IconButton
@@ -137,7 +137,7 @@ export const ServicioEmpresas = ({
                 {headerGroup.headers.map((column) => (
                   <TableCell
                     style={{
-                      borderBottom: '5px solid #6A51e1',
+                      borderBottom: '2.5px solid #6A51e1',
                       fontWeight: 'bold',
                     }}
                     {...column.getHeaderProps()}

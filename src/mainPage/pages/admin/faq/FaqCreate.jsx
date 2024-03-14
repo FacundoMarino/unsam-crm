@@ -1,17 +1,21 @@
+import React, { useEffect, useState } from 'react';
 import {
-  AppBar,
-  Button,
   Container,
-  Grid,
   IconButton,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Toolbar,
-  Typography,
+  Button,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddIcon from '@mui/icons-material/Add';
@@ -35,7 +39,7 @@ export const FaqCreate = ({ setDisplayView, handleNewFormClick }) => {
 
   useEffect(() => {
     dispatch(verTodasPreguntas({ telekinesis }));
-  }, []);
+  }, [dispatch, telekinesis]);
 
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -47,6 +51,7 @@ export const FaqCreate = ({ setDisplayView, handleNewFormClick }) => {
     setModalOpen(false);
     dispatch(setIndividualFaq([]));
   };
+
   const handlerNuevoServicio = () => {
     handleModalOpen();
   };
@@ -57,7 +62,6 @@ export const FaqCreate = ({ setDisplayView, handleNewFormClick }) => {
 
   const handleEditar = (id) => {
     dispatch(verPregunta({ telekinesis, id }));
-
     handleModalOpen();
   };
 
@@ -79,29 +83,68 @@ export const FaqCreate = ({ setDisplayView, handleNewFormClick }) => {
             Nueva Pregunta
           </Button>
         </Grid>
-        <List>
-          {faqs?.map((faq) => (
-            <ListItem key={faq.id}>
-              <ListItemText primary={faq.question} />
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="edit"
-                  onClick={() => handleEditar(faq.id)}
+
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  style={{
+                    textAlign: 'center',
+                    borderBottom: '2.5px solid #6A51e1',
+                    fontWeight: 'bold',
+                    width: '50%',
+                  }}
                 >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => handleEliminar(faq.id)}
+                  PREGUNTA
+                </TableCell>
+                <TableCell
+                  style={{
+                    textAlign: 'center',
+                    borderBottom: '2.5px solid #6A51e1',
+                    fontWeight: 'bold',
+                    width: '50%',
+                  }}
                 >
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-        </List>
+                  ACCIONES
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {faqs?.map((faq) => (
+                <TableRow key={faq.id}>
+                  <TableCell
+                    style={{
+                      textAlign: 'center',
+                    }}
+                  >
+                    {faq.question}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      textAlign: 'center',
+                    }}
+                  >
+                    <IconButton
+                      edge="end"
+                      aria-label="edit"
+                      onClick={() => handleEditar(faq.id)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => handleEliminar(faq.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
         <FaqModal open={isModalOpen} handleClose={handleClose} user={user} />
       </Container>
