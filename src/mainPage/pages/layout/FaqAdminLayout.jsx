@@ -20,8 +20,12 @@ export const FaqAdminLayout = () => {
         onSelect={(index) => setSelectedIndex(index)}
       >
         <TabList>
-          <Tab>Administración de FAQ</Tab>
-          <Tab>FAQ</Tab>
+          <Tab style={{ color: selectedIndex === 0 ? '#6A51e1' : 'black' }}>
+            Administración de FAQ
+          </Tab>
+          <Tab style={{ color: selectedIndex === 1 ? '#6A51e1' : 'black' }}>
+            FAQ
+          </Tab>
         </TabList>
         <TabPanel>
           <FaqCreate />

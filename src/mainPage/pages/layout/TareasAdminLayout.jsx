@@ -18,8 +18,17 @@ export const TareasAdminLayout = () => {
         onSelect={(index) => setSelectedIndex(index)}
       >
         <TabList>
-          <Tab>Administración de Tareas</Tab>
-          <Tab style={{ display: displayView }}>Legajo</Tab>
+          <Tab style={{ color: selectedIndex === 0 ? '#6A51e1' : 'black' }}>
+            Administración de Tareas
+          </Tab>
+          <Tab
+            style={{
+              color: selectedIndex === 1 ? '#6A51e1' : 'black',
+              display: displayView,
+            }}
+          >
+            Legajo
+          </Tab>
         </TabList>
 
         <TabPanel></TabPanel>

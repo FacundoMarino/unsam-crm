@@ -9,6 +9,7 @@ import {
   TableRow,
   Button,
   Grid,
+  Paper,
 } from '@mui/material';
 import { styled } from '@mui/system';
 import {
@@ -210,21 +211,21 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
           />
         </div>
       </Grid>
-      <TableContainer>
+      <TableContainer component={Paper}>
         <Table {...getTableProps()}>
           <TableHead>
             {headerGroups.map((headerGroup) => (
               <TableRow {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
-                  <StyledTableCell
+                  <TableCell
                     style={{
-                      borderBottom: '5px solid #6A51e1',
+                      borderBottom: '2.5px solid #6A51e1',
                       fontWeight: 'bold',
                     }}
                     {...column.getHeaderProps()}
                   >
-                    <StyledButton>{column.render('Header')}</StyledButton>
-                  </StyledTableCell>
+                    {column.render('Header')}
+                  </TableCell>
                 ))}
               </TableRow>
             ))}

@@ -114,24 +114,30 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Servicio',
+        Header: 'SERVICIO',
         accessor: 'service',
       },
       {
-        Header: 'Empresa',
+        Header: 'EMPRESA',
         accessor: 'razonSocial',
       },
       {
-        Header: 'Contacto',
+        Header: 'CONTACTO',
         accessor: 'email',
       },
       {
-        Header: 'Fecha',
+        Header: 'FECHA',
         accessor: 'created_at',
         Cell: ({ value }) => formatDate(value),
+        Cell: ({ value }) => formatDate(value),
+        sortType: (rowA, rowB, columnId) => {
+          const dateA = new Date(rowA.original.created_at);
+          const dateB = new Date(rowB.original.created_at);
+          return dateA - dateB;
+        },
       },
       {
-        Header: 'Estado',
+        Header: 'ESTADO',
         accessor: 'status_service',
         Cell: ({ value }) =>
           value === 1
@@ -141,7 +147,7 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
               : 'Cancelada',
       },
       {
-        Header: 'Acciones',
+        Header: 'ACCIONES',
         Cell: ({ row }) => (
           <>
             <Tooltip title="Ver Servicio Solicitado" arrow>
@@ -290,7 +296,7 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
                 {headerGroup.headers.map((column) => (
                   <TableCell
                     style={{
-                      borderBottom: '5px solid #6A51e1',
+                      borderBottom: '2.5px solid #6A51e1',
                       fontWeight: 'bold',
                     }}
                     {...column.getHeaderProps()}

@@ -1,23 +1,22 @@
+import React, { useEffect, useState } from 'react';
+import { useTable, useGlobalFilter, usePagination } from 'react-table';
 import {
-  AppBar,
-  Button,
-  Container,
-  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
   IconButton,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-  Toolbar,
-  Typography,
+  Tooltip,
+  Grid,
+  TextField,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-
 import { UsuarioModal } from './UsuarioModal';
 import {
   eliminarUsuario,
@@ -28,10 +27,11 @@ import {
   setIndividualUser,
   setStatusUser,
 } from '../../../../store/users/usersSlider';
+import { useDispatch, useSelector } from 'react-redux';
+
 export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
   const telekinesis = useSelector((state) => state.auth.telekinesis);
   const user = useSelector((state) => state.users.individualUser);
-
   const users = useSelector((state) => state.users.users);
   const dispatch = useDispatch();
 
@@ -42,6 +42,7 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -51,6 +52,7 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
     setModalOpen(false);
     dispatch(setIndividualUser([]));
   };
+
   const handlerNuevoServicio = () => {
     handleModalOpen();
   };
@@ -77,73 +79,200 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
       return 'Consultor';
     }
   };
+
   const handleVer = (id) => {
     handleNewFormClick(1);
     setDisplayView('');
     dispatch(verUsuario({ telekinesis, id }));
   };
 
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Nombre',
+        accessor: 'name',
+      },
+      {
+        Header: 'Apellido',
+        accessor: 'apellido',
+      },
+      {
+        Header: 'Rol',
+        accessor: 'rol',
+        Cell: ({ value }) => handleRole(value),
+      },
+      {
+        Header: 'Email',
+        accessor: 'email',
+      },
+      {
+        Header: 'Acciones',
+        Cell: ({ row }) => (
+          <>
+            <Tooltip title="Ver Usuario" arrow>
+              <IconButton
+                edge="end"
+                aria-label="view"
+                onClick={() => handleVer(row.original.id)}
+              >
+                <RemoveRedEyeIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Editar Usuario" arrow>
+              <IconButton
+                edge="end"
+                aria-label="edit"
+                onClick={() => handleEditar(row.original.id)}
+              >
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Eliminar Usuario" arrow>
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                onClick={() => handleEliminar(row.original.id)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </>
+        ),
+      },
+    ],
+    [],
+  );
+
+  const data = React.useMemo(() => users, [users]);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    nextPage,
+    gotoPage,
+    previousPage,
+    setPageSize,
+    setGlobalFilter,
+    state,
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 0 },
+    },
+    useGlobalFilter,
+    usePagination,
+  );
+
+  const { globalFilter, pageIndex, pageSize } = state;
+
+  const filteredData = React.useMemo(() => {
+    if (!data || data.length === 0) {
+      return [];
+    }
+    return data.filter((row) =>
+      row.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+  }, [data, searchTerm]);
+
   return (
     <>
-      <Container>
-        <Grid container justifyContent={'flex-end'}>
-          <Button
-            style={{ backgroundColor: '#6A51e1', color: 'white', margin: 5 }}
-            onClick={handlerNuevoServicio}
-            startIcon={<AddIcon />}
-          >
-            Nuevo Usuario
-          </Button>
-        </Grid>
-        <List>
-          {users?.map((servicio) => (
-            <ListItem key={servicio.id} style={{ width: '94%' }}>
-              <ListItemText primary={servicio.name} style={{ width: '1%' }} />
-              <ListItemText
-                primary={servicio.apellido}
-                style={{ width: '1%' }}
-              />
-              <ListItemText
-                primary={handleRole(servicio.rol)}
-                style={{ width: '1%' }}
-              />
-              <ListItemText primary={servicio.email} style={{ width: '1%' }} />
-
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="edit"
-                  onClick={() => handleVer(servicio.id)}
-                >
-                  <RemoveRedEyeIcon />
-                </IconButton>
-
-                <IconButton
-                  edge="end"
-                  aria-label="edit"
-                  onClick={() => handleEditar(servicio.id)}
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => handleEliminar(servicio.id)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
+      <Grid container justifyContent={'flex-end'}>
+        <div>
+          <input
+            value={globalFilter || ''}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            placeholder="Buscar..."
+          />
+        </div>
+      </Grid>
+      <TableContainer component={Paper}>
+        <Table {...getTableProps()}>
+          <TableHead>
+            {headerGroups.map((headerGroup) => (
+              <TableRow {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <TableCell
+                    style={{
+                      borderBottom: '2.5px solid #6A51e1',
+                      fontWeight: 'bold',
+                    }}
+                    {...column.getHeaderProps()}
+                  >
+                    {column.render('Header')}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <TableRow {...row.getRowProps()} key={row.id}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <TableCell {...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Grid container mt={2} justifyContent={'flex-end'}>
+        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+          Anterior
+        </button>
+        <span>
+          Página
+          <strong>
+            {pageIndex + 1} de {pageOptions.length}
+          </strong>{' '}
+        </span>
+        <button onClick={() => nextPage()} disabled={!canNextPage}>
+          Siguiente
+        </button>
+        <span>
+          | Ir a la página
+          <input
+            type="number"
+            defaultValue={pageIndex + 1}
+            onChange={(e) => {
+              const pageNumber = e.target.value
+                ? Number(e.target.value) - 1
+                : 0;
+              gotoPage(pageNumber);
+            }}
+            style={{ width: '100px' }}
+          />
+        </span>
+        <select
+          value={pageSize}
+          onChange={(e) => setPageSize(Number(e.target.value))}
+        >
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Mostrar {pageSize}
+            </option>
           ))}
-        </List>
-
-        <UsuarioModal
-          edit={edit}
-          open={isModalOpen}
-          handleClose={handleClose}
-          user={user}
-        />
-      </Container>
+        </select>
+      </Grid>
+      <UsuarioModal
+        edit={edit}
+        open={isModalOpen}
+        handleClose={handleClose}
+        user={user}
+      />
     </>
   );
 };

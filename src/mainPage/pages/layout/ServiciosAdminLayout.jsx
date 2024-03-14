@@ -23,10 +23,23 @@ export const ServiciosAdminLayout = () => {
         onSelect={(index) => setSelectedIndex(index)}
       >
         <TabList>
-          <Tab>Bandeja de Servicios</Tab>
-          <Tab>Empresas</Tab>
-          <Tab>Administración de Servicios</Tab>
-          <Tab style={{ display: displayViewLegajo }}>Legajo</Tab>
+          <Tab style={{ color: selectedIndex === 0 ? '#6A51e1' : 'black' }}>
+            Bandeja de Servicios
+          </Tab>
+          <Tab style={{ color: selectedIndex === 1 ? '#6A51e1' : 'black' }}>
+            Empresas
+          </Tab>
+          <Tab style={{ color: selectedIndex === 2 ? '#6A51e1' : 'black' }}>
+            Administración de Servicios
+          </Tab>
+          <Tab
+            style={{
+              display: displayViewLegajo,
+              color: selectedIndex === 3 ? '#6A51e1' : 'black',
+            }}
+          >
+            Legajo
+          </Tab>
         </TabList>
 
         <TabPanel>
