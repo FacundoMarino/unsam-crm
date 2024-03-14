@@ -45,6 +45,9 @@ export const Legajo = ({ setDisplayView }) => {
   const notesRedux = useSelector((state) => state.notes.notes);
   const enterprises = useSelector((state) => state.tasks.enterprises);
   const file = useSelector((state) => state.tasks.file);
+  const razonSocial = useSelector(
+    (state) => state.auth.enterprise.enterprise_razon_social,
+  );
 
   const [cards, setCards] = useState([]);
   const [notes, setNotes] = useState([]);
@@ -117,7 +120,7 @@ export const Legajo = ({ setDisplayView }) => {
     };
   }, []);
 
-  console.log(tasksRedux);
+  console.log(enterprises);
   useEffect(() => {
     const mappedCards = tasksRedux.map((task) => {
       let cardTitle = '';
@@ -272,7 +275,7 @@ export const Legajo = ({ setDisplayView }) => {
   );
   const formulariosCards = cards.filter((card) => card.type === 'formularios');
   const turnosCards = cards.filter((card) => card.type === 'turnos');
-
+  console.log(razonSocial);
   return (
     <div>
       <AppBar
@@ -283,7 +286,7 @@ export const Legajo = ({ setDisplayView }) => {
           <>
             <Grid container>
               <Typography variant="h6" c sx={{ flexGrow: 1 }}>
-                {enterprise.razon_social}
+                {rol === 'Admin' ? enterprise?.razon_social : razonSocial}
               </Typography>
               <Typography
                 variant="h6"
