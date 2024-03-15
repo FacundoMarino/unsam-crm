@@ -21,6 +21,7 @@ import { IoMdAnalytics } from 'react-icons/io';
 
 export const Navbar = ({ draweWidth }) => {
   const dispatch = useDispatch();
+  const rol = useSelector((state) => state.auth.rol);
 
   const name = useSelector((state) => state.auth.name);
   const page = useSelector((state) => state.crm.page);
@@ -39,7 +40,10 @@ export const Navbar = ({ draweWidth }) => {
     if (page === 'servicios') {
       setNameBar({ name: 'Servicios', icon: <FaRegHandshake /> });
     } else if (page === 'milegajo') {
-      setNameBar({ name: 'Legajo', icon: <FaRegFolderOpen /> });
+      setNameBar({
+        name: rol === 'Admin' ? 'Legajo' : 'Mi Legajo',
+        icon: <FaRegFolderOpen />,
+      });
     } else if (page === 'faq') {
       setNameBar({ name: 'FAQ', icon: <FaQuestionCircle /> });
     } else if (page === 'turnos') {

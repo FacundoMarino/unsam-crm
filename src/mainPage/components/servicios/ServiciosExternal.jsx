@@ -40,11 +40,7 @@ export const ServiciosExternal = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Typography variant="h4" component="h1" textAlign="center">
-          Solicitud de Servicios
-        </Typography>
-      </Grid>
+      <Grid item xs={12}></Grid>
       {servicios?.map((servicio) => (
         <Grid item xs={6} md={6} textAlign="center" key={servicio.id}>
           {servicio.service !== 'Consulta General' && (
@@ -56,12 +52,14 @@ export const ServiciosExternal = () => {
                 <Typography variant="h5" component="h2" mt={2}>
                   {servicio.service}
                 </Typography>
-                <Typography color="textSecondary" mt={2} mb={2}>
-                  {servicio.description}
-                </Typography>
+                <Grid container style={{ height: '100px' }}>
+                  <Typography color="textSecondary" mt={2} mb={2}>
+                    {servicio.description}
+                  </Typography>
+                </Grid>
                 <Button
                   variant="contained"
-                  color="primary"
+                  style={{ backgroundColor: '#6A51e1' }}
                   onClick={() => handleSubmit(servicio.id)}
                 >
                   Solicitar
