@@ -5,14 +5,6 @@ import 'moment/locale/es';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import {
-  Modal,
-  Button,
-  Typography,
-  Paper,
-  Card,
-  CardContent,
-} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { verTodosLosTurnosTomados } from '../../../store/shift/thunks';
 moment.locale('es');
@@ -33,6 +25,7 @@ const customMessages = {
   next: 'Siguiente',
   showMore: (total) => `+${total} más`,
 };
+
 export const TurnosAdminPage = ({ onVerDetalle, setDisplayCreateShift }) => {
   const dispatch = useDispatch();
   const telekinesis = useSelector((state) => state.auth.telekinesis);
@@ -43,28 +36,12 @@ export const TurnosAdminPage = ({ onVerDetalle, setDisplayCreateShift }) => {
   }, []);
 
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTurno, setSelectedTurno] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
   const handleSelectSlot = (slotInfo) => {
     setSelectedDate(slotInfo.start);
     setOpenModal(true);
   };
-
-  const handleCloseModal = () => {
-    setSelectedDate(null);
-    setOpenModal(false);
-  };
-
-  const handleVerDetalle = (turno) => {
-    setSelectedTurno(turno);
-    onVerDetalle(turno); // Llamar a la función proporcionada por props
-    setOpenModal(false); // Cerrar el modal si es necesario
-  };
-
-  const turnosParaFecha = turnosDisponibles.filter((turno) =>
-    moment(turno.day).isSame(selectedDate, 'day'),
-  );
 
   useEffect(() => {
     setDisplayCreateShift('none');
@@ -76,6 +53,22 @@ export const TurnosAdminPage = ({ onVerDetalle, setDisplayCreateShift }) => {
     title: `${turno.user_name} ${turno.user_last_name}`,
     turnoInfo: turno, // Guarda toda la información del turno para acceder a ella más tarde si es necesario
   }));
+
+  const eventStyleGetter = (event, start, end, isSelected) => {
+    const backgroundColor = '#6A51e1';
+    const style = {
+      backgroundColor,
+      borderRadius: '4px',
+      opacity: 0.8,
+      color: 'white',
+      border: 'none',
+      padding: '2px',
+      cursor: 'pointer',
+    };
+    return {
+      style: style,
+    };
+  };
 
   return (
     <div>
@@ -89,71 +82,8 @@ export const TurnosAdminPage = ({ onVerDetalle, setDisplayCreateShift }) => {
         style={{ height: 500 }}
         culture="es"
         messages={customMessages}
+        eventPropGetter={eventStyleGetter} // Usa eventPropGetter para aplicar estilos personalizados a los eventos
       />
-
-      <Modal open={openModal} onClose={handleCloseModal}>
-        <div
-          className="animate__animated animate__fadeIn animate__faster"
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '80%',
-          }}
-        >
-          <Paper
-            style={{
-              padding: '10px',
-              backgroundColor: 'white',
-              maxHeight: '80vh',
-              overflowY: 'auto',
-            }}
-          >
-            <Typography variant="h5" component="div">
-              Turnos para el{' '}
-              {selectedDate ? moment(selectedDate).format('LL') : ''}
-            </Typography>
-            {turnosParaFecha.map((turno, index) => (
-              <Card key={index} style={{ marginTop: '20px' }}>
-                <CardContent>
-                  <Typography>{`Nombre: ${turno.nombre}`}</Typography>
-                  <Typography>{`Hora: ${moment(turno.start).format(
-                    'LT',
-                  )}`}</Typography>
-                  <Typography>{`Tipo de Cita: ${turno.tipoCita}`}</Typography>
-                  {turno.tipoCita === 'Presencial' && (
-                    <Typography>{`Dirección: ${
-                      turno.direccion || 'No especificada'
-                    }`}</Typography>
-                  )}
-                  {turno.tipoCita === 'Virtual' && (
-                    <Typography>{`Link de la reunión: ${
-                      turno.link || 'No especificado'
-                    }`}</Typography>
-                  )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleVerDetalle(turno)}
-                    style={{ marginTop: '10px' }}
-                  >
-                    Ver Detalle
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleCloseModal}
-              style={{ marginTop: '20px ' }}
-            >
-              Cerrar
-            </Button>
-          </Paper>
-        </div>
-      </Modal>
     </div>
   );
 };

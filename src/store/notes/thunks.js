@@ -63,7 +63,7 @@ export const newNote = ({
         Swal.fire({
           icon: 'success',
           title: 'Éxito',
-          text: 'El servicios se actualizó correctamente.',
+          text: 'La nota se creó correctamente.',
         });
       }
     } catch (error) {

@@ -87,7 +87,11 @@ export const DocumentacionModal = ({ open, handleClose, props }) => {
                         />
                         <label htmlFor="contained-button-file"></label>
                       </Grid>
-                      <Button variant="contained" onClick={handleFileUpload}>
+                      <Button
+                        variant="contained"
+                        style={{ backgroundColor: '#6A51e1' }}
+                        onClick={handleFileUpload}
+                      >
                         Enviar Archivo
                       </Button>
                     </>
@@ -98,7 +102,10 @@ export const DocumentacionModal = ({ open, handleClose, props }) => {
               ) : (
                 <Button
                   variant="contained"
-                  style={{ display: rol === 'Admin' ? '' : 'none' }}
+                  style={{
+                    display: rol === 'Admin' ? '' : 'none',
+                    backgroundColor: '#6A51e1',
+                  }}
                   onClick={handleDownloadFile}
                 >
                   Descargar Archivo

@@ -262,7 +262,7 @@ export const FormularioCreate = ({
                     ))}
                     <Button
                       variant="outlined"
-                      color="primary"
+                      style={{ backgroundColor: '#6A51e1' }}
                       onClick={() => handleAddOption(field.id)}
                       startIcon={<AddIcon />}
                     >
@@ -283,27 +283,32 @@ export const FormularioCreate = ({
           </Grid>
           <Button
             variant="contained"
-            color="primary"
             onClick={handleAddField}
             startIcon={<AddIcon />}
-            style={{ marginTop: '20px', marginRight: '10px' }}
+            style={{
+              marginTop: '20px',
+              marginRight: '10px',
+              backgroundColor: '#6A51e1',
+            }}
           >
             Agregar Pregunta
           </Button>
           <Button
             variant="contained"
-            color="primary"
             onClick={handleResetForm}
             startIcon={<Refresh />}
-            style={{ marginRight: '10px', marginTop: '20px' }}
+            style={{
+              marginRight: '10px',
+              marginTop: '20px',
+              backgroundColor: '#6A51e1',
+            }}
           >
             Reiniciar Formulario
           </Button>
           <Button
             variant="contained"
-            color="primary"
             onClick={handleSubmit}
-            style={{ marginTop: '20px' }}
+            style={{ marginTop: '20px', backgroundColor: '#6A51e1' }}
           >
             Crear Formulario
           </Button>

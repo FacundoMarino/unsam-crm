@@ -171,7 +171,7 @@ export const UsuarioModal = ({ open, handleClose, user }) => {
                     type="submit"
                     variant="contained"
                     fullWidth
-                    color="primary"
+                    style={{ backgroundColor: '#6A51e1' }}
                   >
                     {user ? 'Editar Usuario' : 'Crear Usuario'}
                   </Button>

@@ -176,7 +176,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
                 <Grid item xs={12} sm={6}>
                   <Button
                     variant="contained"
-                    color="primary"
+                    style={{ backgroundColor: '#6A51e1' }}
                     onClick={() => handleClose(false)}
                     fullWidth
                   >
@@ -187,7 +187,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
                 <Grid item xs={12} sm={6}>
                   <Button
                     variant="contained"
-                    color="primary"
+                    style={{ backgroundColor: '#6A51e1' }}
                     onClick={() => handleSubmit(iconTitle)}
                     fullWidth
                   >
@@ -214,7 +214,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
                   <Grid item xs={12} sm={6}>
                     <Button
                       variant="contained"
-                      color="primary"
+                      style={{ backgroundColor: '#6A51e1' }}
                       onClick={() => handleClose(false)}
                       fullWidth
                     >
@@ -225,7 +225,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
                   <Grid item xs={12} sm={6}>
                     <Button
                       variant="contained"
-                      color="primary"
+                      style={{ backgroundColor: '#6A51e1' }}
                       onClick={() => handleSubmit(iconTitle)}
                       fullWidth
                     >
@@ -269,7 +269,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
                 <Grid item xs={12} sm={6}>
                   <Button
                     variant="contained"
-                    color="primary"
+                    style={{ backgroundColor: '#6A51e1' }}
                     onClick={() => handleClose(false)}
                     fullWidth
                   >
@@ -280,7 +280,7 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
                 <Grid item xs={12} sm={6}>
                   <Button
                     variant="contained"
-                    color="primary"
+                    style={{ backgroundColor: '#6A51e1' }}
                     fullWidth
                     onClick={() => handleSubmit(iconTitle)}
                   >
@@ -311,10 +311,9 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
 
               <Button
                 variant="contained"
-                color="primary"
                 fullWidth
                 onClick={handleSearchTasks}
-                style={{ marginTop: '20px' }}
+                style={{ marginTop: '20px', backgroundColor: '#6A51e1' }}
               >
                 Actualizar Servicio
               </Button>

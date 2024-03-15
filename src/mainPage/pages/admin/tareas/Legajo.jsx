@@ -46,7 +46,7 @@ export const Legajo = ({ setDisplayView }) => {
   const enterprises = useSelector((state) => state.tasks.enterprises);
   const file = useSelector((state) => state.tasks.file);
   const razonSocial = useSelector(
-    (state) => state.auth.enterprise.enterprise_razon_social,
+    (state) => state?.auth?.enterprise?.enterprise_razon_social,
   );
 
   const [cards, setCards] = useState([]);

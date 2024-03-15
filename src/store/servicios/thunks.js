@@ -38,7 +38,7 @@ export const createServices = ({ telekinesis, service, description }) => {
         Swal.fire({
           icon: 'success',
           title: 'Éxito',
-          text: 'El servicios se creó correctamente.',
+          text: 'El servicio se creó correctamente.',
         });
         dispatch(setStatus('ok'));
       }
@@ -134,7 +134,7 @@ export const updateServicio = ({ telekinesis, id, service, description }) => {
         Swal.fire({
           icon: 'success',
           title: 'Éxito',
-          text: 'El servicios se actualizó correctamente.',
+          text: 'El servicio se actualizó correctamente.',
         });
         dispatch(setIndividualService([]));
       }
@@ -169,7 +169,7 @@ export const eliminarServicio = ({ telekinesis, id }) => {
         Swal.fire({
           icon: 'success',
           title: 'Éxito',
-          text: 'El servicios se eliminó correctamente.',
+          text: 'El servicio se eliminó correctamente.',
         });
         dispatch(setStatus('ok'));
       }

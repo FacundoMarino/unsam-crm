@@ -76,14 +76,16 @@ export const Reportes = () => {
 
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center">
-      <Grid item xs={12} md={4} style={{ height: '500px' }}>
+      <Grid item xs={12} md={4} style={{ height: '450px' }}>
         <Paper elevation={3} style={{ padding: '36px', height: '100%' }}>
-          <Grid container style={{ gap: '15px' }}>
+          <Grid container style={{ gap: '16px', fontSize: '12px' }}>
             <div>
-              <h2>Reporte de Servicios</h2>
+              <h2>REPORTE DE SERVICIOS</h2>
             </div>
             <Divider />
-            <h2>Selecciona la fecha Inicial</h2>
+            <h2 style={{ fontWeight: 'normal' }}>
+              Seleccioná la fecha inicial
+            </h2>
             <DatePicker
               selected={selectedDate}
               onChange={(date) => setSelectedDate(date)}
@@ -91,7 +93,7 @@ export const Reportes = () => {
               dateFormat="dd/MM/yyyy"
               showPopperArrow={false}
             />
-            <h2>Selecciona la fecha Final</h2>
+            <h2 style={{ fontWeight: 'normal' }}>Seleccioná la fecha final</h2>
             <DatePicker
               selected={selectedDateEnd}
               onChange={(date) => setSelectedDateTwo(date)}
@@ -118,14 +120,16 @@ export const Reportes = () => {
         </Paper>
       </Grid>
 
-      <Grid item xs={12} md={4} style={{ height: '500px' }}>
+      <Grid item xs={12} md={4} style={{ height: '450px' }}>
         <Paper elevation={3} style={{ padding: '36px', height: '100%' }}>
-          <Grid container style={{ gap: '15px' }}>
+          <Grid container style={{ gap: '16px', fontSize: '12px' }}>
             <div>
-              <h2>Reporte de Usuarios</h2>
+              <h2>REPORTE DE USUARIOS</h2>
             </div>
             <Divider />
-            <h2>Selecciona la fecha Inicial</h2>
+            <h2 style={{ fontWeight: 'normal' }}>
+              Selecciona la fecha Inicial
+            </h2>
             <DatePicker
               selected={selectedDateUser}
               onChange={(date) => setSelectedDateUser(date)}
@@ -133,7 +137,7 @@ export const Reportes = () => {
               dateFormat="dd/MM/yyyy"
               showPopperArrow={false}
             />
-            <h2>Selecciona la fecha Final</h2>
+            <h2 style={{ fontWeight: 'normal' }}>Selecciona la fecha Final</h2>
             <DatePicker
               selected={selectedDateEndUser}
               onChange={(date) => setSelectedDateTwoUser(date)}
@@ -161,9 +165,12 @@ export const Reportes = () => {
         </Paper>
       </Grid>
 
-      <Grid item xs={12} md={4} style={{ height: '500px' }}>
-        <Paper elevation={3} style={{ padding: '36px', height: '100%' }}>
-          <h2>Reporte de Formularios</h2>
+      <Grid item xs={12} md={4} style={{ height: '450px' }}>
+        <Paper
+          elevation={3}
+          style={{ padding: '36px', height: '100%', fontSize: '12px' }}
+        >
+          <h2>REPORTE DE FORMULARIOS</h2>
           <Divider />
           <FormControl fullWidth margin="normal">
             <InputLabel id="turno-select-label">Formulario</InputLabel>
@@ -180,7 +187,7 @@ export const Reportes = () => {
               ))}
             </Select>
           </FormControl>
-          <h2>Selecciona la fecha Inicial</h2>
+          <h2 style={{ fontWeight: 'normal' }}>Selecciona la fecha Inicial</h2>
           <DatePicker
             selected={selectedDateForm}
             onChange={(date) => setSelectedDateForm(date)}
@@ -188,7 +195,7 @@ export const Reportes = () => {
             dateFormat="dd/MM/yyyy"
             showPopperArrow={false}
           />
-          <h2>Selecciona la fecha Final</h2>
+          <h2 style={{ fontWeight: 'normal' }}>Selecciona la fecha Final</h2>
           <DatePicker
             selected={selectedDateEndForm}
             onChange={(date) => setSelectedDateEndForm(date)}

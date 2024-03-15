@@ -123,7 +123,7 @@ export const ServiciosModal = ({ open, handleClose, selectedCompany }) => {
                 <Grid item xs={12} sm={6}>
                   <Button
                     variant="contained"
-                    color="primary"
+                    style={{ backgroundColor: '#6A51e1' }}
                     onClick={() => handleClose(false)}
                     fullWidth
                   >
@@ -134,7 +134,7 @@ export const ServiciosModal = ({ open, handleClose, selectedCompany }) => {
                 <Grid item xs={12} sm={6}>
                   <Button
                     variant="contained"
-                    color="primary"
+                    style={{ backgroundColor: '#6A51e1' }}
                     onClick={() => handleSubmit()}
                     fullWidth
                   >
@@ -185,7 +185,7 @@ export const ServiciosModal = ({ open, handleClose, selectedCompany }) => {
                 <Grid item xs={12} sm={6}>
                   <Button
                     variant="contained"
-                    color="primary"
+                    style={{ backgroundColor: '#6A51e1' }}
                     onClick={() => handleSubmit()}
                     fullWidth
                   >
@@ -211,7 +211,7 @@ export const ServiciosModal = ({ open, handleClose, selectedCompany }) => {
                 <Grid item xs={12} sm={6}>
                   <Button
                     variant="contained"
-                    color="primary"
+                    style={{ backgroundColor: '#6A51e1' }}
                     onClick={() => handleClose(false)}
                     fullWidth
                   >
@@ -222,7 +222,7 @@ export const ServiciosModal = ({ open, handleClose, selectedCompany }) => {
                 <Grid item xs={12} sm={6}>
                   <Button
                     variant="contained"
-                    color="primary"
+                    style={{ backgroundColor: '#6A51e1' }}
                     onClick={() => handleSubmit()}
                     fullWidth
                   >

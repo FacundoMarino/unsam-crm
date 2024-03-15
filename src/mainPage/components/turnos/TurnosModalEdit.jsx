@@ -249,7 +249,11 @@ export const TurnosModalEdit = ({ open, handleClose }) => {
               </Select>
             </FormControl>
 
-            <Button variant="contained" color="primary" onClick={handleSave}>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: '#6A51e1' }}
+              onClick={handleSave}
+            >
               Guardar
             </Button>
           </form>

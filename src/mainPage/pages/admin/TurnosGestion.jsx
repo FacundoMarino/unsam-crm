@@ -10,6 +10,14 @@ import {
   Toolbar,
   Typography,
   Container,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -37,18 +45,17 @@ export const TurnosGestion = ({
   useEffect(() => {
     dispatch(getShiftsTypes({ telekinesis }));
     setDisplayCreateShift('none');
-  }, [dispatch]);
+  }, [dispatch, telekinesis, setDisplayCreateShift]);
 
   useEffect(() => {
     if (adminStatus === 'ok') {
       dispatch(getShiftsTypes({ telekinesis }));
     }
-    setAdminStatus('');
-  }, [adminStatus]);
+    dispatch(setAdminStatus(''));
+  }, [adminStatus, dispatch, telekinesis]);
 
   const handleEditar = (id) => {
     dispatch(getShiftId({ telekinesis, id }));
-
     setModalOpen(true);
   };
 
@@ -67,44 +74,77 @@ export const TurnosGestion = ({
 
   return (
     <Container>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Turnos
-          </Typography>
-          <Button
-            color="inherit"
-            onClick={handleNuevoTurno}
-            startIcon={<AddIcon />}
-          >
-            Nuevo Turno
-          </Button>
-        </Toolbar>
-      </AppBar>
+      <Grid container justifyContent={'flex-end'} alignItems={'center'}>
+        <Button
+          style={{ backgroundColor: '#6A51e1', color: 'white', margin: 5 }}
+          onClick={handleNuevoTurno}
+          startIcon={<AddIcon />}
+        >
+          Nuevo Formulario
+        </Button>
+      </Grid>
 
-      <List>
-        {shifts?.map((turno) => (
-          <ListItem key={turno.shift_type}>
-            <ListItemText primary={turno.shift_type} />
-            <ListItemSecondaryAction>
-              <IconButton
-                edge="end"
-                aria-label="edit"
-                onClick={() => handleEditar(turno.id)}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell
+                style={{
+                  textAlign: 'center',
+                  borderBottom: '2.5px solid #6A51e1',
+                  fontWeight: 'bold',
+                  width: '50%',
+                }}
               >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={() => handleEliminar(turno.id)}
+                TURNO
+              </TableCell>
+              <TableCell
+                style={{
+                  textAlign: 'center',
+                  borderBottom: '2.5px solid #6A51e1',
+                  fontWeight: 'bold',
+                  width: '50%',
+                }}
               >
-                <DeleteIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-      </List>
+                ACCIONES
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {shifts?.map((turno) => (
+              <TableRow key={turno.shift_type}>
+                <TableCell
+                  style={{
+                    textAlign: 'center',
+                  }}
+                >
+                  {turno.shift_type}
+                </TableCell>
+                <TableCell
+                  style={{
+                    textAlign: 'center',
+                  }}
+                >
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    onClick={() => handleEditar(turno.id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => handleEliminar(turno.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       <TurnosModalEdit open={isModalOpen} handleClose={handleCloseModal} />
     </Container>

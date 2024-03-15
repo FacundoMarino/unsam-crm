@@ -135,7 +135,7 @@ export const FormularioGestion = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {formsStore?.forms.map((form) => (
+            {formsStore?.forms?.map((form) => (
               <TableRow key={form.id}>
                 <TableCell
                   style={{
