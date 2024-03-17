@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Grid,
   Card,
   CardContent,
-  Typography,
   Divider,
-  Grid,
   Button,
   TextField,
   Container,
   Dialog,
   DialogContent,
-  AppBar,
-  Toolbar,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
-import {
-  selectRole,
-  selectUserId,
-  setEnterpriseId,
-} from '../../../../store/auth/authSlider';
+import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css'; // Estilo para las pestañas
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import { setCrmPage } from '../../../../store/crm/crmSlider';
@@ -27,14 +24,19 @@ import { setFormId } from '../../../../store/forms/formSlider';
 import { setFile, setTaskId } from '../../../../store/tasks/taskSlider';
 import { getTasks } from '../../../../store/tasks/thunks';
 import { newNote, solicitarNotas } from '../../../../store/notes/thunks';
+import { DocumentacionModal } from './DocumentacionModal';
+import { saveAs } from 'file-saver';
+import { FaDownload } from 'react-icons/fa';
+import {
+  selectRole,
+  selectUserId,
+  setEnterpriseId,
+} from '../../../../store/auth/authSlider';
 import {
   setIdEnterprise,
   setIdService,
   setServicesByEnterprises,
 } from '../../../../store/servicios/servicesSlider';
-import { DocumentacionModal } from './DocumentacionModal';
-import { saveAs } from 'file-saver';
-import { FaDownload } from 'react-icons/fa';
 
 export const Legajo = ({ setDisplayView }) => {
   const rol = useSelector(selectRole);
@@ -120,7 +122,6 @@ export const Legajo = ({ setDisplayView }) => {
     };
   }, []);
 
-  console.log(enterprises);
   useEffect(() => {
     const mappedCards = tasksRedux.map((task) => {
       let cardTitle = '';
@@ -269,13 +270,18 @@ export const Legajo = ({ setDisplayView }) => {
     const date = new Date(dateString);
     return format(date, 'dd/MM/yyyy');
   };
-  // Filtrar las tarjetas por tipo de tarea
-  const documentacionCards = cards.filter(
-    (card) => card.type === 'documentacion',
-  );
-  const formulariosCards = cards.filter((card) => card.type === 'formularios');
-  const turnosCards = cards.filter((card) => card.type === 'turnos');
-  console.log(razonSocial);
+
+  // Agrupar las tarjetas por service_id y tipo de tarea
+  const groupedCards = cards.reduce((acc, card) => {
+    acc[card.service_id] = acc[card.service_id] || {
+      documentacion: [],
+      formularios: [],
+      turnos: [],
+    };
+    acc[card.service_id][card.type].push(card);
+    return acc;
+  }, {});
+
   return (
     <div>
       <AppBar
@@ -298,143 +304,68 @@ export const Legajo = ({ setDisplayView }) => {
         </Toolbar>
       </AppBar>
 
-      <Grid container spacing={2}>
-        {/* Columna de Documentación */}
-        <Grid item xs={12} sm={6} md={4} mb={2}>
-          {documentacionCards.map((card, index) => (
-            <Card
-              key={index}
-              style={{
-                color: card.color,
-                cursor: rol !== 'Admin' ? 'pointer' : 'default',
-                marginBottom: '20px',
-              }}
-              onClick={
-                rol !== 'Admin' && card.color !== 'green'
-                  ? () =>
-                      handleCardClick(
-                        card.id,
-                        card.type,
-                        card.enterprise_id,
-                        card.form_id,
-                        card.service_id,
-                        card.color,
-                      )
-                  : () =>
-                      handleCardClick(
-                        card.id,
-                        card.type,
-                        card.enterprise_id,
-                        card.form_id,
-                        card.service_id,
-                        card.color,
-                      )
-              }
-            >
-              <CardContent>
-                <Grid container alignItems="center">
-                  <Typography variant="h6" gutterBottom>
-                    {card.title}
-                  </Typography>
-                  <FaDownload />
-                </Grid>
-                <Divider />
-                <Typography component="div" mt={2}>
-                  {card.content.split('\n').map((line, lineIndex) => (
-                    <div key={lineIndex}>{line}</div>
+      <Tabs>
+        <TabList>
+          {Object.keys(groupedCards).map((serviceId, index) => (
+            <Tab key={index}>Service {serviceId}</Tab>
+          ))}
+        </TabList>
+        {Object.keys(groupedCards).map((serviceId, index) => (
+          <TabPanel key={index}>
+            <Grid container spacing={2}>
+              {Object.keys(groupedCards[serviceId]).map((taskType) => (
+                <React.Fragment key={taskType}>
+                  {groupedCards[serviceId][taskType].map((card, index) => (
+                    <Grid item xs={12} sm={6} md={4} key={index}>
+                      <Card
+                        style={{
+                          color: card.color,
+                          cursor: rol !== 'Admin' ? 'pointer' : 'default',
+                          marginBottom: '20px',
+                        }}
+                        onClick={() =>
+                          handleCardClick(
+                            card.id,
+                            card.type,
+                            card.enterprise_id,
+                            card.form_id,
+                            card.service_id,
+                            card.color,
+                          )
+                        }
+                      >
+                        <CardContent>
+                          <Typography variant="h6" gutterBottom>
+                            {card.title}
+                          </Typography>
+                          <Divider />
+                          <Typography component="div" mt={2}>
+                            {card.content.split('\n').map((line, lineIndex) => (
+                              <div key={lineIndex}>{line}</div>
+                            ))}
+                          </Typography>
+                          {card.icon && <div>{card.icon}</div>}
+                          {card.hourShift && (
+                            <Typography>
+                              Hora del Turno: {card.hourShift}
+                            </Typography>
+                          )}
+                          {card.dayShift && (
+                            <Typography>
+                              Fecha del Turno: {formatDate(card.dayShift)}
+                            </Typography>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Grid>
                   ))}
-                </Typography>
+                </React.Fragment>
+              ))}
+            </Grid>
+          </TabPanel>
+        ))}
+      </Tabs>
 
-                {card.icon && <div>{card.icon}</div>}
-              </CardContent>
-            </Card>
-          ))}
-        </Grid>
-        {/* Columna de Formularios */}
-        <Grid item xs={12} sm={6} md={4} mb={2}>
-          {formulariosCards.map((card, index) => (
-            <Card
-              key={index}
-              style={{
-                color: card.color,
-                cursor: rol !== 'Admin' ? 'pointer' : 'default',
-                marginBottom: '20px',
-              }}
-              onClick={
-                rol !== 'Admin' && card.color !== 'green'
-                  ? () =>
-                      handleCardClick(
-                        card.id,
-                        card.type,
-                        card.enterprise_id,
-                        card.form_id,
-                        card.service_id,
-                      )
-                  : null
-              }
-            >
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  {card.title}
-                </Typography>
-
-                <Divider />
-                <Typography component="div" mt={2}>
-                  {card.content.split('\n').map((line, lineIndex) => (
-                    <div key={lineIndex}>{line}</div>
-                  ))}
-                </Typography>
-                {card.icon && <div>{card.icon}</div>}
-              </CardContent>
-            </Card>
-          ))}
-        </Grid>
-        {/* Columna de Turnos */}
-        <Grid item xs={12} sm={6} md={4}>
-          {turnosCards.map((card, index) => (
-            <Card
-              key={index}
-              style={{
-                color: card.color,
-                cursor: rol !== 'Admin' ? 'pointer' : 'default',
-                marginBottom: '20px',
-              }}
-              onClick={
-                rol !== 'Admin' && card.color !== 'green'
-                  ? () =>
-                      handleCardClick(
-                        card.id,
-                        card.type,
-                        card.enterprise_id,
-                        card.form_id,
-                        card.service_id,
-                      )
-                  : null
-              }
-            >
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  {card.title}
-                </Typography>
-                <Divider />
-                <Typography component="div" mt={2}>
-                  {card.content.split('\n').map((line, lineIndex) => (
-                    <div key={lineIndex}>{line}</div>
-                  ))}
-                </Typography>
-                <Typography>
-                  {card.hourShift && `Hora del Turno: ${card.hourShift}`}
-                </Typography>
-                <Typography>
-                  {card.dayShift &&
-                    `Fecha del Turno: ${formatDate(card.dayShift)}`}
-                </Typography>
-                {card.icon && <div>{card.icon}</div>}
-              </CardContent>
-            </Card>
-          ))}
-        </Grid>
-      </Grid>
       <Grid container spacing={2}>
         {notesRedux?.map((noteR, index) => (
           <Grid item xs={12} sm={6} md={4} mb={2} key={index}>

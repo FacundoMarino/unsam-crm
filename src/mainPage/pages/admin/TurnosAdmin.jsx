@@ -168,8 +168,8 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
   );
 
   const sortedData = React.useMemo(() => {
-    // Ordenar los turnos por fecha (más reciente primero)
-    const sortedShifts = turnosDisponibles.slice().sort((a, b) => {
+    if (!turnosDisponibles) return [];
+    const sortedShifts = turnosDisponibles?.slice().sort((a, b) => {
       const dateA = new Date(a.day);
       const dateB = new Date(b.day);
       return dateB - dateA; // Orden inverso para la fecha más reciente primero
@@ -196,7 +196,7 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
   } = useTable(
     {
       columns,
-      data: sortedData,
+      data: sortedData, // Reemplazar 'data' por 'sortedData'
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,

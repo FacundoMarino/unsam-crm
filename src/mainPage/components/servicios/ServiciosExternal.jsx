@@ -42,7 +42,14 @@ export const ServiciosExternal = () => {
     <Grid container spacing={2}>
       <Grid item xs={12}></Grid>
       {servicios?.map((servicio) => (
-        <Grid item xs={6} md={6} textAlign="center" key={servicio.id}>
+        <Grid
+          item
+          xs={6}
+          md={6}
+          textAlign="center"
+          key={servicio.id}
+          justifyContent={'center'}
+        >
           {servicio.service !== 'Consulta General' && (
             <Card
               key={servicio.id}
@@ -52,7 +59,11 @@ export const ServiciosExternal = () => {
                 <Typography variant="h5" component="h2" mt={2}>
                   {servicio.service}
                 </Typography>
-                <Grid container style={{ height: '100px' }}>
+                <Grid
+                  container
+                  style={{ height: '100px' }}
+                  justifyContent={'center'}
+                >
                   <Typography color="textSecondary" mt={2} mb={2}>
                     {servicio.description}
                   </Typography>
