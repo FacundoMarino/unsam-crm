@@ -9,7 +9,7 @@ import {
   Icon,
 } from '@mui/material';
 import { startLogout } from '../../store/auth/thunks';
-import { FaRegUser } from 'react-icons/fa';
+import { LuUser2 } from 'react-icons/lu';
 import { FaRegHandshake } from 'react-icons/fa6';
 import { FaRegFolderOpen } from 'react-icons/fa';
 import { FaQuestionCircle } from 'react-icons/fa';
@@ -53,7 +53,7 @@ export const Navbar = ({ draweWidth }) => {
     } else if (page === 'reportes') {
       setNameBar({ name: 'Reportes', icon: <IoMdAnalytics /> });
     } else if (page === 'usuarios') {
-      setNameBar({ name: 'Usuarios', icon: <FaRegUser /> });
+      setNameBar({ name: 'Usuarios', icon: <LuUser2 /> });
     }
   };
 
@@ -85,7 +85,7 @@ export const Navbar = ({ draweWidth }) => {
             sx={{ display: 'flex', flexDirection: 'column' }}
             onClick={() => dispatch(setCrmPage('milegajo'))}
           >
-            <FaRegUser />
+            <LuUser2 />
             <Typography sx={{ fontSize: '0.8rem' }}>{name}</Typography>
           </IconButton>
           <IconButton color="error" onClick={onLogout}>

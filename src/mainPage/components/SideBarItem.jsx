@@ -13,7 +13,7 @@ import { setCrmPage } from '../../store/crm/crmSlider';
 import { FaRegHandshake } from 'react-icons/fa6';
 import { FaRegFolderOpen } from 'react-icons/fa';
 import { FaQuestionCircle } from 'react-icons/fa';
-import { FaRegUser } from 'react-icons/fa';
+import { LuUser2 } from 'react-icons/lu';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { IoNewspaperOutline } from 'react-icons/io5';
 import { IoMdAnalytics } from 'react-icons/io';
@@ -31,7 +31,7 @@ export const SideBarItem = ({ title = '', icon }) => {
     { name: 'FAQ', icon: <FaQuestionCircle /> },
   ];
   const subItemsInternal = [
-    { name: 'Usuarios', icon: <FaRegUser /> },
+    { name: 'Usuarios', icon: <LuUser2 /> },
     { name: 'Servicios', icon: <FaRegHandshake /> },
     { name: 'Turnos', icon: <FaCalendarAlt /> },
     { name: 'Formularios', icon: <IoNewspaperOutline /> },
