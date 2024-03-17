@@ -19,4 +19,7 @@ export const mainTheme = createTheme({
       main: red.A400,
     },
   },
+  typography: {
+    fontFamily: 'Saira',
+  },
 });
