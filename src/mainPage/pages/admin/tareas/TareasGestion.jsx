@@ -129,12 +129,7 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
         Header: 'FECHA',
         accessor: 'created_at',
         Cell: ({ value }) => formatDate(value),
-        Cell: ({ value }) => formatDate(value),
-        sortType: (rowA, rowB, columnId) => {
-          const dateA = new Date(rowA.original.created_at);
-          const dateB = new Date(rowB.original.created_at);
-          return dateA - dateB;
-        },
+        sortDescFirst: true,
       },
       {
         Header: 'ESTADO',
@@ -233,7 +228,7 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
     [],
   );
 
-  const data = React.useMemo(() => {
+  const sortedData = React.useMemo(() => {
     if (!services || services.length === 0) {
       return allServices
         ? allServices.flatMap((service) =>
@@ -245,11 +240,19 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
           )
         : [];
     }
-    return services.map((service) => ({
+
+    const sortedServices = services.slice().sort((a, b) => {
+      const dateA = new Date(a.created_at);
+      const dateB = new Date(b.created_at);
+      return dateB - dateA; // Orden inverso para la fecha más reciente primero
+    });
+
+    return sortedServices.map((service) => ({
       ...service,
       razonSocial: razonSocial,
     }));
   }, [services, allServices, razonSocial]);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -268,14 +271,21 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
   } = useTable(
     {
       columns,
-      data,
-      initialState: { pageIndex: 0 },
+      data: sortedData.sort((a, b) => {
+        const dateA = new Date(a.created_at);
+        const dateB = new Date(b.created_at);
+        return dateB - dateA;
+      }),
+      initialState: {
+        pageIndex: 0,
+      },
     },
     useGlobalFilter,
     usePagination,
   );
 
   const { globalFilter, pageIndex, pageSize } = state;
+  console.log(sortedData);
 
   return (
     <>

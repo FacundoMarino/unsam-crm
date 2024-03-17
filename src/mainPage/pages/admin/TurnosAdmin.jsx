@@ -123,7 +123,7 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
                 </StyledButton>
                 <StyledButton
                   variant="contained"
-                  color="secondary"
+                  style={{ backgroundColor: '#6A51e1' }}
                   onClick={() => handleCancelTurn(row.original.turno_id)}
                 >
                   Cancelar Turno
@@ -167,10 +167,16 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
     [],
   );
 
-  const data = React.useMemo(
-    () => turnosDisponibles || [],
-    [turnosDisponibles],
-  );
+  const sortedData = React.useMemo(() => {
+    // Ordenar los turnos por fecha (más reciente primero)
+    const sortedShifts = turnosDisponibles.slice().sort((a, b) => {
+      const dateA = new Date(a.day);
+      const dateB = new Date(b.day);
+      return dateB - dateA; // Orden inverso para la fecha más reciente primero
+    });
+
+    return sortedShifts;
+  }, [turnosDisponibles]);
 
   const {
     getTableProps,
@@ -190,7 +196,7 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
   } = useTable(
     {
       columns,
-      data,
+      data: sortedData,
       initialState: { pageIndex: 0 },
     },
     useGlobalFilter,

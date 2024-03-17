@@ -128,7 +128,7 @@ export const Reportes = () => {
             </div>
             <Divider />
             <h2 style={{ fontWeight: 'normal' }}>
-              Selecciona la fecha Inicial
+              Seleccioná la fecha inicial
             </h2>
             <DatePicker
               selected={selectedDateUser}
@@ -137,7 +137,7 @@ export const Reportes = () => {
               dateFormat="dd/MM/yyyy"
               showPopperArrow={false}
             />
-            <h2 style={{ fontWeight: 'normal' }}>Selecciona la fecha Final</h2>
+            <h2 style={{ fontWeight: 'normal' }}>Seleccioná la fecha final</h2>
             <DatePicker
               selected={selectedDateEndUser}
               onChange={(date) => setSelectedDateTwoUser(date)}
@@ -187,7 +187,7 @@ export const Reportes = () => {
               ))}
             </Select>
           </FormControl>
-          <h2 style={{ fontWeight: 'normal' }}>Selecciona la fecha Inicial</h2>
+          <h2 style={{ fontWeight: 'normal' }}>Seleccioná la fecha inicial</h2>
           <DatePicker
             selected={selectedDateForm}
             onChange={(date) => setSelectedDateForm(date)}
@@ -195,7 +195,7 @@ export const Reportes = () => {
             dateFormat="dd/MM/yyyy"
             showPopperArrow={false}
           />
-          <h2 style={{ fontWeight: 'normal' }}>Selecciona la fecha Final</h2>
+          <h2 style={{ fontWeight: 'normal' }}>Seleccioná la fecha final</h2>
           <DatePicker
             selected={selectedDateEndForm}
             onChange={(date) => setSelectedDateEndForm(date)}
