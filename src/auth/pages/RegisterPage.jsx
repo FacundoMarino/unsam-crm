@@ -212,7 +212,7 @@ export const RegisterPage = () => {
                     type="submit"
                     variant="contained"
                     fullWidth
-                    style={{ color: 'white', backgroundColor: '#6A51e1' }}
+                    style={{ color: 'white', backgroundColor: '#AC00E3' }}
                   >
                     Guardar Datos
                   </Button>
@@ -325,7 +325,7 @@ export const RegisterPage = () => {
                     type="submit"
                     variant="contained"
                     fullWidth
-                    style={{ color: 'white', backgroundColor: '#6A51e1' }}
+                    style={{ color: 'white', backgroundColor: '#AC00E3' }}
                   >
                     Crear Cuenta
                   </Button>

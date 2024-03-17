@@ -122,7 +122,7 @@ export const FormularioCreate = ({
     <Container>
       <Grid container justifyContent={'flex-end'}>
         <Button
-          style={{ backgroundColor: '#6A51e1', color: 'white', margin: 5 }}
+          style={{ backgroundColor: '#AC00E3', color: 'white', margin: 5 }}
           onClick={handleNuevoTurno}
           startIcon={<AddIcon />}
         >
@@ -262,7 +262,7 @@ export const FormularioCreate = ({
                     ))}
                     <Button
                       variant="outlined"
-                      style={{ backgroundColor: '#6A51e1' }}
+                      style={{ backgroundColor: '#AC00E3' }}
                       onClick={() => handleAddOption(field.id)}
                       startIcon={<AddIcon />}
                     >
@@ -288,7 +288,7 @@ export const FormularioCreate = ({
             style={{
               marginTop: '20px',
               marginRight: '10px',
-              backgroundColor: '#6A51e1',
+              backgroundColor: '#AC00E3',
             }}
           >
             Agregar Pregunta
@@ -300,7 +300,7 @@ export const FormularioCreate = ({
             style={{
               marginRight: '10px',
               marginTop: '20px',
-              backgroundColor: '#6A51e1',
+              backgroundColor: '#AC00E3',
             }}
           >
             Reiniciar Formulario
@@ -308,7 +308,7 @@ export const FormularioCreate = ({
           <Button
             variant="contained"
             onClick={handleSubmit}
-            style={{ marginTop: '20px', backgroundColor: '#6A51e1' }}
+            style={{ marginTop: '20px', backgroundColor: '#AC00E3' }}
           >
             Crear Formulario
           </Button>

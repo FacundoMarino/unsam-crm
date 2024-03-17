@@ -20,13 +20,13 @@ export const UsuariosAdminLayout = () => {
         onSelect={(index) => setSelectedIndex(index)}
       >
         <TabList>
-          <Tab style={{ color: selectedIndex === 0 ? '#6A51e1' : 'black' }}>
+          <Tab style={{ color: selectedIndex === 0 ? '#AC00E3' : 'black' }}>
             Administración de Usuarios
           </Tab>
           <Tab
             style={{
               display: displayView,
-              color: selectedIndex === 1 ? '#6A51e1' : 'black',
+              color: selectedIndex === 1 ? '#AC00E3' : 'black',
             }}
           >
             Detalle Usuario

@@ -82,7 +82,7 @@ export const FaqModal = ({ open, handleClose }) => {
                     type="submit"
                     variant="contained"
                     fullWidth
-                    style={{ backgroundColor: '#6A51e1' }}
+                    style={{ backgroundColor: '#AC00E3' }}
                   >
                     Guardar Pregunta
                   </Button>

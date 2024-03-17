@@ -23,21 +23,21 @@ export const TurnosAdminLayout = () => {
         onSelect={(index) => setSelectedIndex(index)}
       >
         <TabList>
-          <Tab style={{ color: selectedIndex === 0 ? '#6A51e1' : 'black' }}>
+          <Tab style={{ color: selectedIndex === 0 ? '#AC00E3' : 'black' }}>
             Administración de Turno
           </Tab>
-          <Tab style={{ color: selectedIndex === 1 ? '#6A51e1' : 'black' }}>
+          <Tab style={{ color: selectedIndex === 1 ? '#AC00E3' : 'black' }}>
             Gestión de Turno
           </Tab>
           <Tab
             style={{
               display: displayCreateShift,
-              color: selectedIndex === 2 ? '#6A51e1' : 'black',
+              color: selectedIndex === 2 ? '#AC00E3' : 'black',
             }}
           >
             Crear Tipo de Turno
           </Tab>
-          <Tab style={{ color: selectedIndex === 3 ? '#6A51e1' : 'black' }}>
+          <Tab style={{ color: selectedIndex === 3 ? '#AC00E3' : 'black' }}>
             Calendario
           </Tab>
         </TabList>

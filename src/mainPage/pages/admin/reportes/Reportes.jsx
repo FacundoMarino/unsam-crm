@@ -110,7 +110,7 @@ export const Reportes = () => {
             >
               <Button
                 variant="contained"
-                style={{ marginLeft: '10px', backgroundColor: '#6A51e1' }}
+                style={{ marginLeft: '10px', backgroundColor: '#AC00E3' }}
                 onClick={saveAndSendData}
               >
                 Exportar
@@ -155,7 +155,7 @@ export const Reportes = () => {
             >
               <Button
                 variant="contained"
-                style={{ marginLeft: '10px', backgroundColor: '#6A51e1' }}
+                style={{ marginLeft: '10px', backgroundColor: '#AC00E3' }}
                 onClick={saveUserData}
               >
                 Exportar
@@ -212,7 +212,7 @@ export const Reportes = () => {
           >
             <Button
               variant="contained"
-              style={{ marginLeft: '10px', backgroundColor: '#6A51e1' }}
+              style={{ marginLeft: '10px', backgroundColor: '#AC00E3' }}
               onClick={saveFormData}
             >
               Exportar

@@ -149,7 +149,7 @@ export const ServicioGestion = () => {
       <Container>
         <Grid container justifyContent={'flex-end'} alignItems={'center'}>
           <Button
-            style={{ backgroundColor: '#6A51e1', color: 'white', margin: 5 }}
+            style={{ backgroundColor: '#AC00E3', color: 'white', margin: 5 }}
             onClick={handlerNuevoServicio}
             startIcon={<AddIcon />}
           >
@@ -173,7 +173,7 @@ export const ServicioGestion = () => {
                     <TableCell
                       style={{
                         textAlign: 'center',
-                        borderBottom: '2.5px solid #6A51e1',
+                        borderBottom: '2.5px solid #AC00E3',
                         fontWeight: 'bold',
                         width: '50%',
                       }}

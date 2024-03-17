@@ -103,7 +103,7 @@ export const ServicioCreateModal = ({ open, handleClose, id }) => {
               <Grid item xs={12} sm={6}>
                 <Button
                   variant="contained"
-                  style={{ backgroundColor: '#6A51e1' }}
+                  style={{ backgroundColor: '#AC00E3' }}
                   onClick={() => handleClose(false)}
                   fullWidth
                 >
@@ -114,7 +114,7 @@ export const ServicioCreateModal = ({ open, handleClose, id }) => {
               <Grid item xs={12} sm={6}>
                 <Button
                   variant="contained"
-                  style={{ backgroundColor: '#6A51e1' }}
+                  style={{ backgroundColor: '#AC00E3' }}
                   onClick={() => handleSubmit()}
                   fullWidth
                 >

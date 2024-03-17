@@ -76,7 +76,7 @@ export const FaqCreate = ({ setDisplayView, handleNewFormClick }) => {
       <Container>
         <Grid container justifyContent={'flex-end'}>
           <Button
-            style={{ backgroundColor: '#6A51e1', color: 'white', margin: 5 }}
+            style={{ backgroundColor: '#AC00E3', color: 'white', margin: 5 }}
             onClick={handlerNuevoServicio}
             startIcon={<AddIcon />}
           >
@@ -91,7 +91,7 @@ export const FaqCreate = ({ setDisplayView, handleNewFormClick }) => {
                 <TableCell
                   style={{
                     textAlign: 'center',
-                    borderBottom: '2.5px solid #6A51e1',
+                    borderBottom: '2.5px solid #AC00E3',
                     fontWeight: 'bold',
                     width: '50%',
                   }}
@@ -101,7 +101,7 @@ export const FaqCreate = ({ setDisplayView, handleNewFormClick }) => {
                 <TableCell
                   style={{
                     textAlign: 'center',
-                    borderBottom: '2.5px solid #6A51e1',
+                    borderBottom: '2.5px solid #AC00E3',
                     fontWeight: 'bold',
                     width: '50%',
                   }}

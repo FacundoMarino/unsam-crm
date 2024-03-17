@@ -55,7 +55,7 @@ export const TurnosAdminPage = ({ onVerDetalle, setDisplayCreateShift }) => {
   }));
 
   const eventStyleGetter = (event, start, end, isSelected) => {
-    const backgroundColor = '#6A51e1';
+    const backgroundColor = '#AC00E3';
     const style = {
       backgroundColor,
       borderRadius: '4px',

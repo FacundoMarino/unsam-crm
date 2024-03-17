@@ -36,7 +36,7 @@ export const Sidebar = ({ draweWidth }) => {
 
         <List
           sx={{
-            backgroundColor: '#6A51e1',
+            backgroundColor: '#AC00E3',
             height: '100vh',
           }}
         >

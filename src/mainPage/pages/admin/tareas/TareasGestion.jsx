@@ -296,7 +296,7 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
                 {headerGroup.headers.map((column) => (
                   <TableCell
                     style={{
-                      borderBottom: '2.5px solid #6A51e1',
+                      borderBottom: '2.5px solid #AC00E3',
                       fontWeight: 'bold',
                     }}
                     {...column.getHeaderProps()}

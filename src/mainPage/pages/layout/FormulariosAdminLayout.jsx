@@ -25,24 +25,24 @@ export const FormulariosAdminLayout = () => {
         onSelect={(index) => setSelectedIndex(index)}
       >
         <TabList>
-          <Tab style={{ color: selectedIndex === 0 ? '#6A51e1' : 'black' }}>
+          <Tab style={{ color: selectedIndex === 0 ? '#AC00E3' : 'black' }}>
             Administración de Formularios
           </Tab>
           <Tab
             style={{
               display: displayEditForm,
-              color: selectedIndex === 1 ? '#6A51e1' : 'black',
+              color: selectedIndex === 1 ? '#AC00E3' : 'black',
             }}
           >
             Edición de Formulario
           </Tab>
-          <Tab style={{ color: selectedIndex === 2 ? '#6A51e1' : 'black' }}>
+          <Tab style={{ color: selectedIndex === 2 ? '#AC00E3' : 'black' }}>
             Crear Tipo Formulario
           </Tab>
           <Tab
             style={{
               display: displayViewForm,
-              color: selectedIndex === 3 ? '#6A51e1' : 'black',
+              color: selectedIndex === 3 ? '#AC00E3' : 'black',
             }}
           >
             Pre Visualización Formulario
@@ -50,7 +50,7 @@ export const FormulariosAdminLayout = () => {
           <Tab
             style={{
               display: displayStepForm,
-              color: selectedIndex === 4 ? '#6A51e1' : 'black',
+              color: selectedIndex === 4 ? '#AC00E3' : 'black',
             }}
           >
             Agregar Step

@@ -186,7 +186,7 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
     <>
       <Grid container justifyContent={'flex-end'} alignItems={'center'}>
         <Button
-          style={{ backgroundColor: '#6A51e1', color: 'white', margin: 5 }}
+          style={{ backgroundColor: '#AC00E3', color: 'white', margin: 5 }}
           onClick={handlerNuevoServicio}
           startIcon={<AddIcon />}
         >
@@ -209,7 +209,7 @@ export const UsuariosGestion = ({ setDisplayView, handleNewFormClick }) => {
                 {headerGroup.headers.map((column) => (
                   <TableCell
                     style={{
-                      borderBottom: '2.5px solid #6A51e1',
+                      borderBottom: '2.5px solid #AC00E3',
                       fontWeight: 'bold',
                     }}
                     {...column.getHeaderProps()}

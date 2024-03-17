@@ -280,7 +280,7 @@ export const Legajo = ({ setDisplayView }) => {
     <div>
       <AppBar
         position="static"
-        style={{ marginBottom: '20px', backgroundColor: '#6A51e1' }}
+        style={{ marginBottom: '20px', backgroundColor: '#AC00E3' }}
       >
         <Toolbar>
           <>

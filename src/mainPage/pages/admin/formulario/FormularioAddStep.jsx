@@ -305,7 +305,7 @@ export const FormularioAddStep = () => {
                     ))}
                     <Button
                       variant="outlined"
-                      style={{ backgroundColor: '#6A51e1' }}
+                      style={{ backgroundColor: '#AC00E3' }}
                       onClick={() => handleAddOption(field.id)}
                       startIcon={<AddIcon />}
                     >
@@ -343,7 +343,7 @@ export const FormularioAddStep = () => {
                     ))}
                     <Button
                       variant="outlined"
-                      style={{ backgroundColor: '#6A51e1' }}
+                      style={{ backgroundColor: '#AC00E3' }}
                       onClick={() => handleAddOption(field.id)}
                       startIcon={<AddIcon />}
                     >
@@ -368,7 +368,7 @@ export const FormularioAddStep = () => {
             style={{
               marginTop: '20px',
               marginRight: '10px',
-              backgroundColor: '#6A51e1',
+              backgroundColor: '#AC00E3',
             }}
           >
             Agregar Pregunta
@@ -378,7 +378,7 @@ export const FormularioAddStep = () => {
             variant="contained"
             color="primary"
             onClick={handleSubmit}
-            style={{ marginTop: '20px', backgroundColor: '#6A51e1' }}
+            style={{ marginTop: '20px', backgroundColor: '#AC00E3' }}
           >
             Actualizar Formulario
           </Button>

@@ -219,7 +219,7 @@ export const TurnosDisponibles = ({ setDisplayCreateShift }) => {
                   <TableCell
                     style={{
                       padding: '10px 10px 10px 10px',
-                      borderBottom: '2.5px solid #6A51e1',
+                      borderBottom: '2.5px solid #AC00E3',
                       fontWeight: 'bold',
                     }}
                     {...column.getHeaderProps()}
