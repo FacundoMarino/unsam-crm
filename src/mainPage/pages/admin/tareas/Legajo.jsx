@@ -307,7 +307,13 @@ export const Legajo = ({ setDisplayView }) => {
       <Tabs>
         <TabList>
           {Object.keys(groupedCards).map((serviceId, index) => (
-            <Tab key={index}>Service {serviceId}</Tab>
+            <Tab key={index}>
+              {
+                tasksRedux.find(
+                  (task) => task.service_id === parseInt(serviceId),
+                )?.service.service_type
+              }
+            </Tab>
           ))}
         </TabList>
         {Object.keys(groupedCards).map((serviceId, index) => (
