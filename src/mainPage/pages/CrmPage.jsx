@@ -34,27 +34,27 @@ export const CrmPage = () => {
 
   let contentComponent;
 
-  if (page === 'turnos' && rol !== 'Admin') {
+  if (page === 'turnos' && rol === 'Externo') {
     contentComponent = <TurnosPage />;
-  } else if (page === 'formularios' && rol !== 'Admin') {
+  } else if (page === 'formularios' && rol === 'Externo') {
     contentComponent = <FormularioComplete />;
-  } else if (page === 'turnos' && rol !== 'Admin') {
+  } else if (page === 'turnos' && rol !== 'Externo') {
     contentComponent = <TurnosAdminLayout onVerDetalle={handleVerDetalle} />;
-  } else if (page === 'formularios' && rol === 'Admin') {
+  } else if (page === 'formularios' && rol !== 'Externo') {
     contentComponent = <FormulariosAdminLayout />;
-  } else if (page === 'milegajo' && rol !== 'Admin') {
+  } else if (page === 'milegajo' && rol === 'Externo') {
     contentComponent = <Legajo />;
-  } else if (page === 'servicios' && rol === 'Admin') {
+  } else if (page === 'servicios' && rol !== 'Externo') {
     contentComponent = <ServiciosAdminLayout />;
-  } else if (page === 'servicios' && rol !== 'Admin') {
+  } else if (page === 'servicios' && rol === 'Externo') {
     contentComponent = <ServiciosExternal />;
-  } else if (page === 'reportes' && rol === 'Admin') {
+  } else if (page === 'reportes' && rol !== 'Externo') {
     contentComponent = <Reportes />;
-  } else if (page === 'usuarios' && rol === 'Admin') {
+  } else if (page === 'usuarios' && rol !== 'Externo') {
     contentComponent = <UsuariosAdminLayout />;
-  } else if (page === 'faq' && rol === 'Admin') {
+  } else if (page === 'faq' && rol !== 'Externo') {
     contentComponent = <FaqAdminLayout />;
-  } else if (page === 'faq' && rol !== 'Admin') {
+  } else if (page === 'faq' && rol === 'Externo') {
     contentComponent = <FaqGestion />;
   } else {
     contentComponent = <TurnosAdminLayout onVerDetalle={handleVerDetalle} />;

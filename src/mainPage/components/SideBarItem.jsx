@@ -40,7 +40,7 @@ export const SideBarItem = ({ title = '', icon }) => {
   ];
 
   useEffect(() => {
-    if (rol !== 'Admin') {
+    if (rol === 'Externo') {
       setItems(subItems);
     } else {
       setItems(subItemsInternal);

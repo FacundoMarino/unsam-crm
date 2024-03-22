@@ -172,7 +172,9 @@ export const UsuarioDetail = () => {
               </Grid>
               <Grid item>
                 <Typography variant="h6" gutterBottom>
-                  {userIndividual.rol === 1 ? 'Admin' : 'Externo'}
+                  {userIndividual.rol === 1
+                    ? 'Admin' || 'Consultor'
+                    : 'Externo'}
                 </Typography>
               </Grid>
             </Grid>

@@ -67,7 +67,7 @@ export const Legajo = ({ setDisplayView }) => {
   );
 
   useEffect(() => {
-    if (rol === 'Admin' && tasksRedux.length > 0) {
+    if (rol === 'Admin' || (rol === 'Consultor' && tasksRedux.length > 0)) {
       dispatch(
         solicitarNotas({
           telekinesis,
@@ -76,7 +76,7 @@ export const Legajo = ({ setDisplayView }) => {
         }),
       );
     }
-    if (rol !== 'Admin') {
+    if (rol === 'Externo') {
       dispatch(
         getTasks({ telekinesis, enterprise_id: enterpriseTaskExternal }),
       );
@@ -207,7 +207,7 @@ export const Legajo = ({ setDisplayView }) => {
   }, [tasksRedux]);
 
   useEffect(() => {
-    if (note.length > 0 && rol === 'Admin' && tasksRedux.length > 0) {
+    if (note.length > 0 && rol !== 'Externo' && tasksRedux.length > 0) {
       dispatch(
         newNote({
           telekinesis,

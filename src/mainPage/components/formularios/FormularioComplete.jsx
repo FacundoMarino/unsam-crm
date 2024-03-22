@@ -253,7 +253,9 @@ export const FormularioComplete = () => {
       <Paper elevation={3} style={{ padding: '20px' }}>
         <form>
           <Typography marginBottom={2} marginTop={2} variant="h5">
-            {role === 'Admin' ? 'Pre Visualización' : 'Complete el Formulario'}
+            {role === 'Admin' || role === 'Consultor'
+              ? 'Pre Visualización'
+              : 'Complete el Formulario'}
           </Typography>
           <Divider />
           {isLoading && (
@@ -476,13 +478,13 @@ export const FormularioComplete = () => {
             color="primary"
             onClick={handleResetForm}
             startIcon={<Refresh />}
-            disabled={role === 'Admin'}
+            disabled={role === 'Admin' || role === 'Consultor'}
             style={{ marginRight: '10px', marginTop: '20px' }}
           >
             Reiniciar Formulario
           </Button>
           <Button
-            disabled={role === 'Admin'}
+            disabled={role === 'Admin' || role === 'Consultor'}
             variant="contained"
             color="primary"
             onClick={handleSubmit}

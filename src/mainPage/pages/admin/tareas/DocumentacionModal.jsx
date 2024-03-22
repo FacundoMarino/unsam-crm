@@ -74,7 +74,7 @@ export const DocumentacionModal = ({ open, handleClose, props }) => {
         <DialogContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              {updateProps[0]?.color === 'red' && rol !== 'Admin'
+              {updateProps[0]?.color === 'red' && rol === 'Externo'
                 ? selectedFile && (
                     <>
                       <Grid item xs={12} mb={2}>
@@ -97,13 +97,14 @@ export const DocumentacionModal = ({ open, handleClose, props }) => {
                     </>
                   )
                 : null}
-              {updateProps[0]?.color === 'green' && rol !== 'Admin' ? (
+              {updateProps[0]?.color === 'green' && rol === 'Externo' ? (
                 <Typography>La documentación ya se encuentra subida</Typography>
               ) : (
                 <Button
                   variant="contained"
                   style={{
-                    display: rol === 'Admin' ? '' : 'none',
+                    display:
+                      rol === 'Admin' || rol === 'Consultor' ? '' : 'none',
                     backgroundColor: '#AC00E3',
                   }}
                   onClick={handleDownloadFile}

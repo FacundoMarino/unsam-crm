@@ -41,7 +41,7 @@ export const Navbar = ({ draweWidth }) => {
       setNameBar({ name: 'Servicios', icon: <FaRegHandshake /> });
     } else if (page === 'milegajo') {
       setNameBar({
-        name: rol === 'Admin' ? 'Legajo' : 'Mi Legajo',
+        name: rol !== 'Externo' ? 'Legajo' : 'Mi Legajo',
         icon: <FaRegFolderOpen />,
       });
     } else if (page === 'faq') {
