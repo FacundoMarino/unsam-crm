@@ -92,12 +92,12 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
     return format(date, 'dd/MM/yyyy');
   };
 
-  const handleModalOpen = (title, id, status, enterprise_id) => {
+  const handleModalOpen = (title, id, status, enterprise_id, service) => {
     dispatch(setEntepriseId(enterprise_id));
 
     setModalTitle(title);
     setModalOpen(true);
-    setProps([{ id, status, enterprise_id }]);
+    setProps([{ id, status, enterprise_id, service }]);
   };
 
   const handleModalClose = () => {
@@ -134,100 +134,131 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
       {
         Header: 'ESTADO',
         accessor: 'status_service',
-        Cell: ({ value }) =>
-          value === 1
-            ? 'En proceso'
-            : value === 2
-              ? 'Implementada'
-              : 'Cancelada',
+        Cell: ({ value }) => {
+          switch (value) {
+            case 1:
+              return 'Admisión';
+            case 2:
+              return 'En Proceso';
+            case 3:
+              return 'Implementada';
+            case 4:
+              return 'Cancelada';
+            default:
+              return '';
+          }
+        },
       },
       {
         Header: 'ACCIONES',
-        Cell: ({ row }) => (
-          <>
-            <Tooltip title="Ver Servicio Solicitado" arrow>
-              <IconButton
-                edge="end"
-                aria-label="view"
-                onClick={() =>
-                  handleClick(row.original.task, row.original.enterprise_id)
-                }
-              >
-                <RemoveRedEyeIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Solicitar Turno" arrow>
-              <IconButton
-                edge="end"
-                aria-label="solicitar-turno"
-                hovered="Solicitar Turno"
-                onClick={() =>
-                  handleModalOpen(
-                    'Solicitar Turno',
-                    row.original.id,
-                    row.original.status,
-                    row.original.enterprise_id,
-                  )
-                }
-              >
-                <CalendarMonthIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Subir Documentación" arrow>
-              <IconButton
-                edge="end"
-                aria-label="Subir Documentación"
-                onClick={() =>
-                  handleModalOpen(
-                    'Subir Documentación',
-                    row.original.id,
-                    row.original.status,
-                    row.original.enterprise_id,
-                  )
-                }
-              >
-                <FaRegFolderOpen />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Enviar Formulario" arrow>
-              <IconButton
-                edge="end"
-                aria-label="edit"
-                onClick={() =>
-                  handleModalOpen(
-                    'Enviar Formulario',
-                    row.original.id,
-                    row.original.status,
-                    row.original.enterprise_id,
-                  )
-                }
-              >
-                <ChecklistIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Editar Estado" arrow>
-              <IconButton
-                edge="end"
-                aria-label="edit"
-                onClick={() =>
-                  handleModalOpen(
-                    'Editar Estado',
-                    row.original.id,
-                    row.original.status,
-                    row.original.enterprise_id,
-                  )
-                }
-              >
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-          </>
-        ),
+        Cell: ({ row }) => {
+          if (row.original.service === 'Consulta General') {
+            return (
+              <Tooltip title="Editar Estado" arrow>
+                <IconButton
+                  edge="end"
+                  aria-label="edit"
+                  onClick={() =>
+                    handleModalOpen(
+                      'Editar Estado',
+                      row.original.id,
+                      row.original.status,
+                      row.original.enterprise_id,
+                      row.original.service,
+                    )
+                  }
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+            );
+          } else {
+            return (
+              <>
+                <Tooltip title="Ver Servicio Solicitado" arrow>
+                  <IconButton
+                    edge="end"
+                    aria-label="view"
+                    onClick={() =>
+                      handleClick(row.original.task, row.original.enterprise_id)
+                    }
+                  >
+                    <RemoveRedEyeIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Solicitar Turno" arrow>
+                  <IconButton
+                    edge="end"
+                    aria-label="solicitar-turno"
+                    hovered="Solicitar Turno"
+                    onClick={() =>
+                      handleModalOpen(
+                        'Solicitar Turno',
+                        row.original.id,
+                        row.original.status,
+                        row.original.enterprise_id,
+                      )
+                    }
+                  >
+                    <CalendarMonthIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Subir Documentación" arrow>
+                  <IconButton
+                    edge="end"
+                    aria-label="Subir Documentación"
+                    onClick={() =>
+                      handleModalOpen(
+                        'Subir Documentación',
+                        row.original.id,
+                        row.original.status,
+                        row.original.enterprise_id,
+                      )
+                    }
+                  >
+                    <FaRegFolderOpen />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Enviar Formulario" arrow>
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    onClick={() =>
+                      handleModalOpen(
+                        'Enviar Formulario',
+                        row.original.id,
+                        row.original.status,
+                        row.original.enterprise_id,
+                      )
+                    }
+                  >
+                    <ChecklistIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Editar Estado" arrow>
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    onClick={() =>
+                      handleModalOpen(
+                        'Editar Estado',
+                        row.original.id,
+                        row.original.status,
+                        row.original.enterprise_id,
+                      )
+                    }
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
+              </>
+            );
+          }
+        },
       },
     ],
     [],
   );
-
   const sortedData = React.useMemo(() => {
     if (!services || services.length === 0) {
       return allServices
@@ -285,7 +316,6 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
   );
 
   const { globalFilter, pageIndex, pageSize } = state;
-  console.log(sortedData);
 
   return (
     <>
@@ -343,7 +373,7 @@ export const TareasGestion = ({ handleNewFormClick, setDisplayViewLegajo }) => {
           Página
           <strong>
             {pageIndex + 1} de {pageOptions.length}
-          </strong>{' '}
+          </strong>
         </span>
         <button onClick={() => nextPage()} disabled={!canNextPage}>
           Siguiente

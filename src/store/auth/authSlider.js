@@ -42,6 +42,7 @@ export const authSlice = createSlice({
       state.step = payload.info.user_step;
       state.telephone = payload.info.user_telephone;
       state.type_user = payload.info.user_type_user;
+      state.tareas_pendientes = payload.info.tareas_pendientes;
       state.telekinesis = payload.telekinesis;
       state.errorMessage = null;
       state.user_enterprise = payload.user_enterprise;

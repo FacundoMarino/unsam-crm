@@ -63,13 +63,20 @@ export const TareasModal = ({ open, handleClose, iconTitle, props }) => {
   useEffect(() => {
     if (iconTitle === 'Editar Estado') {
       dispatch(getEnterprises({ telekinesis }));
-      setEstados([
-        { value: 1, label: 'En Proceso' },
-        { value: 2, label: 'Implementada' },
-        { value: 3, label: 'Cancelada' },
-      ]);
+      if (props[0].service === 'Consulta General') {
+        setEstados([
+          { value: 2, label: 'Implementada' },
+          { value: 3, label: 'Cancelada' },
+        ]);
+      } else if (props[0].service !== 'Consulta General') {
+        setEstados([
+          { value: 1, label: 'En Proceso' },
+          { value: 2, label: 'Implementada' },
+          { value: 3, label: 'Cancelada' },
+        ]);
+      }
     }
-  }, [dispatch, iconTitle, telekinesis]);
+  }, [dispatch, iconTitle, telekinesis, props]);
 
   useEffect(() => {
     if (enterpriseId) {

@@ -50,6 +50,7 @@ export const Legajo = ({ setDisplayView }) => {
   const razonSocial = useSelector(
     (state) => state?.auth?.enterprise?.enterprise_razon_social,
   );
+  const linkMeet = useSelector((state) => state.auth.link_meet);
 
   const [cards, setCards] = useState([]);
   const [notes, setNotes] = useState([]);
@@ -136,6 +137,7 @@ export const Legajo = ({ setDisplayView }) => {
       let service_id = '';
       let hourShift = '';
       let dayShift = '';
+      let link = '';
 
       const fecha = task.created_at;
 
@@ -166,9 +168,10 @@ export const Legajo = ({ setDisplayView }) => {
             task.comment
           }\nFecha: ${new Date(fecha).toLocaleDateString()}`;
           cardColor = task.status === 1 ? 'red' : 'green';
-          icon = task.status === 1 ? <ErrorIcon /> : <CheckCircleIcon />;
+          link = linkMeet;
           hourShift = task.turno[0]?.hour;
           dayShift = task.turno[0]?.day;
+          icon = task.status === 1 ? <ErrorIcon /> : <CheckCircleIcon />;
           break;
         case 3:
           enterprise_id = task.enterprise_id;
@@ -200,6 +203,7 @@ export const Legajo = ({ setDisplayView }) => {
         service_id: service_id,
         hourShift: hourShift,
         dayShift: dayShift,
+        link: link,
       };
     });
 
@@ -237,7 +241,9 @@ export const Legajo = ({ setDisplayView }) => {
     service_id,
     color,
   ) => {
-    if (page === 'formularios') {
+    if (page === 'formularios' && color === 'red') {
+      console.log(color);
+
       dispatch(setCrmPage(page));
       dispatch(setEnterpriseId(enterprise_id));
       dispatch(setFormId(form_id));
@@ -251,7 +257,7 @@ export const Legajo = ({ setDisplayView }) => {
     if (page === 'documentacion') {
       setProps([{ id, enterprise_id, service_id, color }]);
       handleModalOpen();
-    } else {
+    } else if (page === 'turnos' && color === 'red') {
       dispatch(setCrmPage(page));
       dispatch(setTaskId(id));
 
@@ -326,7 +332,7 @@ export const Legajo = ({ setDisplayView }) => {
                       <Card
                         style={{
                           color: card.color,
-                          cursor: rol !== 'Admin' ? 'pointer' : 'default',
+                          cursor: rol === 'Externo' ? 'pointer' : 'default',
                           marginBottom: '20px',
                         }}
                         onClick={() =>
@@ -350,7 +356,6 @@ export const Legajo = ({ setDisplayView }) => {
                               <div key={lineIndex}>{line}</div>
                             ))}
                           </Typography>
-                          {card.icon && <div>{card.icon}</div>}
                           {card.hourShift && (
                             <Typography>
                               Hora del Turno: {card.hourShift}
@@ -360,6 +365,20 @@ export const Legajo = ({ setDisplayView }) => {
                             <Typography>
                               Fecha del Turno: {formatDate(card.dayShift)}
                             </Typography>
+                          )}
+
+                          {card.link && card.color === 'green' ? (
+                            <Typography>
+                              Link:{' '}
+                              <a target="_blank" href={card.link}>
+                                {card.link}
+                              </a>
+                            </Typography>
+                          ) : null}
+                          {card.icon && (
+                            <Grid container justifyContent={'flex-end'}>
+                              {card.icon}
+                            </Grid>
                           )}
                         </CardContent>
                       </Card>

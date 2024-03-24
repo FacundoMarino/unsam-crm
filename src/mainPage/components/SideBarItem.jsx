@@ -17,17 +17,24 @@ import { LuUser2 } from 'react-icons/lu';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { IoNewspaperOutline } from 'react-icons/io5';
 import { IoMdAnalytics } from 'react-icons/io';
+import { MdNotificationImportant } from 'react-icons/md';
 
 export const SideBarItem = ({ title = '', icon }) => {
   const rol = useSelector((state) => state.auth.rol);
   const dispatch = useDispatch();
+
+  const notification = useSelector((state) => state.auth.tareas_pendientes);
   const [open, setOpen] = useState(false);
 
   const [items, setItems] = useState([]);
 
   const subItems = [
     { name: 'Servicios', icon: <FaRegHandshake /> },
-    { name: 'Mi Legajo', icon: <FaRegFolderOpen /> },
+    {
+      name: 'Mi Legajo',
+      icon: <FaRegFolderOpen />,
+      notification: <MdNotificationImportant style={{ color: 'red' }} />,
+    },
     { name: 'FAQ', icon: <FaQuestionCircle /> },
   ];
   const subItemsInternal = [
@@ -100,6 +107,15 @@ export const SideBarItem = ({ title = '', icon }) => {
                 sx={{ color: 'white' }}
                 primary={subItem.name}
               />
+              {subItem.notification &&
+              subItem.name === 'Mi Legajo' &&
+              notification > 0 ? (
+                <Icon
+                  sx={{ color: 'white', marginRight: '10px', height: '45px' }}
+                >
+                  {subItem.notification}
+                </Icon>
+              ) : null}
             </ListItemButton>
           </ListItem>
         ))}
